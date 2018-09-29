@@ -1,123 +1,82 @@
-# -----------------------------------------------------------------------------
-# Python & OpenGL for Scientific Visualization
-# www.labri.fr/perso/nrougier/python+opengl
-# Copyright (c) 2017, Nicolas P. Rougier
-# Distributed under the 2-Clause BSD License.
-# -----------------------------------------------------------------------------
-import sys
-import ctypes
 import numpy as np
-import OpenGL.GL as gl
-import OpenGL.GLUT as glut
 
-vertex_code = """
-    attribute vec2 position;
-    void main(){ gl_Position = vec4(position, 0.0, 1.0); } """
-
-fragment_code = """
-    uniform vec4 color;
-    void main() { gl_FragColor = color; } """
-
-def display():
-    gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-    gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 4)
-    glut.glutSwapBuffers()
-
-def reshape(width,height):
-    gl.glViewport(0, 0, width, height)
-
-def keyboard( key, x, y ):
-    if key == b'\x1b':
-        sys.exit( )
+# important funcs
+a = np.arange(15).reshape(3, 5)     # Creates an array with numbers from 0 to 14 and rearanges it so it becomes a 3 x 5 matrix
+print(a)
+print(a.ndim)                       # Amount of dimensions
+print(a.shape)                      # Amount of values per dimension
+print(a.size)                       # Total elements in the array
+print(a.dtype)                      # Type of the array's elements
+print(a.dtype.name)
+print(a.itemsize)                   # Size in bytes of the elements
+print(a.data)                       # Returns the buffer containing the actual elements of the array
 
 
-# GLUT init
-# --------------------------------------
-glut.glutInit()
-glut.glutInitDisplayMode(glut.GLUT_DOUBLE | glut.GLUT_RGBA)
-glut.glutCreateWindow('Hello world!')
-glut.glutReshapeWindow(512,512)
-glut.glutReshapeFunc(reshape)
-glut.glutDisplayFunc(display)
-glut.glutKeyboardFunc(keyboard)
+# array creation
+b = np.array([2, 3, 4])             # Basic way
+c = np.array((2, 3, 4))             # Equivalent way
+print(b)
+print(c)
 
-# Build data
-# --------------------------------------
-data = np.zeros(4, [("position", np.float32, 2)])
-data['position'] = [(-1,+1), (+1,+1), (-1,-1), (+1,-1)]
+d = np.array([[2, 3, 4], [3, 4, 5]])
+e = np.array([(2, 3, 4), (3, 4, 5)])
+print(d)
+print(e)
 
-# Build & activate program
-# --------------------------------------
-# Request a program and shader slots from GPU
-program  = gl.glCreateProgram()
-vertex   = gl.glCreateShader(gl.GL_VERTEX_SHADER)
-fragment = gl.glCreateShader(gl.GL_FRAGMENT_SHADER)
-
-# Set shaders source
-gl.glShaderSource(vertex, vertex_code)
-gl.glShaderSource(fragment, fragment_code)
-
-# Compile shaders
-gl.glCompileShader(vertex)
-if not gl.glGetShaderiv(vertex, gl.GL_COMPILE_STATUS):
-    error = gl.glGetShaderInfoLog(vertex).decode()
-    print(error)
-    raise RuntimeError("Shader compilation error")
-
-gl.glCompileShader(fragment)
-gl.glCompileShader(fragment)
-if not gl.glGetShaderiv(fragment, gl.GL_COMPILE_STATUS):
-    error = gl.glGetShaderInfoLog(fragment).decode()
-    print(error)
-    raise RuntimeError("Shader compilation error")
-
-# Attach shader objects to the program
-gl.glAttachShader(program, vertex)
-gl.glAttachShader(program, fragment)
-
-# Build program
-gl.glLinkProgram(program)
-if not gl.glGetProgramiv(program, gl.GL_LINK_STATUS):
-    print(gl.glGetProgramInfoLog(program))
-    raise RuntimeError('Linking error')
-
-# Get rid of shaders (no more needed)
-gl.glDetachShader(program, vertex)
-gl.glDetachShader(program, fragment)
-
-# Make program the default program
-gl.glUseProgram(program)
+f = np.array((1.5, 2.3, 5.4), dtype = complex)
+g = np.array(( [1.5, 4.6], [2.3, 5.4] ), dtype = complex)
+print(f)
+print(g)
 
 
-# Build buffer
-# --------------------------------------
-
-# Request a buffer slot from GPU
-buffer = gl.glGenBuffers(1)
-
-# Make this buffer the default one
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, buffer)
-
-# Upload data
-gl.glBufferData(gl.GL_ARRAY_BUFFER, data.nbytes, data, gl.GL_DYNAMIC_DRAW)
+# placeholder funcs
+h = np.zeros( (3, 4), dtype = "int64" )
+i = np.ones( (3, 2, 3) )
+j = np.empty( (4, 5) )
+print(h)
+print(i)
+print(j)
 
 
-# Bind the position attribute
-# --------------------------------------
-stride = data.strides[0]
-offset = ctypes.c_void_p(0)
-loc = gl.glGetAttribLocation(program, "position")
-gl.glEnableVertexAttribArray(loc)
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, buffer)
-gl.glVertexAttribPointer(loc, 2, gl.GL_FLOAT, False, stride, offset)
+# in range and linspace
+print(np.arange( 10, 30, 5 ))
+print(np.arange( 0, 2, 0.3 ))
+print(np.linspace( 0, 2, 9 ))
+x = np.linspace( -np.pi, np.pi, 100 )
+print(x)
+print(np.sin(x))
 
 
-# Upload the uniform color
-# --------------------------------------
-loc = gl.glGetUniformLocation(program, "color")
-gl.glUniform4f(loc, 0.0, 0.0, 1.0, 1.0)
+# to large to be printed
+print(np.arange( 0, 10000 ).reshape(100, 100))
 
 
-# Enter the mainloop
-# --------------------------------------
-glut.glutMainLoop()
+# basic operations
+k = np.array([[1, 5, 100], [2, 5435, 6]])
+l = np.array([(2, 3, 4), (3, 4, 5)])
+print(k + l)
+print(k * l)
+print(k < l)
+
+m = np.array([[1, 5], [5435, 6]])
+n = np.array([(2, 3), (4, 5)])
+print(m @ n)
+
+k += l
+print(k)
+
+o = np.random.random( (2, 3) )
+print(o)
+print(o.sum())
+print(o.min())
+print(o.max())
+
+print(o.sum(axis = 1))
+
+
+# universal funcs
+
+# exp and sqrt and sin and etc.
+
+
+# indexing, sliciing and iterating
