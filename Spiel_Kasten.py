@@ -1,10 +1,12 @@
 import numpy as np
 
+""" The Basics """
+
 # important funcs
 a = np.arange(15).reshape(3, 5)     # Creates an array with numbers from 0 to 14 and rearanges it so it becomes a 3 x 5 matrix
 print(a)
 print(a.ndim)                       # Amount of dimensions
-print(a.shape)                      # Amount of values per dimension
+print(a.shape)                      # Amount of elements per dimension
 print(a.size)                       # Total elements in the array
 print(a.dtype)                      # Type of the array's elements
 print(a.dtype.name)
@@ -76,7 +78,69 @@ print(o.sum(axis = 1))
 
 # universal funcs
 
-# exp and sqrt and sin and etc.
+# np.exp() and np.sqrt() and np.sin() and np.add() etc.
 
 
 # indexing, sliciing and iterating
+# unidimsional
+p = np.arange(10)
+print(p)
+print(p[2])
+print(p[:4])
+print(p[:8:-1])
+print(p[4:7:2])
+p[:4] = 10
+print(p)
+for i in p:
+    print(i**(1/2))
+
+# multidimensional
+q = np.fromfunction(lambda i, j: 10*i + j, (5, 4), dtype = int)
+print(q)
+print(q[2, 1])
+print(q[:2, 1])
+print(q[2:4,:1:-1])
+
+r = np.fromfunction(lambda i,j,k: 2*i + 5*j + k, (4,4,5), dtype = int)
+print(r)
+print(r[2,...,2])
+
+for e in q.flat:
+    print(e)
+
+
+""" Shape Manipulation """
+
+# changing the shape of an array
+s = np.floor(10*np.random.random((3, 4)))
+print(s)
+print(s.shape)
+print(s.ravel())
+print(s.ravel().shape)
+print(s.reshape(4, 3))
+print(s.T)
+print(s.T.shape)
+s.resize(2, 6)
+print(s)
+print(s.reshape(3,-1))
+print(s.reshape(-1,2))
+
+# stacking together different arrays
+t = np.floor(2*np.random.random((2, 2)))
+print(t)
+u = np.floor(2*np.random.random((2, 2)))
+print(u)
+print(np.vstack((t,u)))
+print(np.hstack((t,u)))
+
+# + colunm_stack() and row_stack() and concatenate()
+
+# splitting one array into several smaller ones
+print(t)
+print(np.hsplit(t,2))
+print(np.hsplit(t,(1,2)))
+
+# + vsplit() and array_split()
+
+
+""" Copies and Views """
