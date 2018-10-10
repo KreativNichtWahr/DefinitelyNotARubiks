@@ -8,29 +8,20 @@ import OpenGL.GLUT as glut
 
 
 # Vertex data
-data = np.zeros(12, [("position", np.float32, 3), ("rotationAngle", np.float32, 3)])
+data = np.zeros(12, [("position", np.float32, 3)])
 data["position"] = [(-0.5, +0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, +0.5), (+0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, +0.5, -0.5), (+0.5, -0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5)]
 
-# Shader code
+# Shader code --> alpha = z-axis, theta = y-axis, beta = x-axis
 vertexShaderCode = """
-    uniform xAngle;
-    uniform yAngle;
-    uniform zAngle;
+    uniform float alpha;
+    uniform float beta;
+    uniform float theta;
     attribute vec3 position;
     void main() {
-        float xCos = cos(xAngle)
-        float xSin = sin(xAngle)
-        float yCos = cos(yAngle)
-        float ySin = sin(yAngle)
-        float zCos = cos(zAngle)
-        float zSin = sin(zAngle)
-        float oldX = 
-        float oldY =
-        float oldZ =
-        float x =
-        float y =
-        float z =
-        gl_Position = vec4(vec3(x,y,z), 1.0);
+        float x = (position.x * (cos(alpha)*cos(theta) + cos(alpha)*sin(theta))) + (position.y * (-sin(alpha)*cos(beta) + sin(alpha)*sin(beta)));
+        float y = (position.x * (sin(alpha)*cos(theta) + sin(alpha)*sin(theta))) + (position.y * (cos(alpha)*cos(beta) - cos(alpha)*sin(beta)));
+        float z = (position.z * (-sin(beta)*cos(beta)*sin(theta) + sin(beta)*cos(beta)*cos(theta)));
+        gl_Position = vec4(x, y, z, 1.0);
     }
 """
 
@@ -41,14 +32,27 @@ fragmentShaderCode = """
     }
 """
 
+alpha = 0
+beta = 0
+theta = 0
+
+
+# Glut funcs
 def display():
+
+    global program
+
+    alphaLocation = gl.glGetUniformLocation(program, "alpha")
+    betaLocation = gl.glGetUniformLocation(program, "beta")
+    thetaLocation = gl.glGetUniformLocation(program, "theta")
+    gl.glUniform1f(alphaLocation, alpha)
+    gl.glUniform1f(betaLocation, beta)
+    gl.glUniform1f(thetaLocation, theta)
 
     gl.glClear(gl.GL_COLOR_BUFFER_BIT)
     gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 12)
-    data["rotationAngle"]
 
     glut.glutSwapBuffers()
-
 
 def reshape(width, height):
 
@@ -59,13 +63,15 @@ def keyboard (key, x, y):
     if key == b'\x1b':
         sys.exit( )
 
+
 glut.glutInit()
 glut.glutInitDisplayMode(glut.GLUT_DOUBLE | glut.GLUT_RGBA)
 glut.glutCreateWindow('Hello world!')
 glut.glutReshapeWindow(512, 512)
-glut.glutReshapeFunc(reshape)
 glut.glutDisplayFunc(display)
+glut.glutReshapeFunc(reshape)
 glut.glutKeyboardFunc(keyboard)
+
 
 # Compile and link shader code
 program = gl.glCreateProgram()
@@ -118,6 +124,13 @@ gl.glVertexAttribPointer(loc, 3, gl.GL_FLOAT, False, stride, offset)
 
 loc = gl.glGetUniformLocation(program, "color")
 gl.glUniform4f(loc, 0.0, 0.0, 1.0, 1.0)
+
+alphaLocation = gl.glGetUniformLocation(program, "alpha")
+betaLocation = gl.glGetUniformLocation(program, "beta")
+thetaLocation = gl.glGetUniformLocation(program, "theta")
+gl.glUniform1f(alphaLocation, alpha)
+gl.glUniform1f(betaLocation, beta)
+gl.glUniform1f(thetaLocation, theta)
 
 
 glut.glutMainLoop()

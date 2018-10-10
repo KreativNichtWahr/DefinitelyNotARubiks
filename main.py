@@ -45,18 +45,6 @@ class MainWindow(QMainWindow):
         centralWidget = SubWindow(parent = self)
         self.setCentralWidget(centralWidget)
 
-        '''self.newCube = OpenGLCube(
-                vertices = [(1, -1, -1), (1, 1, -1), (-1, 1, -1), (-1, -1, -1),
-                            (1, -1, 1), (1, 1, 1), (-1, -1, 1), (-1, 1, 1)],
-                edges = [(0, 1), (0, 3), (0, 4), (2, 1), (2, 3), (2, 7), (6, 3),
-                        (6, 4), (6, 7), (5, 1), (5, 4), (5, 7)]
-        )
-        self.newCube.setMinimumSize(300, 300)
-
-        VBox = QVBoxLayout()
-        VBox.addWidget(self.newCube)
-        centralWidget.setLayout(VBox)'''
-
         self.setMouseTracking(True)
 
         self.setWindowTitle("3D Rubik's Cube Simulator")
@@ -68,7 +56,7 @@ class MainWindow(QMainWindow):
 
         if event.key() == Qt.Key_S:
 
-            print("That's the right event and it has been caught")
+            print("That's the right event and it's been caught")
             cmd = "python3 Play_Ground.py"
             sp.Popen(cmd, stdout=sp.PIPE, shell=True)
 
