@@ -8,10 +8,13 @@ import OpenGL.GLUT as glut
 
 
 # Vertex data
-data = np.zeros(12, [("position", np.float32, 3)])
+data = np.zeros(12, [("position", np.float32, 3), ("color", np.float32, 4)])
 data["position"] = [(-0.5, +0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, +0.5), (+0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, +0.5, -0.5), (+0.5, -0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5)]
+data["color"] = [(0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
 
-
+edgeData = np.zeros(12, [("position", np.float32, 3), ("color", np.float32, 4)])
+edgeData["position"] = [(-0.5, +0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, +0.5), (+0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, +0.5, -0.5), (+0.5, -0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5)]
+edgeData["color"] = [(1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0)]
 
 # Shader code
 vertexShaderCode = """
@@ -19,18 +22,21 @@ vertexShaderCode = """
     uniform vec3 yTransform;
     uniform vec3 zTransform;
     attribute vec3 position;
+    attribute vec4 color;
+    varying vec4 v_color;
     void main() {
         float x = position.x*xTransform.x + position.y*xTransform.y + position.z*xTransform.z;
         float y = position.x*yTransform.x + position.y*yTransform.y + position.z*yTransform.z;
         float z = position.x*zTransform.x + position.y*zTransform.y + position.z*zTransform.z;
         gl_Position = vec4(x, y, z, 1.0);
+        v_color = color;
     }
 """
 
 fragmentShaderCode = """
-    uniform vec4 color;
+    varying vec4 v_color;
     void main() {
-        gl_FragColor = color;
+        gl_FragColor = v_color;
     }
 """
 
@@ -135,28 +141,48 @@ gl.glUseProgram(program)
 
 
 # Buffer stuff
-buffer = gl.glGenBuffers(1)
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, buffer)
 
+# Preparatory stuff
+Vaos = gl.glGenVertexArrays(2)
+Vbos = gl.glGenBuffers(2)
+posLoc = gl.glGetAttribLocation(program, "position")
+colorLoc = gl.glGetAttribLocation(program, "color")
+posOffset = ctypes.c_void_p(0)
+colorOffset = ctypes.c_void_p(data.dtype["position"].itemsize)
+dataStride = data.strides[0]
+edgeDataStride = edgeData.strides[0]
+
+# Cube itself
+gl.glBindVertexArray(Vaos[0])
+
+gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
 gl.glBufferData(gl.GL_ARRAY_BUFFER, data.nbytes, data, gl.GL_DYNAMIC_DRAW)
 
-stride = data.strides[0]
-offset = ctypes.c_void_p(0)
+gl.glEnableVertexAttribArray(posLoc)
+gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, dataStride, posOffset)
 
-loc = gl.glGetAttribLocation(program, "position")
-gl.glEnableVertexAttribArray(loc)
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, buffer)
-gl.glVertexAttribPointer(loc, 3, gl.GL_FLOAT, False, stride, offset)
+gl.glEnableVertexAttribArray(colorLoc)
+gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, dataStride, colorOffset)
 
+# Lines for visibility's sake
+gl.glBindVertexArray(Vaos[1])
 
-loc = gl.glGetUniformLocation(program, "color")
-gl.glUniform4f(loc, 0.0, 0.0, 1.0, 1.0)
+gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
+gl.glBufferData(gl.GL_ARRAY_BUFFER, edgeData.nbytes, edgeData, gl.GL_DYNAMIC_DRAW)
 
+gl.glEnableVertexAttribArray(posLoc)
+gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, edgeDataStride, posOffset)
+
+gl.glEnableVertexAttribArray(colorLoc)
+gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, edgeDataStride, colorOffset)
+
+gl.glBindVertexArray(0)
 
 def display():
 
     global program
     global finalRotationMatrix
+    global Vbos
 
     xTransform = finalRotationMatrix[0,:3]
     yTransform = finalRotationMatrix[1,:3]
@@ -170,7 +196,16 @@ def display():
     gl.glUniform3f(loc, zTransform[0], zTransform[1], zTransform[2])
 
     gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+
+    #gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
+    gl.glBindVertexArray(Vaos[0])
     gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 12)
+
+    #gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
+    gl.glBindVertexArray(Vaos[1])
+    gl.glDrawArrays(gl.GL_LINES, 0, 12)
+
+    gl.glBindVertexArray(0)
 
     glut.glutSwapBuffers()
 
