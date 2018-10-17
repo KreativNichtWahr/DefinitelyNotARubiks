@@ -12,9 +12,12 @@ data = np.zeros(12, [("position", np.float32, 3), ("color", np.float32, 4)])
 data["position"] = [(-0.5, +0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, +0.5), (+0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, +0.5, -0.5), (+0.5, -0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5)]
 data["color"] = [(0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
 
-edgeData = np.zeros(12, [("position", np.float32, 3), ("color", np.float32, 4)])
-edgeData["position"] = [(-0.5, +0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, +0.5), (+0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, +0.5, -0.5), (+0.5, -0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5)]
-edgeData["color"] = [(1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0)]
+edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
+                        #[ 1, 1, 1], [-1, 1, 1], [-1,-1, 1], [ 1,-1, 1], [ 1,-1,-1], [ 1, 1,-1], [-1, 1,-1], [-1,-1,-1]
+edgeData["color"] = np.ones(4, dtype = np.float32)
+edgeDataIndices = np.array([0,1, 1,2, 2,3, 3,0, 4,7, 7,6, 6,5, 5,4, 0,5, 1,6, 2,7, 3,4], dtype = np.int32)
+
 
 # Shader code
 vertexShaderCode = """
@@ -143,40 +146,48 @@ gl.glUseProgram(program)
 # Buffer stuff
 
 # Preparatory stuff
-Vaos = gl.glGenVertexArrays(2)
-Vbos = gl.glGenBuffers(2)
-posLoc = gl.glGetAttribLocation(program, "position")
-colorLoc = gl.glGetAttribLocation(program, "color")
-posOffset = ctypes.c_void_p(0)
-colorOffset = ctypes.c_void_p(data.dtype["position"].itemsize)
-dataStride = data.strides[0]
-edgeDataStride = edgeData.strides[0]
+def createVbos():
 
-# Cube itself
-gl.glBindVertexArray(Vaos[0])
+    print(edgeDataIndices.dtype.name)
 
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
-gl.glBufferData(gl.GL_ARRAY_BUFFER, data.nbytes, data, gl.GL_DYNAMIC_DRAW)
+    Vbos = gl.glGenBuffers(3)
+    posLoc = gl.glGetAttribLocation(program, "position")
+    colorLoc = gl.glGetAttribLocation(program, "color")
+    posOffset = ctypes.c_void_p(0)
+    colorOffset = ctypes.c_void_p(data.dtype["position"].itemsize)
+    dataStride = data.strides[0]
+    edgeDataStride = edgeData.strides[0]
 
-gl.glEnableVertexAttribArray(posLoc)
-gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, dataStride, posOffset)
+    # Cube itself
+    gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
+    gl.glBufferData(gl.GL_ARRAY_BUFFER, data.nbytes, data, gl.GL_DYNAMIC_DRAW)
 
-gl.glEnableVertexAttribArray(colorLoc)
-gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, dataStride, colorOffset)
+    gl.glEnableVertexAttribArray(posLoc)
+    gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, dataStride, posOffset)
 
-# Lines for visibility's sake
-gl.glBindVertexArray(Vaos[1])
+    gl.glEnableVertexAttribArray(colorLoc)
+    gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, dataStride, colorOffset)
 
-gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
-gl.glBufferData(gl.GL_ARRAY_BUFFER, edgeData.nbytes, edgeData, gl.GL_DYNAMIC_DRAW)
+    gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 12)
 
-gl.glEnableVertexAttribArray(posLoc)
-gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, edgeDataStride, posOffset)
+    # Lines for visibility's sake
+    gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
+    gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, edgeDataIndices.nbytes, edgeDataIndices, gl.GL_DYNAMIC_DRAW)
 
-gl.glEnableVertexAttribArray(colorLoc)
-gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, edgeDataStride, colorOffset)
+    gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
+    gl.glBufferData(gl.GL_ARRAY_BUFFER, edgeData.nbytes, edgeData, gl.GL_DYNAMIC_DRAW)
 
-gl.glBindVertexArray(0)
+    gl.glEnableVertexAttribArray(posLoc)
+    gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, edgeDataStride, posOffset)
+
+    gl.glEnableVertexAttribArray(colorLoc)
+    gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, edgeDataStride, colorOffset)
+
+    gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
+
+    gl.glDrawElements(gl.GL_LINES, edgeDataIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+
+gl.glEnable(gl.GL_DEPTH_TEST)
 
 def display():
 
@@ -195,17 +206,9 @@ def display():
     loc = gl.glGetUniformLocation(program, "zTransform")
     gl.glUniform3f(loc, zTransform[0], zTransform[1], zTransform[2])
 
-    gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+    gl.glClear(gl.GL_COLOR_BUFFER_BIT |gl.GL_DEPTH_BUFFER_BIT)
 
-    #gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
-    gl.glBindVertexArray(Vaos[0])
-    gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 12)
-
-    #gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
-    gl.glBindVertexArray(Vaos[1])
-    gl.glDrawArrays(gl.GL_LINES, 0, 12)
-
-    gl.glBindVertexArray(0)
+    createVbos()
 
     glut.glutSwapBuffers()
 

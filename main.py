@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
-#from OpenGLCube import OpenGLCube
+import CubeWindow as cw
 import subprocess as sp
 
 class SubWindow(QWidget):
@@ -47,6 +47,8 @@ class MainWindow(QMainWindow):
 
         self.setMouseTracking(True)
 
+        self.cubeWindow = cw.Cube(self)
+
         self.setWindowTitle("3D Rubik's Cube Simulator")
         self.setGeometry(200, 100, 1100, 800)
         self.show()
@@ -54,12 +56,14 @@ class MainWindow(QMainWindow):
 
     def keyPressEvent(self, event):
 
-        if event.key() == Qt.Key_S:
+        self.cubeWindow.keyboard(event.key())
+
+        """if event.key() == Qt.Key_S:
 
             print("That's the right event and it's been caught")
-            cmd = "python3 Play_Ground.py"
+            cmd = "python3 CubeWindow.py"
             sp.Popen(cmd, stdout=sp.PIPE, shell=True)
-
+        """
 
 
 
