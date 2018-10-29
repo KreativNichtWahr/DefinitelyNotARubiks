@@ -47,9 +47,7 @@ fragmentShaderCode = """
     }
 """
 
-alpha = 0.0
-beta = 0.0
-theta = 0.0
+alpha, beta, theta = 0.0, 0.0, 0.0
 
 # Matrix multiplication
 finalRotationMatrix = (
