@@ -25,17 +25,21 @@ axesData["color"] = [(1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0,
 
 # Shader code
 vertexShaderCode = """
-    uniform vec3 xTransform;
-    uniform vec3 yTransform;
-    uniform vec3 zTransform;
+    uniform vec3 angles;
     attribute vec3 position;
     attribute vec4 color;
     varying vec4 v_color;
+    mat4 modelMatrix;
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
     void main() {
-        float x = position.x*xTransform.x + position.y*xTransform.y + position.z*xTransform.z;
-        float y = position.x*yTransform.x + position.y*yTransform.y + position.z*yTransform.z;
-        float z = position.x*zTransform.x + position.y*zTransform.y + position.z*zTransform.z;
-        gl_Position = vec4(x, y, z, 1.0);
+        modelMatrix = mat4(1,0,0,0,  0,cos(angles.y),-sin(angles.y),0,  0,sin(angles.y),cos(angles.y),0,  0,0,0,1) *
+                           mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
+                           mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
+        viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,1.5,1);
+        projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,1, 0,0,0,0);
+        vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+        gl_Position = temporary / temporary.w;
         v_color = color;
     }
 """
@@ -50,15 +54,14 @@ fragmentShaderCode = """
 alpha, beta, theta = 0.0, 0.0, 0.0
 
 # Matrix multiplication
-finalRotationMatrix = (
+"""finalRotationMatrix = (
     np.array([[1,0,0,0] , [0,np.cos(beta),np.sin(beta),0] , [0,-np.sin(beta),np.cos(beta),0] , [0,0,0,1]]) @
     np.array([[np.cos(theta),0,-np.sin(theta),0] , [0,1,0,0] , [np.sin(theta),0,np.cos(theta),0] , [0,0,0,1]]) @
     np.array([[np.cos(alpha),np.sin(alpha),0,0] , [-np.sin(alpha),np.cos(alpha),0,0] , [0,0,1,0] , [0,0,0,1]])
-)
+)"""
 
 
 # Glut funcs
-
 def reshape(width, height):
 
     gl.glViewport(0, 0, width, height)
@@ -69,34 +72,24 @@ def keyboard (key, x, y):
     global alpha
     global beta
     global theta
-    global finalRotationMatrix
 
     if key == b'\x1b':
-
-        #sys.exit( )
 
         alpha += 1 * math.pi/180
         beta += 2 * math.pi/180
         theta += 5 * math.pi/180
 
     elif key == b'a':
-        theta -= 10 * math.pi/180
+        theta += 10 * math.pi/180
 
     elif key == b'd':
-        theta += 10 * math.pi/180
+        theta -= 10 * math.pi/180
 
     elif key == b's':
         beta -= 10* math.pi/180
 
     elif key == b'w':
         beta += 10* math.pi/180
-
-    finalRotationMatrix = (
-        np.array([[1,0,0,0] , [0,np.cos(beta),-np.sin(beta),0] , [0,np.sin(beta),np.cos(beta),0] , [0,0,0,1]]) @
-        np.array([[np.cos(theta),0,-np.sin(theta),0] , [0,1,0,0] , [np.sin(theta),0,np.cos(theta),0] , [0,0,0,1]]) @
-        np.array([[np.cos(alpha),-np.sin(alpha),0,0] , [np.sin(alpha),np.cos(alpha),0,0] , [0,0,1,0] , [0,0,0,1]])
-    )
-
 
     display()
 
@@ -107,6 +100,9 @@ glut.glutCreateWindow("Rubik's Cube")
 glut.glutReshapeWindow(512, 512)
 glut.glutReshapeFunc(reshape)
 glut.glutKeyboardFunc(keyboard)
+
+gl.glDepthFunc(gl.GL_LESS)
+gl.glEnable(gl.GL_DEPTH_TEST)
 
 
 # Compile and link shader code
@@ -206,24 +202,10 @@ def createVbos():
 
 def display():
 
-    global program
-    global finalRotationMatrix
-    global Vbos
+    loc = gl.glGetUniformLocation(program, "angles")
+    gl.glUniform3f(loc, alpha, beta, theta)
 
-    xTransform = finalRotationMatrix[0,:3]
-    yTransform = finalRotationMatrix[1,:3]
-    zTransform = finalRotationMatrix[2,:3]
-
-    loc = gl.glGetUniformLocation(program, "xTransform")
-    gl.glUniform3f(loc, xTransform[0], xTransform[1], xTransform[2])
-    loc = gl.glGetUniformLocation(program, "yTransform")
-    gl.glUniform3f(loc, yTransform[0], yTransform[1], yTransform[2])
-    loc = gl.glGetUniformLocation(program, "zTransform")
-    gl.glUniform3f(loc, zTransform[0], zTransform[1], zTransform[2])
-
-    gl.glEnable(gl.GL_DEPTH_TEST)
-    gl.glDepthMask(True)
-    gl.glClear(gl.GL_COLOR_BUFFER_BIT|gl.GL_DEPTH_BUFFER_BIT)
+    gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
     createVbos()
 
