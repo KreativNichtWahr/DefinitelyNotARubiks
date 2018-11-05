@@ -26,16 +26,16 @@ class wholeCube():
     def initGlut(self):
 
         glut.glutInit()
-        glut.glutInitDisplayMode(glut.GLUT_DOUBLE | glut.GLUT_RGBA)
+        glut.glutInitDisplayMode(glut.GLUT_DOUBLE | glut.GLUT_RGBA | glut.GLUT_DEPTH)
         glut.glutCreateWindow("Rubik's Cube")
         glut.glutReshapeWindow(512, 512)
         glut.glutReshapeFunc(self.reshape)
         glut.glutKeyboardFunc(self.keyboard)
         glut.glutDisplayFunc(self.display)
 
-        gl.glDepthFunc(gl.GL_LESS)
         gl.glEnable(gl.GL_DEPTH_TEST)
-
+        gl.glDepthFunc(gl.GL_LESS)
+        gl.glEnable(gl.GL_CULL_FACE)
 
     def initProgram(self):
 
@@ -53,7 +53,7 @@ class wholeCube():
                                    mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
                                    mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,1.5,1);
-                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,1, 0,0,0,0);
+                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
                 gl_Position = temporary / temporary.w;
                 v_color = color;
@@ -134,6 +134,7 @@ class wholeCube():
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.alpha, self.beta, self.theta)
 
+        gl.glDepthMask(gl.GL_TRUE)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
         self.createVbosAndDraw()
@@ -205,7 +206,7 @@ if __name__ == "__main__":
     # Vertex data
     data = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
     data["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    data["color"] = [(1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0), (1.0, 0.0, 1.0, 1.0)]
+    data["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
     dataIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
 
     edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
