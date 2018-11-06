@@ -144,3 +144,11 @@ print(np.hsplit(t,(1,2)))
 
 
 """ Copies and Views """
+def arsf(*args):
+    print(list(args))
+    for e in args:
+        print(e)
+    print(len(args))
+    print(args[0])
+
+arsf(1,2,3,523452)

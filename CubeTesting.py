@@ -10,15 +10,13 @@ import OpenGL.GLUT as glut
 
 class wholeCube():
 
-    def __init__(self, blob, blobIndices, lines, lineIndices, coordinateAxes):
+    def __init__(self, lineIndices, coordinateAxes, *args):
 
-        # Rotation angles
-        self.blob, self.blobIndices = blob, blobIndices
-        self.lines, self.lineIndices = lines, lineIndices
+        # Set important variables and launch both init funcs
+        self.lineIndices = lineIndices
         self.coordinateAxes = coordinateAxes
-
+        self.args = args
         self.alpha, self.beta, self.theta = 0.0, 0.0, 0.0
-
         self.initGlut()
         self.initProgram()
 
@@ -53,7 +51,7 @@ class wholeCube():
                                    mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
                                    mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,1.5,1);
-                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,0);
+                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,1.5);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
                 gl_Position = temporary / temporary.w;
                 v_color = color;
@@ -100,6 +98,7 @@ class wholeCube():
 
         gl.glUseProgram(self.program)
 
+
     # Glut funcs
     def reshape(self, width, height):
 
@@ -137,65 +136,84 @@ class wholeCube():
         gl.glDepthMask(gl.GL_TRUE)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
-        self.createVbosAndDraw()
+        for i in range(int(len(self.args)/2)):
+            self.drawCubies(self.args[i], self.args[int(len(self.args)/2) + i])
+        self.drawAxes()
 
         glut.glutSwapBuffers()
 
 
     # Buffer stuff
-    def createVbosAndDraw(self):
+    def drawCubies(self, objectToDraw, objectIndices, outLines = True):
 
-        Vbos = gl.glGenBuffers(5)
+        Vbos = gl.glGenBuffers(4)
 
         posLoc = gl.glGetAttribLocation(self.program, "position")
         colorLoc = gl.glGetAttribLocation(self.program, "color")
         posOffset = ctypes.c_void_p(0)
-        colorOffset = ctypes.c_void_p(self.blob.dtype["position"].itemsize)
-        blobStride = self.blob.strides[0]
-        linesStride = self.lines.strides[0]
-        coordinateAxesStride = self.coordinateAxes.strides[0]
+        colorOffset = ctypes.c_void_p(objectToDraw.dtype["position"].itemsize)
+
+        objectStride = objectToDraw.strides[0]
 
         # Cube itself
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.blobIndices.nbytes, self.blobIndices, gl.GL_DYNAMIC_DRAW)
+        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, objectIndices.nbytes, objectIndices, gl.GL_DYNAMIC_DRAW)
 
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
-        gl.glBufferData(gl.GL_ARRAY_BUFFER, self.blob.nbytes, self.blob, gl.GL_DYNAMIC_DRAW)
+        gl.glBufferData(gl.GL_ARRAY_BUFFER, objectToDraw.nbytes, objectToDraw, gl.GL_DYNAMIC_DRAW)
 
         gl.glEnableVertexAttribArray(posLoc)
-        gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, blobStride, posOffset)
+        gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, objectStride, posOffset)
 
         gl.glEnableVertexAttribArray(colorLoc)
-        gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, blobStride, colorOffset)
+        gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, objectStride, colorOffset)
 
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        gl.glDrawElements(gl.GL_TRIANGLES, self.blobIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+        gl.glDrawElements(gl.GL_TRIANGLES, objectIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
 
-        # Lines for visibility's sake
-        gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[3])
-        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.lineIndices.nbytes, self.lineIndices, gl.GL_DYNAMIC_DRAW)
+        if outLines:
 
-        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
-        gl.glBufferData(gl.GL_ARRAY_BUFFER, self.lines.nbytes, self.lines, gl.GL_DYNAMIC_DRAW)
+            outlines = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+            outlines["position"] = objectToDraw["position"]
+            outlines["color"] = np.ones(4, dtype = np.float32)
 
-        gl.glEnableVertexAttribArray(posLoc)
-        gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, linesStride, posOffset)
+            # Lines for visibility's sake
+            gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[3])
+            gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.lineIndices.nbytes, self.lineIndices, gl.GL_DYNAMIC_DRAW)
 
-        gl.glEnableVertexAttribArray(colorLoc)
-        gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, linesStride, colorOffset)
+            gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[1])
+            gl.glBufferData(gl.GL_ARRAY_BUFFER, outlines.nbytes, outlines, gl.GL_DYNAMIC_DRAW)
 
-        gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[3])
-        gl.glDrawElements(gl.GL_LINES, self.lineIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+            gl.glEnableVertexAttribArray(posLoc)
+            gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, objectStride, posOffset)
+
+            gl.glEnableVertexAttribArray(colorLoc)
+            gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, objectStride, colorOffset)
+
+            gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[3])
+            gl.glDrawElements(gl.GL_LINES, self.lineIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+
+
+    def drawAxes(self):
+
+        Vbo = gl.glGenBuffers(1)
+
+        posLoc = gl.glGetAttribLocation(self.program, "position")
+        colorLoc = gl.glGetAttribLocation(self.program, "color")
+        posOffset = ctypes.c_void_p(0)
+        colorOffset = ctypes.c_void_p(self.coordinateAxes.dtype["position"].itemsize)
+
+        axesStride = self.coordinateAxes.strides[0]
 
         # Coordinate axes
-        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[4])
+        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbo)
         gl.glBufferData(gl.GL_ARRAY_BUFFER, self.coordinateAxes.nbytes, self.coordinateAxes, gl.GL_DYNAMIC_DRAW)
 
         gl.glEnableVertexAttribArray(posLoc)
-        gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, coordinateAxesStride, posOffset)
+        gl.glVertexAttribPointer(posLoc, 3, gl.GL_FLOAT, False, axesStride, posOffset)
 
         gl.glEnableVertexAttribArray(colorLoc)
-        gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, coordinateAxesStride, colorOffset)
+        gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, axesStride, colorOffset)
 
         gl.glDrawArrays(gl.GL_LINES, 0, 6)
 
@@ -203,15 +221,22 @@ class wholeCube():
 
 if __name__ == "__main__":
 
-    # Vertex data
-    data = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    data["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    data["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
-    dataIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
+    # Cuby data
+    center = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    center["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
+    center["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+    centerIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
 
-    edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    topM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    topM["position"] = [(+0.5, +1.7, +0.5), (-0.5, +1.7, +0.5), (-0.5, 0.7, +0.5), (+0.5, 0.7, +0.5), (+0.5, 0.7, -0.5), (+0.5, +1.7, -0.5), (-0.5, +1.7, -0.5), (-0.5, 0.7, -0.5)]
+    topM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+    topMIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
+
+
+    # Outlines data
+    """edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
     edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    edgeData["color"] = np.ones(4, dtype = np.float32)
+    edgeData["color"] = np.ones(4, dtype = np.float32)"""
     edgeDataIndices = np.array([0,1, 1,2, 2,3, 3,0, 4,7, 7,6, 6,5, 5,4, 0,5, 1,6, 2,7, 3,4], dtype = np.int32)
 
     axesData = np.zeros(6, [("position", np.float32, 3), ("color", np.float32, 4)])
@@ -220,7 +245,7 @@ if __name__ == "__main__":
 
 
     # Final Rubik's Cube
-    testCube = wholeCube(data, dataIndices, edgeData, edgeDataIndices, axesData)
+    testCube = wholeCube(edgeDataIndices, axesData, center, topM, centerIndices, topMIndices)
 
     # And finally the Mainloop()
     glut.glutMainLoop()
