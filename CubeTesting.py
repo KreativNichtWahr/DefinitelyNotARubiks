@@ -10,10 +10,11 @@ import OpenGL.GLUT as glut
 
 class wholeCube():
 
-    def __init__(self, lineIndices, coordinateAxes, *args):
+    def __init__(self, objectIndices, lineIndices, coordinateAxes, *args):
 
         # Set important variables and launch both init funcs
         self.lineIndices = lineIndices
+        self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.args = args
         self.alpha, self.beta, self.theta = 0.0, 0.0, 0.0
@@ -23,6 +24,7 @@ class wholeCube():
 
     def initGlut(self):
 
+        # Glut init
         glut.glutInit()
         glut.glutInitDisplayMode(glut.GLUT_DOUBLE | glut.GLUT_RGBA | glut.GLUT_DEPTH)
         glut.glutCreateWindow("Rubik's Cube")
@@ -31,9 +33,13 @@ class wholeCube():
         glut.glutKeyboardFunc(self.keyboard)
         glut.glutDisplayFunc(self.display)
 
+        # Depth / Cull init
         gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glDepthMask(gl.GL_TRUE)
         gl.glDepthFunc(gl.GL_LESS)
+        gl.glDepthRange(-1.0, 1.0)
         gl.glEnable(gl.GL_CULL_FACE)
+        gl.glCullFace(gl.GL_BACK)
 
     def initProgram(self):
 
@@ -50,8 +56,8 @@ class wholeCube():
                 modelMatrix = mat4(1,0,0,0,  0,cos(angles.y),-sin(angles.y),0,  0,sin(angles.y),cos(angles.y),0,  0,0,0,1) *
                                    mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
                                    mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
-                viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,1.5,1);
-                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,1.5);
+                viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0.5,1);
+                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,3);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
                 gl_Position = temporary / temporary.w;
                 v_color = color;
@@ -133,18 +139,19 @@ class wholeCube():
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.alpha, self.beta, self.theta)
 
-        gl.glDepthMask(gl.GL_TRUE)
+        #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+        #gl.glClearDepth(1.0)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
-        for i in range(int(len(self.args)/2)):
-            self.drawCubies(self.args[i], self.args[int(len(self.args)/2) + i])
+        for i in range(int(len(self.args))):
+            self.drawCubies(self.args[i])
         self.drawAxes()
 
         glut.glutSwapBuffers()
 
 
     # Buffer stuff
-    def drawCubies(self, objectToDraw, objectIndices, outLines = True):
+    def drawCubies(self, objectToDraw, outLines = True):
 
         Vbos = gl.glGenBuffers(4)
 
@@ -157,7 +164,7 @@ class wholeCube():
 
         # Cube itself
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, objectIndices.nbytes, objectIndices, gl.GL_DYNAMIC_DRAW)
+        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.objectIndices.nbytes, self.objectIndices, gl.GL_DYNAMIC_DRAW)
 
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
         gl.glBufferData(gl.GL_ARRAY_BUFFER, objectToDraw.nbytes, objectToDraw, gl.GL_DYNAMIC_DRAW)
@@ -169,7 +176,7 @@ class wholeCube():
         gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, objectStride, colorOffset)
 
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        gl.glDrawElements(gl.GL_TRIANGLES, objectIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+        gl.glDrawElements(gl.GL_TRIANGLES, self.objectIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
 
         if outLines:
 
@@ -222,30 +229,62 @@ class wholeCube():
 if __name__ == "__main__":
 
     # Cuby data
-    center = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    center["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    center["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
-    centerIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
-
-    topM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    topM["position"] = [(+0.5, +1.7, +0.5), (-0.5, +1.7, +0.5), (-0.5, 0.7, +0.5), (+0.5, 0.7, +0.5), (+0.5, 0.7, -0.5), (+0.5, +1.7, -0.5), (-0.5, +1.7, -0.5), (-0.5, 0.7, -0.5)]
-    topM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-    topMIndices = np.array([3,0,1, 3,1,2, 4,5,0, 4,0,3, 7,6,5, 7,5,4, 2,1,6, 2,6,7, 0,5,6, 0,6,1, 2,7,4, 2,4,3], dtype = np.int32)
-
-
-    # Outlines data
-    """edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    edgeData["color"] = np.ones(4, dtype = np.float32)"""
+    dataIndices = np.array([0,1,3, 1,2,3, 5,0,4, 0,3,4, 6,5,7, 5,4,7, 1,6,2, 6,7,2, 5,6,0, 6,1,0, 7,4,2, 4,3,2], dtype = np.int32)
     edgeDataIndices = np.array([0,1, 1,2, 2,3, 3,0, 4,7, 7,6, 6,5, 5,4, 0,5, 1,6, 2,7, 3,4], dtype = np.int32)
 
     axesData = np.zeros(6, [("position", np.float32, 3), ("color", np.float32, 4)])
     axesData["position"] = [(0.0, 0.0, 0.0), (0.8, 0.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.8, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.8)]
     axesData["color"] = [(1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
 
+    # Center face
+    centerR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    centerR["position"] = [(+1.7, +0.5, +0.5), (+0.7, +0.5, +0.5), (+0.7, -0.5, +0.5), (+1.7, -0.5, +0.5), (+1.7, -0.5, -0.5), (+1.7, +0.5, -0.5), (+0.7, +0.5, -0.5), (+0.7, -0.5, -0.5)]
+    centerR["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+
+    topR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    topR["position"] = [(+1.7, +1.7, +0.5), (+0.7, +1.7, +0.5), (+0.7, 0.7, +0.5), (+1.7, 0.7, +0.5), (+1.7, 0.7, -0.5), (+1.7, +1.7, -0.5), (+0.7, +1.7, -0.5), (+0.7, 0.7, -0.5)]
+    topR["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+    botR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    botR["position"] = [(+1.7, -0.7, +0.5), (+0.7, -0.7, +0.5), (+0.7, -1.7, +0.5), (+1.7, -1.7, +0.5), (+1.7, -1.7, -0.5), (+1.7, -0.7, -0.5), (+0.7, -0.7, -0.5), (+0.7, -1.7, -0.5)]
+    botR["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+
+    centerM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    centerM["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
+    centerM["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+
+    topM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    topM["position"] = [(+0.5, +1.7, +0.5), (-0.5, +1.7, +0.5), (-0.5, 0.7, +0.5), (+0.5, 0.7, +0.5), (+0.5, 0.7, -0.5), (+0.5, +1.7, -0.5), (-0.5, +1.7, -0.5), (-0.5, 0.7, -0.5)]
+    topM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+    botM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    botM["position"] = [(+0.5, -0.7, +0.5), (-0.5, -0.7, +0.5), (-0.5, -1.7, +0.5), (+0.5, -1.7, +0.5), (+0.5, -1.7, -0.5), (+0.5, -0.7, -0.5), (-0.5, -0.7, -0.5), (-0.5, -1.7, -0.5)]
+    botM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+
+    centerL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    centerL["position"] = [(-0.7, +0.5, +0.5), (-1.7, +0.5, +0.5), (-1.7, -0.5, +0.5), (-0.7, -0.5, +0.5), (-0.7, -0.5, -0.5), (-0.7, +0.5, -0.5), (-1.7, +0.5, -0.5), (-1.7, -0.5, -0.5)]
+    centerL["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+
+    topL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    topL["position"] = [(-0.7, +1.7, +0.5), (-1.7, +1.7, +0.5), (-1.7, 0.7, +0.5), (-0.7, 0.7, +0.5), (-0.7, 0.7, -0.5), (-0.7, +1.7, -0.5), (-1.7, +1.7, -0.5), (-1.7, 0.7, -0.5)]
+    topL["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+    botL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    botL["position"] = [(-0.7, -0.7, +0.5), (-1.7, -0.7, +0.5), (-1.7, -1.7, +0.5), (-0.7, -1.7, +0.5), (-0.7, -1.7, -0.5), (-0.7, -0.7, -0.5), (-1.7, -0.7, -0.5), (-1.7, -1.7, -0.5)]
+    botL["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
+
+
+    # Outlines data
+    """edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
+    edgeData["color"] = np.ones(4, dtype = np.float32)"""
+
+
 
     # Final Rubik's Cube
-    testCube = wholeCube(edgeDataIndices, axesData, center, topM, centerIndices, topMIndices)
+    testCube = wholeCube(dataIndices, edgeDataIndices, axesData, topL, centerL, botL, topM, centerM, botM, topR, centerR, botR)
 
     # And finally the Mainloop()
     glut.glutMainLoop()
