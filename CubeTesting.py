@@ -10,13 +10,13 @@ import OpenGL.GLUT as glut
 
 class wholeCube():
 
-    def __init__(self, objectIndices, lineIndices, coordinateAxes, *args):
+    def __init__(self, objectIndices, lineIndices, coordinateAxes, listWithCubies):
 
         # Set important variables and launch both init funcs
         self.lineIndices = lineIndices
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
-        self.args = args
+        self.listWithCubies = listWithCubies
         self.alpha, self.beta, self.theta = 0.0, 0.0, 0.0
         self.initGlut()
         self.initProgram()
@@ -37,9 +37,9 @@ class wholeCube():
         gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glDepthMask(gl.GL_TRUE)
         gl.glDepthFunc(gl.GL_LESS)
-        gl.glDepthRange(-1.0, 1.0)
-        gl.glEnable(gl.GL_CULL_FACE)
-        gl.glCullFace(gl.GL_BACK)
+        #gl.glDepthRange(-1.0, 1.0)
+        #gl.glEnable(gl.GL_CULL_FACE)
+        #gl.glCullFace(gl.GL_BACK)
 
     def initProgram(self):
 
@@ -56,8 +56,8 @@ class wholeCube():
                 modelMatrix = mat4(1,0,0,0,  0,cos(angles.y),-sin(angles.y),0,  0,sin(angles.y),cos(angles.y),0,  0,0,0,1) *
                                    mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
                                    mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
-                viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0.5,1);
-                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,1, 0,0,0,3);
+                viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
+                projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
                 gl_Position = temporary / temporary.w;
                 v_color = color;
@@ -120,16 +120,16 @@ class wholeCube():
             self.theta += 5 * math.pi/180
 
         elif key == b'a':
-            self.theta += 10 * math.pi/180
-
-        elif key == b'd':
             self.theta -= 10 * math.pi/180
 
+        elif key == b'd':
+            self.theta += 10 * math.pi/180
+
         elif key == b's':
-            self.beta -= 10* math.pi/180
+            self.beta += 10* math.pi/180
 
         elif key == b'w':
-            self.beta += 10* math.pi/180
+            self.beta -= 10* math.pi/180
 
         self.display()
 
@@ -139,12 +139,12 @@ class wholeCube():
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.alpha, self.beta, self.theta)
 
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         #gl.glClearDepth(1.0)
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
-        for i in range(int(len(self.args))):
-            self.drawCubies(self.args[i])
+        for i in range(int(len(self.listWithCubies))):
+            self.drawCubies(self.listWithCubies[i])
         self.drawAxes()
 
         glut.glutSwapBuffers()
@@ -225,6 +225,19 @@ class wholeCube():
         gl.glDrawArrays(gl.GL_LINES, 0, 6)
 
 
+def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner
+
+    listWithCubies = []
+
+    for i in range(amount):
+        cubyData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+        cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
+        cubyData["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+        listWithCubies.append(cubyData)
+
+    return listWithCubies
+
+
 
 if __name__ == "__main__":
 
@@ -236,6 +249,7 @@ if __name__ == "__main__":
     axesData["position"] = [(0.0, 0.0, 0.0), (0.8, 0.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.8, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.8)]
     axesData["color"] = [(1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
 
+    """
     # Center face
     centerR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
     centerR["position"] = [(+1.7, +0.5, +0.5), (+0.7, +0.5, +0.5), (+0.7, -0.5, +0.5), (+1.7, -0.5, +0.5), (+1.7, -0.5, -0.5), (+1.7, +0.5, -0.5), (+0.7, +0.5, -0.5), (+0.7, -0.5, -0.5)]
@@ -277,14 +291,29 @@ if __name__ == "__main__":
 
 
     # Outlines data
-    """edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
     edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    edgeData["color"] = np.ones(4, dtype = np.float32)"""
-
+    edgeData["color"] = np.ones(4, dtype = np.float32)
+    """
 
 
     # Final Rubik's Cube
-    testCube = wholeCube(dataIndices, edgeDataIndices, axesData, topL, centerL, botL, topM, centerM, botM, topR, centerR, botR)
+    testCube = wholeCube(
+            dataIndices, edgeDataIndices, axesData,
+            createNewCubyData(
+                    27, 1.0, (1.7,1.7,1.7), (0.5,1.7,1.7), (-0.7,1.7,1.7),
+                    (1.7,0.5,1.7), (0.5,0.5,1.7), (-0.7,0.5,1.7),
+                    (1.7,-0.7,1.7), (0.5,-0.7,1.7), (-0.7,-0.7,1.7),
+
+                    (1.7,1.7,0.5), (0.5,1.7,0.5), (-0.7,1.7,0.5),
+                    (1.7,0.5,0.5), (0.5,0.5,0.5), (-0.7,0.5,0.5),
+                    (1.7,-0.7,0.5), (0.5,-0.7,0.5), (-0.7,-0.7,0.5),
+
+                    (1.7,1.7,-0.7), (0.5,1.7,-0.7), (-0.7,1.7,-0.7),
+                    (1.7,0.5,-0.7), (0.5,0.5,-0.7), (-0.7,0.5,-0.7),
+                    (1.7,-0.7,-0.7), (0.5,-0.7,-0.7), (-0.7,-0.7,-0.7)
+            )
+    )
 
     # And finally the Mainloop()
     glut.glutMainLoop()
