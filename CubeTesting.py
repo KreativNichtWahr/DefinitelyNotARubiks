@@ -17,7 +17,9 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = listWithCubies
-        self.alpha, self.beta, self.theta = 0.0, 0.0, 0.0
+        self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
+        self.angles = [0.0, 0.0, 0.0]
+        self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
         self.initGlut()
         self.initProgram()
 
@@ -53,9 +55,9 @@ class wholeCube():
             mat4 viewMatrix;
             mat4 projectionMatrix;
             void main() {
-                modelMatrix = mat4(1,0,0,0,  0,cos(angles.y),-sin(angles.y),0,  0,sin(angles.y),cos(angles.y),0,  0,0,0,1) *
-                                   mat4(cos(angles.z),0,sin(angles.z),0,  0,1,0,0,  -sin(angles.z),0,cos(angles.z),0,  0,0,0,1) *
-                                   mat4(cos(angles.x),-sin(angles.x),0,0,  sin(angles.x),cos(angles.x),0,0,  0,0,1,0,  0,0,0,1);
+                modelMatrix = mat4(1,0,0,0,  0,cos(angles.x),-sin(angles.x),0,  0,sin(angles.x),cos(angles.x),0,  0,0,0,1) *
+                                   mat4(cos(angles.y),0,sin(angles.y),0,  0,1,0,0,  -sin(angles.y),0,cos(angles.y),0,  0,0,0,1) *
+                                   mat4(cos(angles.z),-sin(angles.z),0,0,  sin(angles.z),cos(angles.z),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
                 projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
@@ -113,31 +115,62 @@ class wholeCube():
 
     def keyboard(self, key, x, y):
 
+        modMatLoc = gl.glGetUniformLocation(self.program, "modelMatrix")
+
+        """
         if key == b'\x1b':
 
             self.alpha += 1 * math.pi/180
             self.beta += 2 * math.pi/180
             self.theta += 5 * math.pi/180
+        """
+        # Left
+        if key == b'a':
 
-        elif key == b'a':
-            self.theta -= 10 * math.pi/180
+            self.angles[1] -= 10 * math.pi/180
+            self.display()
 
+        # Right
         elif key == b'd':
-            self.theta += 10 * math.pi/180
 
+            self.angles[1] += 10 * math.pi/180
+
+        # Down
         elif key == b's':
-            self.beta += 10* math.pi/180
 
+            self.angles[0] += 10* math.pi/180
+
+            if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
+                self.angles.append(self.angles[1])
+                self.angles.pop(1)
+                temp = self.yRotPos
+                self.yRotPos = self.zRotPos
+                self.zRotPos = temp
+                self.difStartPosXRot += math.pi/2
+
+        # Up
         elif key == b'w':
-            self.beta -= 10* math.pi/180
+
+            self.angles[0] -= 10* math.pi/180
+
+            if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
+                self.angles.append(self.angles[1])
+                self.angles.pop(1)
+                temp = self.yRotPos
+                self.yRotPos = self.zRotPos
+                self.zRotPos = temp
+                self.difStartPosXRot -= math.pi/2
+
 
         self.display()
 
 
     def display(self):
 
+
+
         loc = gl.glGetUniformLocation(self.program, "angles")
-        gl.glUniform3f(loc, self.alpha, self.beta, self.theta)
+        gl.glUniform3f(loc, self.angles[self.xRotPos], self.angles[self.yRotPos], self.angles[self.zRotPos])
 
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -246,7 +279,7 @@ if __name__ == "__main__":
     edgeDataIndices = np.array([0,1, 1,2, 2,3, 3,0, 4,7, 7,6, 6,5, 5,4, 0,5, 1,6, 2,7, 3,4], dtype = np.int32)
 
     axesData = np.zeros(6, [("position", np.float32, 3), ("color", np.float32, 4)])
-    axesData["position"] = [(0.0, 0.0, 0.0), (0.8, 0.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.8, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.8)]
+    axesData["position"] = [(0.0, 0.0, 0.0), (3.0, 0.0, 0.0), (0.0, 0.0, 0.0), (0.0, 3.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 3.0)]
     axesData["color"] = [(1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
 
     """

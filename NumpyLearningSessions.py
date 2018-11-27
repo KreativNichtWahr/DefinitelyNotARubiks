@@ -152,3 +152,16 @@ def arsf(*args):
     print(args[0])
 
 arsf(1,2,3,523452)
+
+centerR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+centerR["position"] = [(+1.7, +0.5, +0.5), (+0.7, +0.5, +0.5), (+0.7, -0.5, +0.5), (+1.7, -0.5, +0.5), (+1.7, -0.5, -0.5), (+1.7, +0.5, -0.5), (+0.7, +0.5, -0.5), (+0.7, -0.5, -0.5)]
+centerR["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
+print(centerR)
+dataIndices = np.array([0,1,3, 1,2,3, 5,0,4, 0,3,4, 6,5,7, 5,4,7, 1,6,2, 6,7,2, 5,6,0, 6,1,0, 7,4,2, 4,3,2], dtype = np.int32)
+
+finalData = np.zeros(36, [("position", np.float32, 3)])
+
+for count, i in enumerate(dataIndices):
+    finalData["position"][count] = centerR["position"][i]
+
+print(finalData)
