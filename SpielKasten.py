@@ -17,6 +17,8 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = listWithCubies
+        self.subListIndexes = (0, 27)
+        self.sideRotatingAngle = 0
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
         self.angles = [0.0, 0.0, 0.0]
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
@@ -161,6 +163,10 @@ class wholeCube():
                 self.zRotPos = temp
                 self.difStartPosXRot -= math.pi/2
 
+        elif key == b'f':
+
+            self.subListIndexes = (0, 9)
+            self.sideRotatingAngle = math.pi/2
 
         self.display()
 
@@ -176,10 +182,11 @@ class wholeCube():
         #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         #gl.glClearDepth(1.0)
 
-        for i in range(int(len(self.listWithCubies))):
-            self.drawCubies(self.listWithCubies[i])
+        for i in self.listWithCubies[self.subListIndexes[0]:self.subListIndexes[1]]:
+            self.drawCubies(i)
         self.drawAxes()
 
+        self.subListIndexes = (0, 27)
         glut.glutSwapBuffers()
 
 
@@ -267,11 +274,9 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
 
     for i in range(amount):
         cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
-        #cubyData["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
         convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4)])
 
         for count, e in enumerate(dataIndices):
-            print(e)
             convertedData["position"][count] = cubyData["position"][e]
             try:
                 convertedData["color"][count] = tRC[amount][i * 36 + count]         # Skip the topRightCorner positions and the colors for the cubes which have already been treated
@@ -280,7 +285,6 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
 
         listWithCubies.append(convertedData)
 
-    print(len(listWithCubies))
     return listWithCubies
 
 

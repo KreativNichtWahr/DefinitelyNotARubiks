@@ -165,3 +165,12 @@ for count, i in enumerate(dataIndices):
     finalData["position"][count] = centerR["position"][i]
 
 print(finalData)
+
+
+tupel = (0, 1)
+print(tupel)
+print(*tupel)
+print([*tupel])
+
+subListIndexes = (0, 9)
+print(subListIndexes[0])
