@@ -178,12 +178,12 @@ class wholeCube():
 
         if self.sideIsAboutToRotate:
 
-            for _ in range(45):
+            for _ in range(18):
 
                 for i in self.listWithCubies[:9]:
                     print(i)
                     for e in i["animationAngles"]:
-                        e[0] += 2
+                        e[2] += math.pi/36
 
                 gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
@@ -197,7 +197,6 @@ class wholeCube():
             gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
             #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
             #gl.glClearDepth(1.0)
-
             for i in self.listWithCubies:
                 self.drawCubies(i)
             self.drawAxes()
