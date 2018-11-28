@@ -16,12 +16,11 @@ class wholeCube():
         self.lineIndices = lineIndices
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
-        self.listWithCubies = listWithCubies
-        self.subListIndexes = (0, 27)
-        self.sideRotatingAngle = 0
+        self.listWithCubies = np.array([*listWithCubies])
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
         self.angles = [0.0, 0.0, 0.0]
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
+        self.sideIsAboutToRotate = False
         self.initGlut()
         self.initProgram()
 
@@ -50,6 +49,7 @@ class wholeCube():
         # Shader code
         vertexShaderCode = """
             uniform vec3 angles;
+            attribute vec3 animationAngles;
             attribute vec3 position;
             attribute vec4 color;
             varying vec4 v_color;
@@ -57,9 +57,9 @@ class wholeCube():
             mat4 viewMatrix;
             mat4 projectionMatrix;
             void main() {
-                modelMatrix = mat4(1,0,0,0,  0,cos(angles.x),-sin(angles.x),0,  0,sin(angles.x),cos(angles.x),0,  0,0,0,1) *
-                                   mat4(cos(angles.y),0,sin(angles.y),0,  0,1,0,0,  -sin(angles.y),0,cos(angles.y),0,  0,0,0,1) *
-                                   mat4(cos(angles.z),-sin(angles.z),0,0,  sin(angles.z),cos(angles.z),0,0,  0,0,1,0,  0,0,0,1);
+                modelMatrix = mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1) *
+                                   mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
+                                   mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
                 projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
@@ -165,30 +165,46 @@ class wholeCube():
 
         elif key == b'f':
 
-            self.subListIndexes = (0, 9)
-            self.sideRotatingAngle = math.pi/2
+            self.sideIsAboutToRotate = True
 
         self.display()
 
 
     def display(self):
 
-
-
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.angles[self.xRotPos], self.angles[self.yRotPos], self.angles[self.zRotPos])
 
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
-        #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
-        #gl.glClearDepth(1.0)
 
-        for i in self.listWithCubies[self.subListIndexes[0]:self.subListIndexes[1]]:
-            self.drawCubies(i)
-        self.drawAxes()
+        if self.sideIsAboutToRotate:
 
-        self.subListIndexes = (0, 27)
-        glut.glutSwapBuffers()
+            for _ in range(45):
 
+                for i in self.listWithCubies[:9]:
+                    print(i)
+                    for e in i["animationAngles"]:
+                        e[0] += 2
+
+                gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+
+                for i in self.listWithCubies:
+                    self.drawCubies(i)
+                self.drawAxes()
+
+                glut.glutSwapBuffers()
+
+        else:
+            gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+            #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+            #gl.glClearDepth(1.0)
+
+            for i in self.listWithCubies:
+                self.drawCubies(i)
+            self.drawAxes()
+
+            glut.glutSwapBuffers()
+
+        self.sideIsAboutToRotate = False
 
     # Buffer stuff
     def drawCubies(self, objectToDraw, outLines = True):
@@ -197,15 +213,14 @@ class wholeCube():
 
         posLoc = gl.glGetAttribLocation(self.program, "position")
         colorLoc = gl.glGetAttribLocation(self.program, "color")
+        angleLoc = gl.glGetAttribLocation(self.program, "animationAngles")
         posOffset = ctypes.c_void_p(0)
         colorOffset = ctypes.c_void_p(objectToDraw.dtype["position"].itemsize)
+        angleOffset = ctypes.c_void_p(objectToDraw.dtype["position"].itemsize + objectToDraw.dtype["color"].itemsize)
 
         objectStride = objectToDraw.strides[0]
 
         # Cube itself
-        #gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        #gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.objectIndices.nbytes, self.objectIndices, gl.GL_DYNAMIC_DRAW)
-
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, Vbos[0])
         gl.glBufferData(gl.GL_ARRAY_BUFFER, objectToDraw.nbytes, objectToDraw, gl.GL_DYNAMIC_DRAW)
 
@@ -215,8 +230,9 @@ class wholeCube():
         gl.glEnableVertexAttribArray(colorLoc)
         gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, objectStride, colorOffset)
 
-        #gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Vbos[2])
-        #gl.glDrawElements(gl.GL_TRIANGLES, self.objectIndices.size, gl.GL_UNSIGNED_INT, ctypes.c_void_p(0))
+        gl.glEnableVertexAttribArray(angleLoc)
+        gl.glVertexAttribPointer(angleLoc, 3, gl.GL_FLOAT, False, objectStride, angleOffset)
+
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, objectToDraw.size)
 
         if not outLines:
@@ -274,7 +290,7 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
 
     for i in range(amount):
         cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
-        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4)])
+        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3)])
 
         for count, e in enumerate(dataIndices):
             convertedData["position"][count] = cubyData["position"][e]

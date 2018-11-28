@@ -174,3 +174,6 @@ print([*tupel])
 
 subListIndexes = (0, 9)
 print(subListIndexes[0])
+
+convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3)])
+print(convertedData["animationAngles"])
