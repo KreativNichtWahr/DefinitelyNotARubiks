@@ -17,10 +17,14 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = np.array([*listWithCubies])
+        self.cubeSideOrder = np.arange(27)
+        self.whatCubesToRotate = np.array([])#np.empty(9, dtype = np.object_)
+        #self.whatCubesToRotate.fill([])
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
         self.angles = [0.0, 0.0, 0.0]
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
         self.sideIsAboutToRotate = False
+        self.aroundWhichAxis = 0
         self.initGlut()
         self.initProgram()
 
@@ -35,7 +39,6 @@ class wholeCube():
         glut.glutReshapeFunc(self.reshape)
         glut.glutKeyboardFunc(self.keyboard)
         glut.glutDisplayFunc(self.display)
-
         # Depth / Cull init
         gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glDepthMask(gl.GL_TRUE)
@@ -166,6 +169,29 @@ class wholeCube():
         elif key == b'f':
 
             self.sideIsAboutToRotate = True
+            self.cubeSideOrder[:9] = np.rot90(self.cubeSideOrder[:9].reshape(3,3)).ravel() # That is the reason why I looooooooove numpy <3
+
+            self.whatCubesToRotate = self.cubeSideOrder[:9]
+
+            self.aroundWhichAxis = 2
+
+        elif key == b'r':
+
+            self.sideIsAboutToRotate = True
+            temp = np.empty(9, dtype = np.object_)
+            temp.fill([])
+            for count, i in enumerate(self.cubeSideOrder):
+                if count % 3 == 0:
+                    temp[int(count/3)] = i
+            temp = np.rot90(temp.reshape(3,3).T).ravel()
+            for count in range(27):
+                if count % 3 == 0:
+                    self.cubeSideOrder[count] = temp[int(count/3)]
+
+            self.whatCubesToRotate = temp
+
+            self.aroundWhichAxis = 0
+
 
         self.display()
 
@@ -179,11 +205,10 @@ class wholeCube():
         if self.sideIsAboutToRotate:
 
             for _ in range(18):
-
-                for i in self.listWithCubies[:9]:
+                for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
                     print(i)
                     for e in i["animationAngles"]:
-                        e[2] += math.pi/36
+                        e[self.aroundWhichAxis] += math.pi/36
 
                 gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 

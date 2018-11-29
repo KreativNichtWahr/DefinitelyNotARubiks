@@ -177,3 +177,12 @@ print(subListIndexes[0])
 
 convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3)])
 print(convertedData["animationAngles"])
+
+test = np.arange(27)
+print(test)
+print(test[:9])
+print(test[:9].reshape(3,3))
+print(np.rot90(test[:9].reshape(3,3)).ravel())
+
+test2 = np.rot90(test[:9].reshape(3,3)).ravel()
+print([x for x in test if np.where(test == x) in test2])
