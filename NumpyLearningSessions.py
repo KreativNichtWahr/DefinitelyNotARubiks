@@ -186,3 +186,23 @@ print(np.rot90(test[:9].reshape(3,3)).ravel())
 
 test2 = np.rot90(test[:9].reshape(3,3)).ravel()
 print([x for x in test if np.where(test == x) in test2])
+
+cubeSideOrder = np.zeros(27).reshape(3,3,3)
+"""
+print(cubeSideOrder)
+count = 0
+for i in range(3):
+    for j in range(3):
+        for e in range(3):
+            cubeSideOrder[i][j][2-e] = count
+            count += 1
+
+print(cubeSideOrder)
+"""
+
+for i in range(27):
+    print((i - i%3 - 2*(i//3))%3)
+    cubeSideOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
+
+print(cubeSideOrder)
+print(cubeSideOrder[2,:,2])

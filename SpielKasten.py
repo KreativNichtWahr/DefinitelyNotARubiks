@@ -17,7 +17,9 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = np.array([*listWithCubies])
-        self.cubeSideOrder = np.arange(27)
+        self.cubeSideOrder = np.arange(27).reshape(3,3,3)
+        for i in range(27):
+            self.cubeSideOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
         self.whatCubesToRotate = np.array([])#np.empty(9, dtype = np.object_)
         #self.whatCubesToRotate.fill([])
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
@@ -25,6 +27,7 @@ class wholeCube():
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
         self.sideIsAboutToRotate = False
         self.aroundWhichAxis = 0
+        self.change = [False, False, False]
         self.initGlut()
         self.initProgram()
 
@@ -50,9 +53,11 @@ class wholeCube():
     def initProgram(self):
 
         # Shader code
+        # I know what problem there is: as you can see the order of the matrices which build the modelMatrix matters
         vertexShaderCode = """
             uniform vec3 angles;
             attribute vec3 animationAngles;
+            attribute float change;
             attribute vec3 position;
             attribute vec4 color;
             varying vec4 v_color;
@@ -60,9 +65,21 @@ class wholeCube():
             mat4 viewMatrix;
             mat4 projectionMatrix;
             void main() {
+                if (change == 0.0) {
+                modelMatrix = mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
+                              mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1) *
+                              mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1);
+                }
+                else if (change == 1.0) {
+                modelMatrix = mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1) *
+                              mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1) *
+                              mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1);
+                }
+                else {
                 modelMatrix = mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1) *
-                                   mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
-                                   mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
+                              mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
+                              mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
+                }
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
                 projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
@@ -169,24 +186,28 @@ class wholeCube():
         elif key == b'f':
 
             self.sideIsAboutToRotate = True
-            self.cubeSideOrder[:9] = np.rot90(self.cubeSideOrder[:9].reshape(3,3)).ravel() # That is the reason why I looooooooove numpy <3
+            self.change[2] = True
+            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
 
-            self.whatCubesToRotate = self.cubeSideOrder[:9]
+            print(self.cubeSideOrder[0])
+
+            self.whatCubesToRotate = self.cubeSideOrder[0]
 
             self.aroundWhichAxis = 2
 
         elif key == b'r':
 
             self.sideIsAboutToRotate = True
-            temp = np.empty(9, dtype = np.object_)
-            temp.fill([])
-            for count, i in enumerate(self.cubeSideOrder):
-                if count % 3 == 0:
-                    temp[int(count/3)] = i
-            temp = np.rot90(temp.reshape(3,3).T).ravel()
-            for count in range(27):
-                if count % 3 == 0:
-                    self.cubeSideOrder[count] = temp[int(count/3)]
+            self.change[0] = True
+            temp = np.hstack((self.cubeSideOrder[0,:,2].reshape(3,1), self.cubeSideOrder[1,:,2].reshape(3,1), self.cubeSideOrder[2,:,2].reshape(3,1)))
+            print(temp)
+            temp = np.rot90(temp,3)
+            print(temp[:,0])
+            print(temp)
+            for i in range(3):
+                self.cubeSideOrder[i,:,2] = temp[:,i]
+
+            print(self.cubeSideOrder)
 
             self.whatCubesToRotate = temp
 
