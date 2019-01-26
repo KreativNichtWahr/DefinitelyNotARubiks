@@ -206,3 +206,39 @@ for i in range(27):
 
 print(cubeSideOrder)
 print(cubeSideOrder[2,:,2])
+
+print("Hey")
+
+test = np.arange(27)
+for e in test:
+    print(np.where(e == test))
+
+listWithQuats = np.empty(27, dtype = np.object_)
+listWithQuats.fill(np.zeros(36, [("position", np.float32, 4)]))
+#print(listWithQuats)
+#print(listWithQuats.itemsize)
+
+
+#print((-1.7)**2)
+"""
+#array = np.zeros(3, dtype = np.float32)
+array2 = np.array((3,4,-2), dtype = np.float32)
+array3 = np.array((2), dtype = np.float32)
+#print(array2 / array3)
+#print(np.divide(array2,array3))
+array4 = np.array((4,-5,18), dtype = np.float32)
+for cuby in range(27):
+    for vertex in range(36):
+        listWithQuats[cuby][vertex]["position"][:3] = np.divide(array2, array3)
+        print(listWithQuats)
+    if cuby > 5:
+        array2 = array4
+"""
+listWithQuats = np.empty(27, dtype = np.object_)
+listWithQuats.fill(np.array([], dtype = np.object_))
+print(listWithQuats)
+
+multQuat = np.array([0.0,1.0,0.0,0.0], dtype = np.float32)
+invMultQuat = np.zeros(4, dtype = np.float32)
+invMultQuat[:3] = (-1) * multQuat[:3]
+print(invMultQuat)

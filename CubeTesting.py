@@ -206,7 +206,6 @@ class wholeCube():
 
             for _ in range(18):
                 for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-                    print(i)
                     for e in i["animationAngles"]:
                         e[self.aroundWhichAxis] += math.pi/36
 
