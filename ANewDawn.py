@@ -40,25 +40,72 @@ def vertexToQuat(cube, betraege):
         listWithQuats[cubyIndex] = normalizedCuby
         normalizedCuby = np.zeros(36, [("position", np.float32, 4)])
 
-    print(listWithQuats)
     return listWithQuats
 
 
 def quatMult(listWithQuats, multQuat):
 
+    listWithMultQuats = np.empty(27, dtype = np.object_)
+    listWithMultQuats.fill(np.array([], dtype = np.object_))
+    multipliedCuby = np.zeros(36, [("position", np.float32, 4)])
     invMultQuat = np.zeros(4, dtype = np.float32)
     invMultQuat[:3] = (-1) * multQuat[:3]
-    multipliedCuby = np.zeros(36, [("position", np.float32, 4)])
-    temp = np.zeros(4, dtype = np.float32)
+    for index, e in enumerate(invMultQuat):
+        if e == -0.0:
+            invMultQuat[index] = 0.0
 
     for cubyIndex, cuby in enumerate(listWithQuats):
         for index, vertex in enumerate(cuby):
-            
 
-            mutlipliedCuby[index]["position"][:3][0] =
+            firstMultResult = np.array([
+                                        multQuat[0]*vertex["position"][3] + multQuat[1]*vertex["position"][2] - multQuat[2]*vertex["position"][1] + multQuat[3]*vertex["position"][0],
+                                        -multQuat[0]*vertex["position"][2] + multQuat[1]*vertex["position"][3] + multQuat[2]*vertex["position"][0] + multQuat[3]*vertex["position"][1],
+                                        multQuat[0]*vertex["position"][1] - multQuat[1]*vertex["position"][0] + multQuat[2]*vertex["position"][3] + multQuat[3]*vertex["position"][2],
+                                        -multQuat[0]*vertex["position"][0] - multQuat[1]*vertex["position"][1] - multQuat[2]*vertex["position"][2] + multQuat[3]*vertex["position"][3]
+                                        ],
+                                        dtype = np.float32
+            )
 
-        listWithQuats[cubyIndex] = multipliedCuby
+            #print(firstMultResult[0]*invMultQuat[3], firstMultResult[1]*invMultQuat[2], firstMultResult[2]*invMultQuat[1], firstMultResult[3]*invMultQuat[0],
+            #-firstMultResult[0]*invMultQuat[2], firstMultResult[1]*invMultQuat[3], firstMultResult[2]*invMultQuat[0], firstMultResult[3]*invMultQuat[1],
+            #firstMultResult[0]*invMultQuat[1], firstMultResult[1]*invMultQuat[0], firstMultResult[2]*invMultQuat[3], firstMultResult[3]*invMultQuat[2],
+            #-firstMultResult[0]*invMultQuat[0], firstMultResult[1]*invMultQuat[1], firstMultResult[2]*invMultQuat[2], firstMultResult[3]*invMultQuat[3])
+
+            temp = list((firstMultResult[0]*invMultQuat[3], firstMultResult[1]*invMultQuat[2], firstMultResult[2]*invMultQuat[1], firstMultResult[3]*invMultQuat[0],
+            -firstMultResult[0]*invMultQuat[2], firstMultResult[1]*invMultQuat[3], firstMultResult[2]*invMultQuat[0], firstMultResult[3]*invMultQuat[1],
+            firstMultResult[0]*invMultQuat[1], firstMultResult[1]*invMultQuat[0], firstMultResult[2]*invMultQuat[3], firstMultResult[3]*invMultQuat[2],
+            -firstMultResult[0]*invMultQuat[0], firstMultResult[1]*invMultQuat[1], firstMultResult[2]*invMultQuat[2], firstMultResult[3]*invMultQuat[3]))
+
+            for damn, e in enumerate(temp):
+                if e == -0.0:
+                    temp[damn] = 0.0
+
+            invMultResult = np.zeros(4, dtype = np.float32)
+            #(temp[4*index] + temp[4*index + 1] + temp[4*index + 2] + temp[4*index + 3])
+
+            for dude in range(4):
+                invMultResult[dude] = (temp[4*dude] + temp[4*dude + 1] + temp[4*dude + 2] + temp[4*dude + 3])
+
+            print(temp)
+
+            """invMultResult = np.array([
+                                        firstMultResult[0]*invMultQuat[3] + firstMultResult[1]*invMultQuat[2] - firstMultResult[2]*invMultQuat[1] + firstMultResult[3]*invMultQuat[0],
+                                        -firstMultResult[0]*invMultQuat[2] + firstMultResult[1]*invMultQuat[3] + firstMultResult[2]*invMultQuat[0] + firstMultResult[3]*invMultQuat[1],
+                                        firstMultResult[0]*invMultQuat[1] - firstMultResult[1]*invMultQuat[0] + firstMultResult[2]*invMultQuat[3] + firstMultResult[3]*invMultQuat[2],
+                                        -firstMultResult[0]*invMultQuat[0] - firstMultResult[1]*invMultQuat[1] - firstMultResult[2]*invMultQuat[2] + firstMultResult[3]*invMultQuat[3]
+                                        ],
+                                        dtype = np.float32
+            )
+            """
+            multipliedCuby[index]["position"] = invMultResult
+
+        listWithMultQuats[cubyIndex] = multipliedCuby
         multipliedCuby = np.zeros(36, [("position", np.float32, 4)])
+
+    print(listWithMultQuats)
+    return listWithMultQuats
+
+
 
 if __name__ == "__main__":
 
