@@ -17,7 +17,9 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = np.array([*listWithCubies])
-        self.cubeSideOrder = np.arange(27)
+        self.cubeSideOrder = np.arange(27).reshape(3,3,3)
+        for i in range(27):
+            self.cubeSideOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
         self.whatCubesToRotate = np.array([])#np.empty(9, dtype = np.object_)
         #self.whatCubesToRotate.fill([])
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
@@ -25,6 +27,8 @@ class wholeCube():
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
         self.sideIsAboutToRotate = False
         self.aroundWhichAxis = 0
+        self.whichSideTurned = ""
+        print()
         self.initGlut()
         self.initProgram()
 
@@ -50,9 +54,11 @@ class wholeCube():
     def initProgram(self):
 
         # Shader code
+        # I know what problem there is: as you can see the order of the matrices which build the modelMatrix matters
         vertexShaderCode = """
             uniform vec3 angles;
             attribute vec3 animationAngles;
+            attribute float change;
             attribute vec3 position;
             attribute vec4 color;
             varying vec4 v_color;
@@ -61,8 +67,8 @@ class wholeCube():
             mat4 projectionMatrix;
             void main() {
                 modelMatrix = mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1) *
-                                   mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
-                                   mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
+                              mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
+                              mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
                 projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
@@ -169,29 +175,46 @@ class wholeCube():
         elif key == b'f':
 
             self.sideIsAboutToRotate = True
-            self.cubeSideOrder[:9] = np.rot90(self.cubeSideOrder[:9].reshape(3,3)).ravel() # That is the reason why I looooooooove numpy <3
+            self.whichSideTurned = "f"
 
-            self.whatCubesToRotate = self.cubeSideOrder[:9]
+            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
+            self.whatCubesToRotate = self.cubeSideOrder[0]
 
             self.aroundWhichAxis = 2
+
+        elif key == b't':
+
+
+            self.sideIsAboutToRotate = True
+            self.whichSideTurned = "t"
+
+            self.cubeSideOrder = np.rot90(self.cubeSideOrder, 3, axes = (0,1))
+            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
+            self.whatCubesToRotate = self.cubeSideOrder[0]
+            self.cubeSideOrder = np.rot90(self.cubeSideOrder, axes = (0,1))
+
+            #for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
+            #    i["axisInverted"][0] = True
+
+            self.aroundWhichAxis = 1
 
         elif key == b'r':
 
             self.sideIsAboutToRotate = True
-            temp = np.empty(9, dtype = np.object_)
-            temp.fill([])
-            for count, i in enumerate(self.cubeSideOrder):
-                if count % 3 == 0:
-                    temp[int(count/3)] = i
-            temp = np.rot90(temp.reshape(3,3).T).ravel()
-            for count in range(27):
-                if count % 3 == 0:
-                    self.cubeSideOrder[count] = temp[int(count/3)]
+            self.cubeSideOrder = np.rot90(self.cubeSideOrder, axes = (0,2))
+            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
+            self.whatCubesToRotate = self.cubeSideOrder[0]
 
-            self.whatCubesToRotate = temp
-
+            self.cubeSideOrder = np.rot90(self.cubeSideOrder, 3, axes = (0,2))
+            print(self.cubeSideOrder)
             self.aroundWhichAxis = 0
 
+
+        elif key == b'k':
+
+            self.sideIsAboutToRotate = True
+            self.whatCubesToRotate = self.cubeSideOrder[0]
+            self.aroundWhichAxis = 2
 
         self.display()
 
@@ -206,8 +229,8 @@ class wholeCube():
 
             for _ in range(18):
                 for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-                    print(i)
                     for e in i["animationAngles"]:
+                        #print(i["animationAngles"])
                         e[self.aroundWhichAxis] += math.pi/36
 
                 gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
@@ -309,12 +332,12 @@ class wholeCube():
 def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the verteces' colors are also part of that n-tuple (second half)
 
     listWithCubies = []
-    cubyData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
+    cubyData = np.zeros(8, [("position", np.float32, 3)])
     dataIndices = np.array([0,1,3, 1,2,3, 5,0,4, 0,3,4, 6,5,7, 5,4,7, 1,6,2, 6,7,2, 5,6,0, 6,1,0, 7,4,2, 4,3,2], dtype = np.int32)
 
     for i in range(amount):
         cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
-        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3)])
+        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3), ("axisInverted", np.bool, 3)])
 
         for count, e in enumerate(dataIndices):
             convertedData["position"][count] = cubyData["position"][e]
@@ -322,6 +345,7 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
                 convertedData["color"][count] = tRC[amount][i * 36 + count]         # Skip the topRightCorner positions and the colors for the cubes which have already been treated
             except:
                 print("Weird, you did not finish filling in the arguments...")
+            convertedData["axisInverted"][count] = False
 
         listWithCubies.append(convertedData)
 

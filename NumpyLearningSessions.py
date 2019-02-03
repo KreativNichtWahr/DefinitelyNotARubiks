@@ -205,4 +205,17 @@ for i in range(27):
     cubeSideOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
 
 print(cubeSideOrder)
-print(cubeSideOrder[2,:,2])
+print(np.rot90(cubeSideOrder, axes = (0,2))[0,:,:])
+cubeSideOrder = np.rot90(cubeSideOrder, axes = (0,2))
+print(cubeSideOrder)
+cubeSideOrder[0,:,:] = np.rot90(cubeSideOrder[0,:,:], 3)
+print(cubeSideOrder)
+cubeSideOrder = np.rot90(cubeSideOrder, 3, axes = (0,2))
+print(cubeSideOrder)
+#cubeSideOrder = np.rot90(np.rot90(np.rot90(cubeSideOrder, axes = (0,2))[0,:,:], 3), 3, axes = (0,2))
+
+a = np.ones(8, [("position", np.float32, 3)])
+b = np.zeros(8, [("position", np.float32, 3)])
+print(a)
+a["position"] = b["position"]
+print(a)
