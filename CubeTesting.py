@@ -258,6 +258,10 @@ class wholeCube():
 
         Vbos = gl.glGenBuffers(4)
 
+        print(objectToDraw["position"])
+        print(objectToDraw["position"].dtype.itemsize)
+        print(objectToDraw.strides[0])s
+
         posLoc = gl.glGetAttribLocation(self.program, "position")
         colorLoc = gl.glGetAttribLocation(self.program, "color")
         angleLoc = gl.glGetAttribLocation(self.program, "animationAngles")

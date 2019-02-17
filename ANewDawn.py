@@ -331,5 +331,5 @@ if __name__ == "__main__":
     betraege = []
     listWithQuats = vertexToQuat(listWithCubies, betraege)
     listWithMultQuats = quatMult(listWithQuats, np.array([1.0,0.0,0.0,0.0], dtype = np.float32))
-    quatToVert(listWithCubies, listWithMultQuats, betraege)
+    testList = quatToVert(listWithCubies, listWithMultQuats, betraege)
     print(listWithCubies)
