@@ -1,0 +1,807 @@
+[00:00:00]: PersistRootStorage is now /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/Cluster_1/Master/ 
+[00:00:00]: Starting Up
+[00:00:00]: Version: 298000
+[00:00:00]: Current time: Fri Dec 14 17:12:44 2018
+
+[00:00:00]: Don't Starve Together: 298000 OSX
+[00:00:00]: Build Date: 3497
+[00:00:00]: Parsing command line
+[00:00:00]: Command Line Arguments: -monitor_parent_process 1395 -persistent_storage_root /Users/Whoistheboss/Documents/Klei/ -conf_dir DoNotStarveTogether -cluster Cluster_1 -fo -ownernetid 76561198177497214 -backup_log_count 10 -backup_log_period 0 -shard Master -sigprefix DST_Master -region EU 
+[00:00:00]: Initializing distribution platform
+[00:00:00]: ....Done
+[00:00:00]: THREAD - started 'GAClient' (2963914752)
+[00:00:00]: CurlRequestManager::ClientThread::Main()
+[00:00:00]: Mounting file system databundles/klump.zip successful.
+[00:00:00]: Mounting file system databundles/shaders.zip successful.
+[00:00:00]: Mounting file system databundles/fonts.zip successful.
+[00:00:00]: Mounting file system databundles/anim_dynamic.zip successful.
+[00:00:00]: Mounting file system databundles/bigportraits.zip successful.
+[00:00:00]: Mounting file system databundles/images.zip successful.
+[00:00:00]: Mounting file system databundles/scripts.zip successful.
+[00:00:00]: ProfileIndex:5.04
+[00:00:00]: [Connect] PendingConnection::Reset(true)
+[00:00:00]: THREAD - started 'Ping Job Thread' (2966020096)
+[00:00:00]: Platform: 1
+[00:00:00]: Network tick rate: U=15(2), D=0
+[00:00:00]: Network tick rate: U=15(2), D=0
+[00:00:00]: Overriding region to EU
+[00:00:00]: THREAD - started 'StreamInput' (2968125440)
+[00:00:00]: OnLoadPermissionList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/blocklist.txt (Failure)
+[00:00:00]: OnLoadPermissionList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/adminlist.txt (Failure)
+[00:00:00]: OnLoadUserIdList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/whitelist.txt (Failure)
+[00:00:00]: Offline user ID: OU_76561198177497214
+[00:00:00]: Token retrieved from: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/Cluster_1/cluster_token.txt
+[00:00:00]: Token retrieved from: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/Cluster_1/cluster_token.txt
+[00:00:00]: cGame::InitializeOnMainThread
+[00:00:00]: Renderer initialize: Okay
+[00:00:00]: AnimManager initialize: Okay
+[00:00:00]: Buffers initialize: Okay
+[00:00:00]: cDontStarveGame::DoGameSpecificInitialize()
+[00:00:00]: GameSpecific initialize: Okay
+[00:00:00]: cGame::StartPlaying
+[00:00:00]: LOADING LUA
+[00:00:00]: DoLuaFile scripts/main.lua
+[00:00:00]: DoLuaFile loading buffer scripts/main.lua
+[00:00:01]:   taskgrouplist:	default	Together	
+[00:00:01]:   taskgrouplist:	classic	Classic	
+[00:00:01]:   taskgrouplist:	cave_default	Underground	
+[00:00:01]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:01]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:01]: running main.lua
+	
+[00:00:01]: loaded modindex	
+[00:00:01]: ModIndex: Beginning normal load sequence for dedicated server.
+	
+[00:00:01]: DownloadMods(0)
+[00:00:01]: modoverrides.lua enabling workshop-1207269058	
+[00:00:01]: modoverrides.lua enabling workshop-791838548	
+[00:00:01]: modoverrides.lua enabling workshop-1349799880	
+[00:00:01]: ModIndex:GetModsToLoad inserting moddir, 	workshop-791838548	
+[00:00:01]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1349799880	
+[00:00:01]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:01]: Could not load mod_config_data/modconfiguration_workshop-791838548_CLIENT	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:01]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:01]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:01]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:01]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:01]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:01]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:01]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:01]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:01]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:01]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:01]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:01]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:01]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:01]: Loading mod: workshop-791838548 (The Engineer) Version:2.5	
+[00:00:01]: Could not load mod_config_data/modconfiguration_workshop-1349799880_CLIENT	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:01]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:01]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:01]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:01]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:01]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:01]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:01]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:01]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:01]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:01]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:01]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:01]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:01]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:01]: Loading mod: workshop-1349799880 (Basements) Version:2.5	
+[00:00:01]: Could not load mod_config_data/modconfiguration_workshop-1207269058_CLIENT	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:01]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:01]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:01]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:01]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:01]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:01]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:01]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:01]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:01]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:01]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:01]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:01]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:01]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:01]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:01]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:01]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:01]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:01]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:01]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:01]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:01]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:01]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:01]: Loading mod: workshop-1207269058 (Simple Health Bar DST) Version:1.06 (Old API! (mod: 6 game: 10) )	
+[00:00:01]: Mod: workshop-791838548 (The Engineer)	Loading modworldgenmain.lua	
+[00:00:01]: Mod: workshop-791838548 (The Engineer)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:01]: Mod: workshop-791838548 (The Engineer)	Loading modmain.lua	
+[00:00:01]: modimport: ../mods/workshop-791838548/scripts/strings.lua	
+[00:00:01]: modimport: ../mods/workshop-791838548/scripts/engineermod_skins.lua	
+[00:00:01]: Mod: workshop-1207269058 (Simple Health Bar DST)	Loading modworldgenmain.lua	
+[00:00:01]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:01]: Mod: workshop-1207269058 (Simple Health Bar DST)	Loading modmain.lua	
+[00:00:01]: Mod: workshop-1349799880 (Basements)	Loading modworldgenmain.lua	
+[00:00:01]: Mod: workshop-1349799880 (Basements)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:01]: Mod: workshop-1349799880 (Basements)	Loading modmain.lua	
+[00:00:01]: modimport: ../mods/workshop-1349799880/scripts/tools/waffles	
+[00:00:01]: Event data unavailable: lavaarena_event_server/lavaarena_achievement_quest_defs
+[00:00:03]: AnimationFile::LoadFile Failed to open anim/engineer.zip
+[00:00:03]: LOADING LUA SUCCESS
+[00:00:03]: PlayerDeaths could not load morgue	
+[00:00:03]: PlayerHistory could not load player_history	
+[00:00:03]: ServerPreferences could not load server_preferences	
+[00:00:03]: bloom_enabled	false	
+[00:00:03]: loaded saveindex	
+[00:00:03]: OnFilesLoaded()	
+[00:00:03]: OnUpdatePurchaseStateComplete	
+[00:00:03]: Klump load on boot started.	
+[00:00:03]: Klump files loaded: 	0	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	Registering prefabs	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/scrap	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    scrap	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/engineer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    engineer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/engineer_skins	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    engineer_none	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    esentry	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    esentry_placer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/dispenser	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    dispenser	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    ehealfx	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    dispenser_placer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/eteleporter	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleporter	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eshockfx	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleringenter	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleporter_placer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/eteleporter_exit	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleporter_exit	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleringexit	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    eteleporter_exit_placer	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/tf2wrench	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    tf2wrench	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/gibus	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    gibus	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/ehardhat	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    ehardhat	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry_bullet	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    esentry_bullet	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry_rocket	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	    esentry_rocket	
+[00:00:04]: Mod: workshop-791838548 (The Engineer)	  Registering default mod prefab	
+[00:00:05]: Could not preload undefined prefab (eshealfx)
+[00:00:05]: Could not preload undefined prefab (eshealfx)
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	Registering prefabs	
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Registering prefab file: prefabs/dychealthbar	
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_damagedisplay	
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_healthbarchild	
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_healthbar	
+[00:00:06]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Registering default mod prefab	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	Registering prefabs	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/fakedynamicshadow	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    fakedynamicshadow	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/sparkle_fx	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    sparkle_fx	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/basement	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    wall_basement_1	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    wall_basement_2	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    wall_basement_rubble	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    wall_basement_void	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_entrance	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_entrance_hatch	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_entrance_builder	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_entrance_placer	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_exit	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_exit_light	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_tile	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_voidtile	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_ceiling	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_debugpoint	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_debuglight	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/basement_upgrades	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder_placer	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    gunpowder_ember_fx	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder_placer_fx	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_wall	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_wall_placer	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_3	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_2	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_1	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/explode_rain	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    explode_rain	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	    explode_particle	
+[00:00:06]: Mod: workshop-1349799880 (Basements)	  Registering default mod prefab	
+[00:00:06]: 	Load FE	
+[00:00:08]: THREAD - started 'FilesExistAsyncThread' (2970230784)
+[00:00:08]: 	Load FE: done	
+[00:00:08]: FilesExistAsyncThread started (19655 files)...
+[00:00:08]: ModIndex: Load sequence finished successfully.	
+[00:00:08]: Reset() returning
+[00:00:08]: [IPC] Signal created '/DST_Master_Kill'  #0xad
+[00:00:08]: [IPC] Registering handler for signal #0xad
+[00:00:08]: [IPC] Signal created '/DST_Master_Starting'  #0xae
+[00:00:08]: [IPC] Sending signal.... #0xae
+[00:00:10]: [200] Account Communication Success (6)
+[00:00:10]: Received (KU_K0QftNCm) from TokenPurpose
+[00:00:10]: Starting Dedicated Server Game	
+[00:00:10]: Network tick rate: U=15(2), D=0
+[00:00:10]: About to start a server with the following settings:
+[00:00:10]:   Dedicated: true
+[00:00:10]:   Online: true
+[00:00:10]:   Passworded: false
+[00:00:10]:   ServerPort: 10999
+[00:00:10]:   SteamAuthPort: 8766
+[00:00:10]:   SteamMasterServerPort: 27016
+[00:00:10]:   ClanID: false
+[00:00:10]:   ClanOnly: false
+[00:00:10]:   ClanAdmin: false
+[00:00:10]:   LanOnly: false
+[00:00:10]:   FriendsOnly: true
+[00:00:10]:   EnableAutosaver: true
+[00:00:10]:   EncodeUserPath: true
+[00:00:10]:   PVP: false
+[00:00:10]:   MaxPlayers: 6
+[00:00:10]:   GameMode: survival
+[00:00:10]:   OverridenDNS: 
+[00:00:10]:   PauseWhenEmpty: true
+[00:00:10]:   IdleTimeout: 1800s
+[00:00:10]:   VoteEnabled: false
+[00:00:10]:   InternetBroadcasting: true
+[00:00:10]:   Intent: cooperative
+[00:00:10]: Could not load mod_config_data/modconfiguration_workshop-791838548	
+[00:00:10]: Could not load mod_config_data/modconfiguration_workshop-1207269058	
+[00:00:10]: Could not load mod_config_data/modconfiguration_workshop-1349799880	
+[00:00:10]: Online Server Started on port: 10999
+[00:00:10]: Collecting garbage...
+[00:00:10]: lua_gc took 0.06 seconds
+[00:00:10]: ~ShardLuaProxy()
+[00:00:10]: ~cEventLeaderboardProxy()
+[00:00:10]: ~ItemServerLuaProxy()
+[00:00:10]: ~InventoryLuaProxy()
+[00:00:10]: ~NetworkLuaProxy()
+[00:00:10]: ~SimLuaProxy()
+[00:00:10]: FilesExistAsyncThread aborted.
+[00:00:10]: ... FilesExistAsyncThread complete
+[00:00:10]: lua_close took 0.13 seconds
+[00:00:10]: ReleaseAll
+[00:00:10]: ReleaseAll Finished
+[00:00:10]: cGame::StartPlaying
+[00:00:10]: LOADING LUA
+[00:00:10]: DoLuaFile scripts/main.lua
+[00:00:10]: DoLuaFile loading buffer scripts/main.lua
+[00:00:11]:   taskgrouplist:	default	Together	
+[00:00:11]:   taskgrouplist:	classic	Classic	
+[00:00:11]:   taskgrouplist:	cave_default	Underground	
+[00:00:11]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:11]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:11]: running main.lua
+	
+[00:00:11]: unloading prefabs for mod MOD_workshop-791838548	
+[00:00:11]: Could not unload undefined prefab (eshealfx)
+[00:00:11]: Could not unload undefined prefab (eshealfx)
+[00:00:11]: unloading prefabs for mod MOD_workshop-1207269058	
+[00:00:11]: unloading prefabs for mod MOD_workshop-1349799880	
+[00:00:11]: loaded modindex	
+[00:00:11]: ModIndex: Beginning normal load sequence for dedicated server.
+	
+[00:00:11]: modoverrides.lua enabling workshop-1207269058	
+[00:00:11]: modoverrides.lua enabling workshop-791838548	
+[00:00:11]: modoverrides.lua enabling workshop-1349799880	
+[00:00:11]: ModIndex:GetModsToLoad inserting moddir, 	workshop-791838548	
+[00:00:11]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1349799880	
+[00:00:11]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1207269058	
+[00:00:11]: Could not load mod_config_data/modconfiguration_workshop-791838548	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:11]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:11]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:11]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:11]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:11]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:11]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:11]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:11]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:11]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:11]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:11]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:11]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:11]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:11]: Loading mod: workshop-791838548 (The Engineer) Version:2.5	
+[00:00:11]: Could not load mod_config_data/modconfiguration_workshop-1349799880	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:11]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:11]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:11]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:11]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:11]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:11]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:11]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:11]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:11]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:11]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:11]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:11]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:11]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:11]: Loading mod: workshop-1349799880 (Basements) Version:2.5	
+[00:00:11]: Could not load mod_config_data/modconfiguration_workshop-1207269058	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1207269058	
+[00:00:11]: Overriding mod workshop-1207269058's option hbcolor with value dynamic	
+[00:00:11]: Overriding mod workshop-1207269058's option hbstyle with value heart	
+[00:00:11]: Overriding mod workshop-1207269058's option value with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option ddon with value true	
+[00:00:11]: Overriding mod workshop-1207269058's option hbpos with value 1	
+[00:00:11]: Overriding mod workshop-1207269058's option hblength with value 10	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-791838548	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchuses with value 150	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Damage with value 9.5	
+[00:00:11]: Overriding mod workshop-791838548's option buildinglimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenserhealingrate with value 3	
+[00:00:11]: Overriding mod workshop-791838548's option sentrylimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option Teleporter_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option rocketsplashdmg with value y	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Range with value 13	
+[00:00:11]: Overriding mod workshop-791838548's option tf2wrenchdmg with value 17	
+[00:00:11]: Overriding mod workshop-791838548's option teleporterlimit with value n	
+[00:00:11]: Overriding mod workshop-791838548's option dispenseramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option sentryamount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option hardhatabsorb with value 0.7	
+[00:00:11]: Overriding mod workshop-791838548's option Scrap_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option tf2Wrench_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Dispenser_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option ehardhatdura with value 295	
+[00:00:11]: Overriding mod workshop-791838548's option sentryh_regen with value n	
+[00:00:11]: Overriding mod workshop-791838548's option engiedmgdebuff with value 0.8	
+[00:00:11]: Overriding mod workshop-791838548's option teleporteramount with value 4	
+[00:00:11]: Overriding mod workshop-791838548's option disprange with value 2	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_ROF with value 1	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option EHat_Difficulty with value default	
+[00:00:11]: Overriding mod workshop-791838548's option Sentry_Health with value 200	
+[00:00:11]: applying configuration_options from modoverrides.lua to mod workshop-1349799880	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_ingredients with value 12/68/20	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider1 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider4 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option loot_percent with value 0.75	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider2 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option temperature with value -25	
+[00:00:11]: Overriding mod workshop-1349799880's option sanity with value -5	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tech with value SCIENCE_TWO	
+[00:00:11]: Overriding mod workshop-1349799880's option mist with value 1	
+[00:00:11]: Overriding mod workshop-1349799880's option menu_divider3 with value false	
+[00:00:11]: Overriding mod workshop-1349799880's option language with value en	
+[00:00:11]: Overriding mod workshop-1349799880's option recipe_tab with value SCIENCE	
+[00:00:11]: Loading mod: workshop-1207269058 (Simple Health Bar DST) Version:1.06 (Old API! (mod: 6 game: 10) )	
+[00:00:11]: Mod: workshop-791838548 (The Engineer)	Loading modworldgenmain.lua	
+[00:00:11]: Mod: workshop-791838548 (The Engineer)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:11]: Mod: workshop-791838548 (The Engineer)	Loading modmain.lua	
+[00:00:11]: modimport: ../mods/workshop-791838548/scripts/strings.lua	
+[00:00:11]: modimport: ../mods/workshop-791838548/scripts/engineermod_skins.lua	
+[00:00:11]: Mod: workshop-1207269058 (Simple Health Bar DST)	Loading modworldgenmain.lua	
+[00:00:11]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:11]: Mod: workshop-1207269058 (Simple Health Bar DST)	Loading modmain.lua	
+[00:00:11]: Mod: workshop-1349799880 (Basements)	Loading modworldgenmain.lua	
+[00:00:11]: Mod: workshop-1349799880 (Basements)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:11]: Mod: workshop-1349799880 (Basements)	Loading modmain.lua	
+[00:00:11]: modimport: ../mods/workshop-1349799880/scripts/tools/waffles	
+[00:00:17]: Event data unavailable: lavaarena_event_server/lavaarena_achievement_quest_defs
+[00:00:17]: LOADING LUA SUCCESS
+[00:00:17]: PlayerDeaths could not load morgue	
+[00:00:17]: PlayerHistory could not load player_history	
+[00:00:17]: ServerPreferences could not load server_preferences	
+[00:00:17]: bloom_enabled	false	
+[00:00:17]: loaded saveindex	
+[00:00:17]: OnFilesLoaded()	
+[00:00:17]: OnUpdatePurchaseStateComplete	
+[00:00:17]: Loading world: session/057F4D032A0140F3/0000000004	
+[00:00:18]: Save file is at version 4.77	
+[00:00:18]: Klump load on boot started.	
+[00:00:18]: Klump files loaded: 	0	
+[00:00:18]: 	Unload FE	
+[00:00:18]: 	Unload FE done	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	Registering prefabs	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/scrap	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    scrap	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/engineer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    engineer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/engineer_skins	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    engineer_none	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    esentry	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    esentry_placer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/dispenser	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    dispenser	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    ehealfx	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    dispenser_placer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/eteleporter	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleporter	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eshockfx	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleringenter	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleporter_placer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/eteleporter_exit	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleporter_exit	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleringexit	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    eteleporter_exit_placer	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/tf2wrench	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    tf2wrench	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/gibus	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    gibus	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/ehardhat	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    ehardhat	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry_bullet	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    esentry_bullet	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering prefab file: prefabs/esentry_rocket	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	    esentry_rocket	
+[00:00:38]: Mod: workshop-791838548 (The Engineer)	  Registering default mod prefab	
+[00:00:38]: Could not preload undefined prefab (eshealfx)
+[00:00:38]: Could not preload undefined prefab (eshealfx)
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	Registering prefabs	
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Registering prefab file: prefabs/dychealthbar	
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_damagedisplay	
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_healthbarchild	
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	    dyc_healthbar	
+[00:00:39]: Mod: workshop-1207269058 (Simple Health Bar DST)	  Registering default mod prefab	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	Registering prefabs	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/fakedynamicshadow	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    fakedynamicshadow	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/sparkle_fx	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    sparkle_fx	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/basement	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    wall_basement_1	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    wall_basement_2	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    wall_basement_rubble	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    wall_basement_void	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_entrance	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_entrance_hatch	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_entrance_builder	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_entrance_placer	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_exit	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_exit_light	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_tile	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_voidtile	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_ceiling	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_debugpoint	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_debuglight	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/basement_upgrades	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder_placer	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    gunpowder_ember_fx	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_gunpowder_placer_fx	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_wall	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_wall_placer	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_3	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_2	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    basement_upgrade_floor_1	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering prefab file: prefabs/explode_rain	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    explode_rain	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	    explode_particle	
+[00:00:39]: Mod: workshop-1349799880 (Basements)	  Registering default mod prefab	
+[00:00:39]: 	LOAD BE	
+[00:00:45]: Could not preload undefined prefab (eteleporter_exit_dummy)
+[00:00:45]: Could not preload undefined prefab (esentry_dummy)
+[00:00:46]: Could not preload undefined prefab (eteleporter_dummy)
+[00:00:47]: Could not preload undefined prefab (dispenser_dummy)
+[00:00:48]: 	LOAD BE: done	
+[00:00:48]: Begin Session: 057F4D032A0140F3
+[00:00:48]: saving to server_temp/server_save	
+[00:00:48]: MiniMapComponent::AddAtlas( minimap/minimap_data.xml )
+[00:00:48]: MiniMapComponent::AddAtlas( ../mods/workshop-791838548/images/minimap/engineer.xml )
+[00:00:48]: MiniMapComponent::AddAtlas( ../mods/workshop-791838548/images/minimap/esentry.xml )
+[00:00:48]: MiniMapComponent::AddAtlas( ../mods/workshop-791838548/images/minimap/dispenser.xml )
+[00:00:48]: MiniMapComponent::AddAtlas( ../mods/workshop-791838548/images/minimap/eteleporter.xml )
+[00:00:48]: MiniMapComponent::AddAtlas( ../mods/workshop-1349799880/images/inventoryimages/basement.xml )
+[00:00:48]: Loading 13 new character(s)	
+[00:00:50]: Total 13 character(s) loaded	
+[00:00:51]: Loading Nav Grid	
+[00:00:51]: setting 	summerlength	15	
+[00:00:51]: setting 	isnightmaredawn	false	
+[00:00:51]: setting 	elapseddaysinseason	0	
+[00:00:51]: setting 	isfullmoon	false	
+[00:00:51]: setting 	moisture	13.699876785278	
+[00:00:51]: setting 	springlength	20	
+[00:00:51]: setting 	isnightmarewild	false	
+[00:00:51]: setting 	moonphase	new	
+[00:00:51]: setting 	precipitationrate	0	
+[00:00:51]: setting 	iswet	false	
+[00:00:51]: setting 	isnewmoon	false	
+[00:00:51]: setting 	iswinter	false	
+[00:00:51]: setting 	israining	false	
+[00:00:51]: setting 	isnightmarewarn	false	
+[00:00:51]: setting 	precipitation	none	
+[00:00:51]: setting 	cavephase	day	
+[00:00:51]: setting 	moistureceil	728.22399902344	
+[00:00:51]: setting 	isday	true	
+[00:00:51]: setting 	iscaveday	true	
+[00:00:51]: setting 	season	autumn	
+[00:00:51]: setting 	timeinphase	0.2283821105957	
+[00:00:51]: setting 	temperature	31.117820268294	
+[00:00:51]: setting 	isnightmarecalm	false	
+[00:00:51]: setting 	isnight	false	
+[00:00:51]: setting 	isdusk	false	
+[00:00:51]: setting 	iscavedusk	false	
+[00:00:51]: setting 	isautumn	true	
+[00:00:51]: setting 	issnowing	false	
+[00:00:51]: setting 	iswaxingmoon	true	
+[00:00:51]: setting 	pop	0.018812723562599	
+[00:00:51]: setting 	snowlevel	0	
+[00:00:51]: setting 	issnowcovered	false	
+[00:00:51]: setting 	autumnlength	20	
+[00:00:51]: setting 	phase	day	
+[00:00:51]: setting 	nightmaretime	0	
+[00:00:51]: setting 	winterlength	15	
+[00:00:51]: setting 	isspring	false	
+[00:00:51]: setting 	nightmarephase	none	
+[00:00:51]: setting 	remainingdaysinseason	20	
+[00:00:51]: setting 	cycles	0	
+[00:00:51]: setting 	iscavenight	false	
+[00:00:51]: setting 	nightmaretimeinphase	0	
+[00:00:51]: setting 	wetness	0	
+[00:00:51]: setting 	time	0.11419105529785	
+[00:00:51]: setting 	issummer	false	
+[00:01:03]: Reconstructing topology	
+[00:01:03]: 	...Sorting points	
+[00:01:03]: 	...Sorting edges	
+[00:01:03]: 	...Connecting nodes	
+[00:01:03]: 	...Validating connections	
+[00:01:03]: 	...Housekeeping	
+[00:01:03]: 	...Done!	
+[00:01:03]: 1 uploads added to server. From server_temp
+[00:01:03]: About to start a shard with these settings:
+[00:01:03]:   ShardName: [SHDMASTER]
+[00:01:03]:   ShardID: 1
+[00:01:03]:   ShardRole: MASTER
+[00:01:03]:   MasterHost: (null)
+[00:01:03]:   MasterBind: 127.0.0.1
+[00:01:03]:   MasterPort: 10888
+[00:01:03]: [Shard] Starting master server
+[00:01:03]: [Shard] Shard server started on port: 10888
+[00:01:03]: [IPC] Signal created '/DST_Master_Ready'  #0xb2
+[00:01:03]: [IPC] Sending signal.... #0xb2
+[00:01:03]: Telling Client our new session identifier: 057F4D032A0140F3
+[00:01:03]: ModIndex: Load sequence finished successfully.	
+[00:01:04]: Reset() returning
+[00:01:04]: [Steam] SteamGameServer_Init(8766, 10999, 27016)
+[00:01:04]: [Steam] SteamGameServer_Init success
+[00:01:05]: Validating portal[6] <-> 685539886[6] (inactive)	
+[00:01:05]: Validating portal[8] <-> 685539886[8] (inactive)	
+[00:01:05]: Validating portal[1] <-> 685539886[1] (inactive)	
+[00:01:05]: Validating portal[2] <-> 685539886[2] (inactive)	
+[00:01:05]: Validating portal[9] <-> 685539886[9] (inactive)	
+[00:01:05]: Validating portal[5] <-> 685539886[5] (inactive)	
+[00:01:05]: Validating portal[10] <-> 685539886[10] (inactive)	
+[00:01:05]: Validating portal[4] <-> 685539886[4] (inactive)	
+[00:01:05]: Validating portal[3] <-> 685539886[3] (inactive)	
+[00:01:05]: Validating portal[7] <-> 685539886[7] (inactive)	
+[00:01:05]: Sim paused
+[00:01:05]: Registering master server in EU lobby
+[00:01:06]: [Shard] Slave Caves(685539886) connected: [LAN] 127.0.0.1
+[00:01:07]: [Shard] Slave Caves(685539886) ready!
+[00:01:07]: World 685539886 is now connected	
+[00:01:07]: Validating portal[6] <-> 685539886[6] (disabled)	
+[00:01:07]: Validating portal[8] <-> 685539886[8] (disabled)	
+[00:01:07]: Validating portal[1] <-> 685539886[1] (disabled)	
+[00:01:07]: Validating portal[2] <-> 685539886[2] (disabled)	
+[00:01:07]: Validating portal[9] <-> 685539886[9] (disabled)	
+[00:01:07]: Validating portal[5] <-> 685539886[5] (disabled)	
+[00:01:07]: Validating portal[10] <-> 685539886[10] (disabled)	
+[00:01:07]: Validating portal[4] <-> 685539886[4] (disabled)	
+[00:01:07]: Validating portal[3] <-> 685539886[3] (disabled)	
+[00:01:07]: Validating portal[7] <-> 685539886[7] (disabled)	
+[00:01:07]: Gameserver logged on to Steam, assigned SteamID [A:1:1652635650:11563]
+[00:01:09]: New incoming connection 127.0.0.1|57525 <5940497316037669905>
+[00:01:09]: Client connected from [LAN] 127.0.0.1|57525 <5940497316037669905>
+[00:01:09]: ValidateGameSessionToken pgs-usc^KU_K0QftNCm^DontStarveTogether^CNuzpjJ4vdmh2GfLu0O10lXGdTlbQy1kLCmZhMyamKk= for <5940497316037669905>
+[00:01:10]: Client authenticated: (KU_K0QftNCm) NochKreativerNichtWahr
+[00:01:10]: [Steam] Authenticated host '76561198177497214'
+[00:01:10]: LOCAL_SKIN_DLC_GRANTING reading bits in DeserializeUnverifiedInventory unread bits 8
+[00:01:12]: There is no active event to validate against.
+[00:01:12]: [Shard] Read save location file for (KU_K0QftNCm)
+[00:01:15]: Registering master server in EU lobby
+[00:02:10]: Resuming user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000003
+[00:02:10]: Spawning player at: [Load] (2.25, 0.00, -194.17)	
+[00:02:10]: Sim unpaused
+[00:02:15]: Registering master server in EU lobby
+[00:09:15]: Registering master server in EU lobby
+[00:09:17]: Serializing user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000005
+[00:09:17]: Serializing world: session/057F4D032A0140F3/0000000005
+[00:17:17]: Serializing user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000006
+[00:17:18]: Serializing world: session/057F4D032A0140F3/0000000006
+[00:17:20]: Registering master server in EU lobby
+[00:25:18]: Serializing user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000007
+[00:25:19]: Serializing world: session/057F4D032A0140F3/0000000007
+[00:25:26]: Registering master server in EU lobby
+[00:30:10]: [200] Account Communication Success (6)
+[00:30:10]: Received (KU_K0QftNCm) from TokenPurpose
+[00:30:25]: 110671	
+[00:33:18]: Registering master server in EU lobby
+[00:33:19]: Serializing user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000008
+[00:33:19]: Serializing world: session/057F4D032A0140F3/0000000008
+[00:33:28]: [Steam] SendUserDisconnect for '76561198177497214'
+[00:33:28]: [Shard] (KU_K0QftNCm) disconnected from [SHDMASTER](1)
+[00:33:28]: Registering master server in EU lobby
+[00:33:28]: [IPC] Received shutdown signal.
+[00:33:28]: Serializing user: session/057F4D032A0140F3/A7IG0QKTQSPG/0000000009
+[00:33:28]: Serializing world: session/057F4D032A0140F3/0000000009
+[00:33:28]: Truncating to snapshot #9...
+[00:33:28]:  - session/057F4D032A0140F3/0000000002
+[00:33:28]:  - session/057F4D032A0140F3/0000000003
+[00:33:28]:    2 file(s) removed
+[00:33:28]: Removing server from EU lobby
+[00:33:28]: [Shard] Stopping shard mode
+[00:33:29]: Collecting garbage...
+[00:33:29]: lua_gc took 0.18 seconds
+[00:33:29]: ~ShardLuaProxy()
+[00:33:29]: ~cEventLeaderboardProxy()
+[00:33:29]: ~ItemServerLuaProxy()
+[00:33:29]: ~InventoryLuaProxy()
+[00:33:29]: ~NetworkLuaProxy()
+[00:33:29]: ~SimLuaProxy()
+[00:33:29]: lua_close took 0.45 seconds
+[00:33:29]: Could not unload undefined prefab (eshealfx)
+[00:33:29]: Could not unload undefined prefab (eshealfx)
+[00:33:30]: CurlRequestManager::ClientThread::Main() complete
+[00:33:30]: HttpClient2 discarded 0 callbacks.
+[00:33:30]: Shutting down

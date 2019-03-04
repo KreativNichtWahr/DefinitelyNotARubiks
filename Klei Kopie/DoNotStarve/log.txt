@@ -1,0 +1,400 @@
+Starting up
+Don't Starve: 269653 OSX_STEAM
+Build Date: 299
+THREAD - started 'GAClient' (2960269312)
+HttpClient::ClientThread::Main()
+SteamApps()->BIsSubscribedApp( 282470 ) -- Not Subscribed
+SteamApps()->BIsSubscribedApp( 393010 ) -- Not Subscribed
+Cloud enabled: true
+    Enabled app: true    Enabled account: true
+    Num files: 6
+    Quota used: 0.003 Mbytes / 100.000 Mbytes
+cGame::InitializeOnMainThread
+WindowManager::Initialize
+Creating window with size 1920x1080 at 0x22
+THREAD - started 'SDLInputManager' (2960941056)
+OSX version 10.13.3
+GLInfo
+~~~~~~
+GL_VENDOR: Intel Inc.
+GL_RENDERER: Intel Iris OpenGL Engine
+GL_VERSION: 2.1 INTEL-10.30.14
+GL_SHADING_LANGUAGE_VERSION: 1.20
+OpenGL 3.0 not present, detecting extensions the old way
+OpenGL extensions (129, 129):
+
+GL_APPLE_aux_depth_stencil
+GL_APPLE_client_storage
+GL_APPLE_element_array
+GL_APPLE_fence
+GL_APPLE_float_pixels
+GL_APPLE_flush_buffer_range
+GL_APPLE_flush_render
+GL_APPLE_object_purgeable
+GL_APPLE_packed_pixels
+GL_APPLE_pixel_buffer
+GL_APPLE_rgb_422
+GL_APPLE_row_bytes
+GL_APPLE_specular_vector
+GL_APPLE_texture_range
+GL_APPLE_transform_hint
+GL_APPLE_vertex_array_object
+GL_APPLE_vertex_array_range
+GL_APPLE_vertex_point_size
+GL_APPLE_vertex_program_evaluators
+GL_APPLE_ycbcr_422
+GL_ARB_color_buffer_float
+GL_ARB_depth_buffer_float
+GL_ARB_depth_clamp
+GL_ARB_depth_texture
+GL_ARB_draw_buffers
+GL_ARB_draw_elements_base_vertex
+GL_ARB_draw_instanced
+GL_ARB_fragment_program
+GL_ARB_fragment_program_shadow
+GL_ARB_fragment_shader
+GL_ARB_framebuffer_object
+GL_ARB_framebuffer_sRGB
+GL_ARB_half_float_pixel
+GL_ARB_half_float_vertex
+GL_ARB_instanced_arrays
+GL_ARB_multisample
+GL_ARB_multitexture
+GL_ARB_occlusion_query
+GL_ARB_pixel_buffer_object
+GL_ARB_point_parameters
+GL_ARB_point_sprite
+GL_ARB_provoking_vertex
+GL_ARB_seamless_cube_map
+GL_ARB_shader_objects
+GL_ARB_shader_texture_lod
+GL_ARB_shading_language_100
+GL_ARB_shadow
+GL_ARB_sync
+GL_ARB_texture_border_clamp
+GL_ARB_texture_compression
+GL_ARB_texture_compression_rgtc
+GL_ARB_texture_cube_map
+GL_ARB_texture_env_add
+GL_ARB_texture_env_combine
+GL_ARB_texture_env_crossbar
+GL_ARB_texture_env_dot3
+GL_ARB_texture_float
+GL_ARB_texture_mirrored_repeat
+GL_ARB_texture_non_power_of_two
+GL_ARB_texture_rectangle
+GL_ARB_texture_rg
+GL_ARB_transpose_matrix
+GL_ARB_vertex_array_bgra
+GL_ARB_vertex_blend
+GL_ARB_vertex_buffer_object
+GL_ARB_vertex_program
+GL_ARB_vertex_shader
+GL_ARB_window_pos
+GL_ATI_separate_stencil
+GL_ATI_texture_env_combine3
+GL_ATI_texture_float
+GL_ATI_texture_mirror_once
+GL_EXT_abgr
+GL_EXT_bgra
+GL_EXT_blend_color
+GL_EXT_blend_equation_separate
+GL_EXT_blend_func_separate
+GL_EXT_blend_minmax
+GL_EXT_blend_subtract
+GL_EXT_clip_volume_hint
+GL_EXT_debug_label
+GL_EXT_debug_marker
+GL_EXT_draw_buffers2
+GL_EXT_draw_range_elements
+GL_EXT_fog_coord
+GL_EXT_framebuffer_blit
+GL_EXT_framebuffer_multisample
+GL_EXT_framebuffer_multisample_blit_scaled
+GL_EXT_framebuffer_object
+GL_EXT_framebuffer_sRGB
+GL_EXT_geometry_shader4
+GL_EXT_gpu_program_parameters
+GL_EXT_gpu_shader4
+GL_EXT_multi_draw_arrays
+GL_EXT_packed_depth_stencil
+GL_EXT_packed_float
+GL_EXT_provoking_vertex
+GL_EXT_rescale_normal
+GL_EXT_secondary_color
+GL_EXT_separate_specular_color
+GL_EXT_shadow_funcs
+GL_EXT_stencil_two_side
+GL_EXT_stencil_wrap
+GL_EXT_texture_array
+GL_EXT_texture_compression_dxt1
+GL_EXT_texture_compression_s3tc
+GL_EXT_texture_env_add
+GL_EXT_texture_filter_anisotropic
+GL_EXT_texture_integer
+GL_EXT_texture_lod_bias
+GL_EXT_texture_rectangle
+GL_EXT_texture_sRGB
+GL_EXT_texture_sRGB_decode
+GL_EXT_texture_shared_exponent
+GL_EXT_timer_query
+GL_EXT_transform_feedback
+GL_EXT_vertex_array_bgra
+GL_IBM_rasterpos_clip
+GL_NV_blend_square
+GL_NV_conditional_render
+GL_NV_depth_clamp
+GL_NV_fog_distance
+GL_NV_light_max_exponent
+GL_NV_texgen_reflection
+GL_NV_texture_barrier
+GL_SGIS_generate_mipmap
+GL_SGIS_texture_edge_clamp
+GL_SGIS_texture_lod
+GL_MAX_TEXTURE_SIZE = 16384
+GL_MAX_TEXTURE_IMAGE_UNITS = 16
+GL_MAX_RENDERBUFFER_SIZE = 16384
+GL_MAX_VIEWPORT_DIMS = 16384, 16384
+GL_MAX_VARYING_VECTORS not supported
+GL_MAX_VERTEX_ATTRIBS = 16
+GL_MAX_VERTEX_UNIFORM_VECTORS not supported
+GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS = 16
+GL_MAX_FRAGMENT_UNIFORM_VECTORS not supported
+3 compressed texture formats
+texture format 0x83f0
+texture format 0x83f2
+texture format 0x83f3
+cDontStarveGame::DoGameSpecificInitialize()
+cGame::StartPlaying
+LOADING LUA
+DoLuaFile scripts/main.lua
+DoLuaFile loading buffer scripts/main.lua
+scripts/playerprofile.lua(317,1) FOUND THE NEW DATA	true	
+scripts/playerprofile.lua(317,1) FOUND THE NEW DATA	true	
+scripts/playerprofile.lua(317,1) FOUND THE NEW DATA	true	
+scripts/main.lua(184,1) running main.lua
+	
+scripts/modindex.lua(321,1) loaded modindex	
+scripts/modindex.lua(75,1) ModIndex: Beginning normal load sequence.
+	
+LOADING LUA SUCCESS
+scripts/playerdeaths.lua(79,1) PlayerDeaths loaded morgue	1044	
+scripts/playerprofile.lua(547,1) loaded profile	
+scripts/playerprofile.lua(611,1) bloom_enabled	true	
+DEVICE CAP 1528652892
+scripts/saveindex.lua(119,1) loaded saveindex	
+scripts/gamelogic.lua(1167,1) OnFilesLoaded()	
+scripts/gamelogic.lua(1156,1) OnUpdatePurchaseStateComplete	
+scripts/gamelogic.lua(116,1) 	Unload BE	
+Could not unload undefined prefab 0x4374c56c (yellowstaff)
+Could not unload undefined prefab 0x303bfdce (axe)
+Could not unload undefined prefab 0x94cf6c04 (goldenpickaxe)
+Could not unload undefined prefab 0x8cc766ef (pumpkin_lantern)
+Could not unload undefined prefab 0xfdcabd86 (earmuffshat)
+Could not unload undefined prefab 0x9a6718eb (resurrectionstatue)
+Could not unload undefined prefab 0x6b0c64bf (resurrectionstatue_placer)
+Could not unload undefined prefab 0xdfb37276 (telestaff)
+Could not unload undefined prefab 0xaf34ecc0 (trunkvest_winter)
+Could not unload undefined prefab 0x875750ea (turf_road)
+Could not unload undefined prefab 0xcd7669e5 (nightsword)
+Could not unload undefined prefab 0x3f6c9ebb (diviningrod)
+Could not unload undefined prefab 0xefa57cea (bandage)
+Could not unload undefined prefab 0xde4bc7e7 (wall_hay_item)
+Could not unload undefined prefab 0xe51acd32 (lightning_rod)
+Could not unload undefined prefab 0x947bfcb8 (lightning_rod_placer)
+Could not unload undefined prefab 0xb1fa364d (pickaxe)
+Could not unload undefined prefab 0x34fb4f82 (pitchfork)
+Could not unload undefined prefab 0x3f5176c5 (firepit)
+Could not unload undefined prefab 0x8a462465 (firepit_placer)
+Could not unload undefined prefab 0x62a5e7fe (nightlight)
+Could not unload undefined prefab 0x185806ec (nightlight_placer)
+Could not unload undefined prefab 0x3d4d1dc6 (bedroll_straw)
+Could not unload undefined prefab 0xadfdb7ae (armor_sanity)
+Could not unload undefined prefab 0xdf13a0c1 (ruins_bat)
+Could not unload undefined prefab 0x76d26529 (bugnet)
+Could not unload undefined prefab 0x5ce426c4 (blowdart_fire)
+Could not unload undefined prefab 0x1541c9cc (armorruins)
+Could not unload undefined prefab 0xe16c07d0 (ruinshat)
+Could not unload undefined prefab 0xe5936c6a (firestaff)
+Could not unload undefined prefab 0x1c48b877 (campfire)
+Could not unload undefined prefab 0xdfe3a33 (campfire_placer)
+Could not unload undefined prefab 0x89c20b1b (telebase)
+Could not unload undefined prefab 0x868a468f (telebase_placer)
+Could not unload undefined prefab 0x4740cff7 (tent)
+Could not unload undefined prefab 0xb4d742b3 (tent_placer)
+Could not unload undefined prefab 0x10473739 (spear)
+Could not unload undefined prefab 0x36768a92 (orangestaff)
+Could not unload undefined prefab 0x8d44bbad (cookpot)
+Could not unload undefined prefab 0x30d2f57d (cookpot_placer)
+Could not unload undefined prefab 0xa1e54a85 (goldenaxe)
+Could not unload undefined prefab 0x68ba7100 (researchlab2)
+Could not unload undefined prefab 0x3386a16a (researchlab2_placer)
+Could not unload undefined prefab 0xdac7fbf5 (birdcage)
+Could not unload undefined prefab 0xe1f9b335 (birdcage_placer)
+Could not unload undefined prefab 0xe6af29d2 (compass)
+Could not unload undefined prefab 0x2ca456a0 (orangeamulet)
+Could not unload undefined prefab 0xcf1626 (rabbithouse)
+Could not unload undefined prefab 0x1aa31ec4 (rabbithouse_placer)
+Could not unload undefined prefab 0xe474f23c (armormarble)
+Could not unload undefined prefab 0x3ccdbe75 (icestaff)
+Could not unload undefined prefab 0x68ba7101 (researchlab3)
+Could not unload undefined prefab 0xd6985329 (researchlab3_placer)
+Could not unload undefined prefab 0xe87e06c0 (icebox)
+Could not unload undefined prefab 0xf2bd1baa (icebox_placer)
+Could not unload undefined prefab 0x19c004b2 (pighouse)
+Could not unload undefined prefab 0x469fe538 (pighouse_placer)
+Could not unload undefined prefab 0xca16846d (boards)
+Could not unload undefined prefab 0xa8b25abc (wall_ruins_item)
+Could not unload undefined prefab 0x21bf03b1 (thulecite)
+Could not unload undefined prefab 0xfa14dec6 (birdtrap)
+Could not unload undefined prefab 0x68370bd6 (trap_teeth)
+Could not unload undefined prefab 0x7c11af2 (treasurechest)
+Could not unload undefined prefab 0xd411bef8 (treasurechest_placer)
+Could not unload undefined prefab 0xef21c9f2 (rope)
+Could not unload undefined prefab 0x539e9e8a (trunkvest_summer)
+Could not unload undefined prefab 0x2e54b535 (cane)
+Could not unload undefined prefab 0xb981ecda (fast_farmplot)
+Could not unload undefined prefab 0x2639673 (farmplot_placer)
+Could not unload undefined prefab 0xf4eb0943 (shovel)
+Could not unload undefined prefab 0xbcfca634 (strawhat)
+Could not unload undefined prefab 0xe2bfa46 (tophat)
+Could not unload undefined prefab 0xcda99af6 (winterhat)
+Could not unload undefined prefab 0x761a1799 (gunpowder)
+Could not unload undefined prefab 0x1cd9e60e (razor)
+Could not unload undefined prefab 0xbea16a01 (hambat)
+Could not unload undefined prefab 0x2e264dbc (blowdart_pipe)
+Could not unload undefined prefab 0xec43b9f4 (sewing_kit)
+Could not unload undefined prefab 0x46094f1b (beefalohat)
+Could not unload undefined prefab 0x9a99c7b7 (armorgrass)
+Could not unload undefined prefab 0x4d9a964d (trap)
+Could not unload undefined prefab 0xd8067599 (beehat)
+Could not unload undefined prefab 0xda17c8e8 (armorslurper)
+Could not unload undefined prefab 0x47611d71 (sweatervest)
+Could not unload undefined prefab 0x85181f7c (minerhat)
+Could not unload undefined prefab 0x15220700 (backpack)
+Could not unload undefined prefab 0x8bbc7f55 (beemine)
+Could not unload undefined prefab 0xe8f381a1 (turf_checkerfloor)
+Could not unload undefined prefab 0xd5201c09 (beebox)
+Could not unload undefined prefab 0x753b7621 (beebox_placer)
+Could not unload undefined prefab 0xb918c5fd (fishingrod)
+Could not unload undefined prefab 0x86860bc2 (boomerang)
+Could not unload undefined prefab 0x80cb1e18 (featherhat)
+Could not unload undefined prefab 0x5a59f5cc (goldenshovel)
+Could not unload undefined prefab 0xfb180669 (blowdart_sleep)
+Could not unload undefined prefab 0xc4101586 (hammer)
+Could not unload undefined prefab 0x4685284 (umbrella)
+Could not unload undefined prefab 0xda1f7edf (winterometer)
+Could not unload undefined prefab 0x955229cb (winterometer_placer)
+Could not unload undefined prefab 0x111db7ae (footballhat)
+Could not unload undefined prefab 0x9d92cce (purpleamulet)
+Could not unload undefined prefab 0x3949a42 (meatrack)
+Could not unload undefined prefab 0x56340ba8 (meatrack_placer)
+Could not unload undefined prefab 0xbc429ef3 (bushhat)
+Could not unload undefined prefab 0x22ec3802 (wall_stone_item)
+Could not unload undefined prefab 0xfbaefa0e (rainometer)
+Could not unload undefined prefab 0xeea990dc (rainometer_placer)
+Could not unload undefined prefab 0x41ba89b5 (nightmarefuel)
+Could not unload undefined prefab 0x3cb06493 (healingsalve)
+Could not unload undefined prefab 0x75370b6 (papyrus)
+Could not unload undefined prefab 0x37c31aa6 (lantern)
+Could not unload undefined prefab 0xcceee6c3 (cutstone)
+Could not unload undefined prefab 0x7fcb037d (greenstaff)
+Could not unload undefined prefab 0x3edae42e (multitool_axe_pickaxe)
+Could not unload undefined prefab 0x7f2d088c (armorwood)
+Could not unload undefined prefab 0xc3bf310c (blueamulet)
+Could not unload undefined prefab 0x739fbe3c (homesign)
+Could not unload undefined prefab 0x33fdbd2e (homesign_placer)
+Could not unload undefined prefab 0x7f46d7c0 (batbat)
+Could not unload undefined prefab 0x378bda50 (wall_wood_item)
+Could not unload undefined prefab 0x3c935451 (eyeturret_item)
+Could not unload undefined prefab 0xb6201ac9 (onemanband)
+Could not unload undefined prefab 0xf0330963 (panflute)
+Could not unload undefined prefab 0x6f21e747 (piggyback)
+Could not unload undefined prefab 0x1daa5ab7 (turf_carpetfloor)
+Could not unload undefined prefab 0xcba65752 (amulet)
+Could not unload undefined prefab 0x38967bb2 (researchlab)
+Could not unload undefined prefab 0x77e9ae38 (researchlab_placer)
+Could not unload undefined prefab 0xcad92460 (flowerhat)
+Could not unload undefined prefab 0xb1591875 (greenamulet)
+Could not unload undefined prefab 0x1153dbb9 (pottedfern)
+Could not unload undefined prefab 0xf2102a71 (pottedfern_placer)
+Could not unload undefined prefab 0x68ba7102 (researchlab4)
+Could not unload undefined prefab 0x79aa04e8 (researchlab4_placer)
+Could not unload undefined prefab 0x263bc4d5 (slow_farmplot)
+Could not unload undefined prefab 0x2639673 (farmplot_placer)
+Could not unload undefined prefab 0xe5071541 (nightmare_timepiece)
+Could not unload undefined prefab 0x2c158f7c (torch)
+Could not unload undefined prefab 0x2ae7e3b3 (purplegem)
+Could not unload undefined prefab 0x265d1455 (turf_woodfloor)
+Could not unload undefined prefab 0xf8e41fa9 (bedroll_furry)
+Could not unload undefined prefab 0xdb20fa95 (heatrock)
+Could not unload undefined prefab 0x9a0ed246 (yellowamulet)
+Could not unload undefined prefab 0x33ab6997 (hud)
+Could not unload undefined prefab 0x3364203d (forest)
+Could not unload undefined prefab 0x2e5cb72d (cave)
+Could not unload undefined prefab 0x7c61e1f5 (shipwrecked)
+Could not unload undefined prefab 0xa552d992 (volcanolevel)
+Could not unload undefined prefab 0x40b82ff2 (maxwell)
+Could not unload undefined prefab 0xbddda476 (fire)
+Could not unload undefined prefab 0x1078732c (character_fire)
+Could not unload undefined prefab 0x427b5b39 (shatter)
+scripts/gamelogic.lua(121,1) 	Unload BE done	
+scripts/gamelogic.lua(131,1) 	Load FE	
+scripts/gamelogic.lua(133,1) 	Load FE: done	
+SimLuaProxy::QueryServer()
+scripts/modindex.lua(85,1) ModIndex: Load sequence finished successfully.
+	
+Reset() returning
+focus gained
+HttpClientWriteCallback (0x0182E1DD, 1, 1333, 0xB0721E10)
+HttpClientWriteCallback READ 1333 (1333 total)
+QueryServerComplete no callback
+Could not unload undefined prefab 0xf0533cd6 (area_maxwelllight)
+Could not unload undefined prefab 0x5f41a1f4 (brokenwalls)
+Could not unload undefined prefab 0x7ec8eb53 (nightmare_flame)
+Could not unload undefined prefab 0x5bb6aaea (paired_maxwelllight)
+Could not unload undefined prefab 0xed1e0dd6 (phonograph)
+Could not unload undefined prefab 0x223749c9 (player_common)
+Could not unload undefined prefab 0xe3941c2c (researchmachine)
+Could not unload undefined prefab 0xf20f2548 (ruin)
+Could not unload undefined prefab 0x92464c8a (stairs)
+Could not unload undefined prefab 0x8b7cefce (tree_clump)
+Could not unload undefined prefab 0xfa7e8231 (unlockable_players)
+Could not unload undefined prefab 0x350a87f2 (note)
+Could not unload undefined prefab 0x350a87f2 (note)
+Could not unload undefined prefab 0x350a87f2 (note)
+Collecting garbage...
+lua_gc took 0.03 seconds
+~SimLuaProxy()
+lua_close took 0.03 seconds
+Could not unload undefined prefab 0xf0533cd6 (area_maxwelllight)
+Could not unload undefined prefab 0x5f41a1f4 (brokenwalls)
+Could not unload undefined prefab 0x7ec8eb53 (nightmare_flame)
+Could not unload undefined prefab 0x5bb6aaea (paired_maxwelllight)
+Could not unload undefined prefab 0xed1e0dd6 (phonograph)
+Could not unload undefined prefab 0x223749c9 (player_common)
+Could not unload undefined prefab 0xe3941c2c (researchmachine)
+Could not unload undefined prefab 0xf20f2548 (ruin)
+Could not unload undefined prefab 0x92464c8a (stairs)
+Could not unload undefined prefab 0x8b7cefce (tree_clump)
+Could not unload undefined prefab 0xfa7e8231 (unlockable_players)
+Could not unload undefined prefab 0x350a87f2 (note)
+Could not unload undefined prefab 0x350a87f2 (note)
+Could not unload undefined prefab 0x350a87f2 (note)
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+HttpClient::ClientThread::Main() complete
+Shutting down

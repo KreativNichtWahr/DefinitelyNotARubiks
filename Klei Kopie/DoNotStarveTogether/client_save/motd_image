@@ -1,0 +1,44 @@
+KLEI     1 {
+	"dststeam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2rApZ3i"
+	},
+	"swsteam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2rA3FYn"
+	},	
+	"rogsteam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2r0VmHT"
+	},
+	"steam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2q4PU1H"
+	},
+	"swstandalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2q1EbBS"
+	},
+	"rogstandalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2r1eOV9"
+	},
+	"standalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd-oni-early-access.tex",
+		"image_version":"17",
+		"link_title":"More Info!",
+		"link_url":"http://bit.ly/2r0IUrF"
+	}
+}

@@ -1,0 +1,302 @@
+[00:00:00]: PersistRootStorage is now /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/ 
+[00:00:00]: Starting Up
+[00:00:00]: Version: 305472
+[00:00:00]: Current time: Fri Mar  1 17:46:39 2019
+
+[00:00:00]: Don't Starve Together: 305472 OSX_STEAM
+[00:00:00]: Build Date: 3472
+[00:00:00]: Parsing command line
+[00:00:00]: Command Line Arguments: 
+[00:00:00]: Initializing distribution platform
+[00:00:00]: Steam AppBuildID: 3503077
+[00:00:00]: ....Done
+[00:00:00]: PersistUserStorage is now /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/ 
+[00:00:00]: THREAD - started 'GAClient' (2964946944)
+[00:00:00]: CurlRequestManager::ClientThread::Main()
+[00:00:00]: Mounting file system databundles/klump.zip successful.
+[00:00:00]: Mounting file system databundles/shaders.zip successful.
+[00:00:00]: Mounting file system databundles/fonts.zip successful.
+[00:00:00]: Mounting file system databundles/anim_dynamic.zip successful.
+[00:00:00]: Mounting file system databundles/bigportraits.zip successful.
+[00:00:00]: Mounting file system databundles/images.zip successful.
+[00:00:00]: Mounting file system databundles/scripts.zip successful.
+[00:00:00]: ProfileIndex:5.13
+[00:00:00]: [Connect] PendingConnection::Reset(true)
+[00:00:00]: THREAD - started 'Ping Job Thread' (2969182208)
+[00:00:00]: Platform: 1
+[00:00:00]: Network tick rate: U=15(2), D=0
+[00:00:00]: THREAD - started 'StreamInput' (2971287552)
+[00:00:01]: loaded ping_cache
+[00:00:01]: Offline user ID: OU_76561198177497214
+[00:00:01]: SteamID: 76561198177497214
+[00:00:01]: cGame::InitializeOnMainThread
+[00:00:01]: WindowManager::Initialize
+[00:00:01]: Creating window with size 1920x985 at 0x45
+[00:00:01]: THREAD - started 'SDLInputManager' (2973392896)
+[00:00:01]: OSX version 10.14.3
+[00:00:01]: GLInfo
+[00:00:01]: ~~~~~~
+[00:00:01]: GL_VENDOR: Intel Inc.
+[00:00:01]: GL_RENDERER: Intel Iris OpenGL Engine
+[00:00:01]: GL_VERSION: 2.1 INTEL-12.4.7
+[00:00:01]: GL_SHADING_LANGUAGE_VERSION: 1.20
+[00:00:01]: OpenGL 3.0 not present, detecting extensions the old way
+[00:00:01]: OpenGL extensions (129, 129):
+[00:00:01]: 
+[00:00:01]: GL_APPLE_aux_depth_stencil
+[00:00:01]: GL_APPLE_client_storage
+[00:00:01]: GL_APPLE_element_array
+[00:00:01]: GL_APPLE_fence
+[00:00:01]: GL_APPLE_float_pixels
+[00:00:01]: GL_APPLE_flush_buffer_range
+[00:00:01]: GL_APPLE_flush_render
+[00:00:01]: GL_APPLE_object_purgeable
+[00:00:01]: GL_APPLE_packed_pixels
+[00:00:01]: GL_APPLE_pixel_buffer
+[00:00:01]: GL_APPLE_rgb_422
+[00:00:01]: GL_APPLE_row_bytes
+[00:00:01]: GL_APPLE_specular_vector
+[00:00:01]: GL_APPLE_texture_range
+[00:00:01]: GL_APPLE_transform_hint
+[00:00:01]: GL_APPLE_vertex_array_object
+[00:00:01]: GL_APPLE_vertex_array_range
+[00:00:01]: GL_APPLE_vertex_point_size
+[00:00:01]: GL_APPLE_vertex_program_evaluators
+[00:00:01]: GL_APPLE_ycbcr_422
+[00:00:01]: GL_ARB_color_buffer_float
+[00:00:01]: GL_ARB_depth_buffer_float
+[00:00:01]: GL_ARB_depth_clamp
+[00:00:01]: GL_ARB_depth_texture
+[00:00:01]: GL_ARB_draw_buffers
+[00:00:01]: GL_ARB_draw_elements_base_vertex
+[00:00:01]: GL_ARB_draw_instanced
+[00:00:01]: GL_ARB_fragment_program
+[00:00:01]: GL_ARB_fragment_program_shadow
+[00:00:01]: GL_ARB_fragment_shader
+[00:00:01]: GL_ARB_framebuffer_object
+[00:00:01]: GL_ARB_framebuffer_sRGB
+[00:00:01]: GL_ARB_half_float_pixel
+[00:00:01]: GL_ARB_half_float_vertex
+[00:00:01]: GL_ARB_instanced_arrays
+[00:00:01]: GL_ARB_multisample
+[00:00:01]: GL_ARB_multitexture
+[00:00:01]: GL_ARB_occlusion_query
+[00:00:01]: GL_ARB_pixel_buffer_object
+[00:00:01]: GL_ARB_point_parameters
+[00:00:01]: GL_ARB_point_sprite
+[00:00:01]: GL_ARB_provoking_vertex
+[00:00:01]: GL_ARB_seamless_cube_map
+[00:00:01]: GL_ARB_shader_objects
+[00:00:01]: GL_ARB_shader_texture_lod
+[00:00:01]: GL_ARB_shading_language_100
+[00:00:01]: GL_ARB_shadow
+[00:00:01]: GL_ARB_sync
+[00:00:01]: GL_ARB_texture_border_clamp
+[00:00:01]: GL_ARB_texture_compression
+[00:00:01]: GL_ARB_texture_compression_rgtc
+[00:00:01]: GL_ARB_texture_cube_map
+[00:00:01]: GL_ARB_texture_env_add
+[00:00:01]: GL_ARB_texture_env_combine
+[00:00:01]: GL_ARB_texture_env_crossbar
+[00:00:01]: GL_ARB_texture_env_dot3
+[00:00:01]: GL_ARB_texture_float
+[00:00:01]: GL_ARB_texture_mirrored_repeat
+[00:00:01]: GL_ARB_texture_non_power_of_two
+[00:00:01]: GL_ARB_texture_rectangle
+[00:00:01]: GL_ARB_texture_rg
+[00:00:01]: GL_ARB_transpose_matrix
+[00:00:01]: GL_ARB_vertex_array_bgra
+[00:00:01]: GL_ARB_vertex_blend
+[00:00:01]: GL_ARB_vertex_buffer_object
+[00:00:01]: GL_ARB_vertex_program
+[00:00:01]: GL_ARB_vertex_shader
+[00:00:01]: GL_ARB_window_pos
+[00:00:01]: GL_ATI_separate_stencil
+[00:00:01]: GL_ATI_texture_env_combine3
+[00:00:01]: GL_ATI_texture_float
+[00:00:01]: GL_ATI_texture_mirror_once
+[00:00:01]: GL_EXT_abgr
+[00:00:01]: GL_EXT_bgra
+[00:00:01]: GL_EXT_blend_color
+[00:00:01]: GL_EXT_blend_equation_separate
+[00:00:01]: GL_EXT_blend_func_separate
+[00:00:01]: GL_EXT_blend_minmax
+[00:00:01]: GL_EXT_blend_subtract
+[00:00:01]: GL_EXT_clip_volume_hint
+[00:00:01]: GL_EXT_debug_label
+[00:00:01]: GL_EXT_debug_marker
+[00:00:01]: GL_EXT_draw_buffers2
+[00:00:01]: GL_EXT_draw_range_elements
+[00:00:01]: GL_EXT_fog_coord
+[00:00:01]: GL_EXT_framebuffer_blit
+[00:00:01]: GL_EXT_framebuffer_multisample
+[00:00:01]: GL_EXT_framebuffer_multisample_blit_scaled
+[00:00:01]: GL_EXT_framebuffer_object
+[00:00:01]: GL_EXT_framebuffer_sRGB
+[00:00:01]: GL_EXT_geometry_shader4
+[00:00:01]: GL_EXT_gpu_program_parameters
+[00:00:01]: GL_EXT_gpu_shader4
+[00:00:01]: GL_EXT_multi_draw_arrays
+[00:00:01]: GL_EXT_packed_depth_stencil
+[00:00:01]: GL_EXT_packed_float
+[00:00:01]: GL_EXT_provoking_vertex
+[00:00:01]: GL_EXT_rescale_normal
+[00:00:01]: GL_EXT_secondary_color
+[00:00:01]: GL_EXT_separate_specular_color
+[00:00:01]: GL_EXT_shadow_funcs
+[00:00:01]: GL_EXT_stencil_two_side
+[00:00:01]: GL_EXT_stencil_wrap
+[00:00:01]: GL_EXT_texture_array
+[00:00:01]: GL_EXT_texture_compression_dxt1
+[00:00:01]: GL_EXT_texture_compression_s3tc
+[00:00:01]: GL_EXT_texture_env_add
+[00:00:01]: GL_EXT_texture_filter_anisotropic
+[00:00:01]: GL_EXT_texture_integer
+[00:00:01]: GL_EXT_texture_lod_bias
+[00:00:01]: GL_EXT_texture_rectangle
+[00:00:01]: GL_EXT_texture_sRGB
+[00:00:01]: GL_EXT_texture_sRGB_decode
+[00:00:01]: GL_EXT_texture_shared_exponent
+[00:00:01]: GL_EXT_timer_query
+[00:00:01]: GL_EXT_transform_feedback
+[00:00:01]: GL_EXT_vertex_array_bgra
+[00:00:01]: GL_IBM_rasterpos_clip
+[00:00:01]: GL_NV_blend_square
+[00:00:01]: GL_NV_conditional_render
+[00:00:01]: GL_NV_depth_clamp
+[00:00:01]: GL_NV_fog_distance
+[00:00:01]: GL_NV_light_max_exponent
+[00:00:01]: GL_NV_texgen_reflection
+[00:00:01]: GL_NV_texture_barrier
+[00:00:01]: GL_SGIS_generate_mipmap
+[00:00:01]: GL_SGIS_texture_edge_clamp
+[00:00:01]: GL_SGIS_texture_lod
+[00:00:01]: GL_MAX_TEXTURE_SIZE = 16384
+[00:00:01]: GL_MAX_TEXTURE_IMAGE_UNITS = 16
+[00:00:01]: GL_MAX_RENDERBUFFER_SIZE = 16384
+[00:00:01]: GL_MAX_VIEWPORT_DIMS = 16384, 16384
+[00:00:01]: GL_MAX_VARYING_VECTORS not supported
+[00:00:01]: GL_MAX_VERTEX_ATTRIBS = 16
+[00:00:01]: GL_MAX_VERTEX_UNIFORM_VECTORS not supported
+[00:00:01]: GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS = 16
+[00:00:01]: GL_MAX_FRAGMENT_UNIFORM_VECTORS not supported
+[00:00:01]: 3 compressed texture formats
+[00:00:01]: texture format 0x83f0
+[00:00:01]: texture format 0x83f2
+[00:00:01]: texture format 0x83f3
+[00:00:01]: Renderer initialize: Okay
+[00:00:01]: AnimManager initialize: Okay
+[00:00:01]: Buffers initialize: Okay
+[00:00:01]: cDontStarveGame::DoGameSpecificInitialize()
+[00:00:02]: GameSpecific initialize: Okay
+[00:00:02]: cGame::StartPlaying
+[00:00:02]: LOADING LUA
+[00:00:02]: DoLuaFile scripts/main.lua
+[00:00:02]: DoLuaFile loading buffer scripts/main.lua
+[00:00:02]:   taskgrouplist:	default	Together	
+[00:00:02]:   taskgrouplist:	classic	Classic	
+[00:00:02]:   taskgrouplist:	cave_default	Underground	
+[00:00:02]:   taskgrouplist:	lavaarena_taskset	The Forge	
+[00:00:02]:   taskgrouplist:	quagmire_taskset	The Gorge	
+[00:00:02]: running main.lua
+	
+[00:00:02]: loaded modindex	
+[00:00:02]: ModIndex: Beginning normal load sequence.
+	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-345692228	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-836583293	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-376333686	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1583765151	
+[00:00:02]: Could not load mod_config_data/modconfiguration_workshop-345692228	
+[00:00:02]: Loading mod: workshop-345692228 (Minimap HUD) Version:1.0.7	
+[00:00:02]: Could not load mod_config_data/modconfiguration_workshop-836583293	
+[00:00:02]: Loading mod: workshop-836583293 (Item Info) Version:0.52	
+[00:00:02]: Could not load mod_config_data/modconfiguration_workshop-376333686	
+[00:00:02]: Loading mod: workshop-376333686 (Combined Status) Version:1.7.5	
+[00:00:02]: Could not load mod_config_data/modconfiguration_workshop-1583765151	
+[00:00:02]: Loading mod: workshop-1583765151 ([Gorge] Victorian HUD) Version:3.3	
+[00:00:02]: Mod: workshop-836583293 (Item Info)	Loading modworldgenmain.lua	
+[00:00:02]: Mod: workshop-836583293 (Item Info)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:02]: Mod: workshop-836583293 (Item Info)	Loading modmain.lua	
+[00:00:02]: Mod: workshop-1583765151 ([Gorge] Victorian HUD)	Loading modworldgenmain.lua	
+[00:00:02]: Mod: workshop-1583765151 ([Gorge] Victorian HUD)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:02]: Mod: workshop-1583765151 ([Gorge] Victorian HUD)	Loading modmain.lua	
+[00:00:02]: Mod: workshop-345692228 (Minimap HUD)	Loading modworldgenmain.lua	
+[00:00:02]: Mod: workshop-345692228 (Minimap HUD)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:02]: Mod: workshop-345692228 (Minimap HUD)	Loading modmain.lua	
+[00:00:02]: Mod: workshop-376333686 (Combined Status)	Loading modworldgenmain.lua	
+[00:00:02]: Mod: workshop-376333686 (Combined Status)	  Mod had no modworldgenmain.lua. Skipping.	
+[00:00:02]: Mod: workshop-376333686 (Combined Status)	Loading modmain.lua	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-345692228	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-836583293	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-376333686	
+[00:00:02]: ModIndex:GetModsToLoad inserting moddir, 	workshop-1583765151	
+[00:00:02]: Event data unavailable: lavaarena_event_server/lavaarena_achievement_quest_defs
+[00:00:03]: Ping measurement completed
+[00:00:03]: Ping location: fra=37+3,ams=38+3,lux=44+4/40+3,lhr=54+5/44+3,vie=55+5/49+3,par=69+6/51+3,waw=61+6/52+3,sto=67+6/57+3,sto2=68+6/57+3,iad=139+13/115+3,sgp=275+27/223+32,gru=252+25/259+3
+[00:00:04]: LOADING LUA SUCCESS
+[00:00:05]: PlayerDeaths loaded morgue	3979	
+[00:00:05]: PlayerHistory loaded player_history (v2) len:964	
+[00:00:05]: ServerPreferences loaded server_preferences	2	
+[00:00:05]: bloom_enabled	false	
+[00:00:05]: loaded saveindex	
+[00:00:05]: OnFilesLoaded()	
+[00:00:05]: OnUpdatePurchaseStateComplete	
+[00:00:05]: Klump load on boot started.	
+[00:00:05]: Klump files loaded: 	0	
+[00:00:06]: Mod: workshop-836583293 (Item Info)	Registering prefabs	
+[00:00:06]: Mod: workshop-836583293 (Item Info)	  Registering default mod prefab	
+[00:00:06]: Mod: workshop-1583765151 ([Gorge] Victorian HUD)	Registering prefabs	
+[00:00:06]: Mod: workshop-1583765151 ([Gorge] Victorian HUD)	  Registering default mod prefab	
+[00:00:06]: Mod: workshop-345692228 (Minimap HUD)	Registering prefabs	
+[00:00:06]: Mod: workshop-345692228 (Minimap HUD)	  Registering default mod prefab	
+[00:00:06]: Mod: workshop-376333686 (Combined Status)	Registering prefabs	
+[00:00:06]: Mod: workshop-376333686 (Combined Status)	  Registering default mod prefab	
+[00:00:06]: ../mods/workshop-1583765151/images/bar_bg2.tex is 324x60 but compressed textures must have power of 2 dimensions.
+[00:00:06]: 	Load FE	
+[00:00:07]: THREAD - started 'FilesExistAsyncThread' (2975498240)
+[00:00:07]: 	Load FE: done	
+[00:00:07]: OnLoadPermissionList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/blocklist.txt (Failure)
+[00:00:07]: FilesExistAsyncThread started (20447 files)...
+[00:00:07]: OnLoadPermissionList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/adminlist.txt (Failure)
+[00:00:07]: OnLoadUserIdList: /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/whitelist.txt (Failure)
+[00:00:07]: [MOTD] Downloading info	
+[00:00:07]: SimLuaProxy::QueryServer()
+[00:00:07]: ModIndex: Load sequence finished successfully.	
+[00:00:07]: Reset() returning
+[00:00:08]: focus gained
+[00:00:09]: ... FilesExistAsyncThread complete
+[00:00:11]: [MOTD] Downloading image for box1
+[00:00:12]: [Steam] Auth Session Ticket requested...
+[00:00:13]: [Steam] Got Auth Session Ticket
+[00:00:14]: [MOTD] Downloading image for box3
+[00:00:14]: [200] Account Communication Success (3)
+[00:00:14]: Logging in as KU_K0QftNCm
+[00:00:15]: There is no active event to get the status of.
+[00:00:15]: loaded inventory_cache_prod
+[00:00:15]: [MOTD] Done Loading.	
+[00:00:15]: saved /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/inventory_cache_prod
+[00:00:15]: saved /Users/Whoistheboss/Documents/Klei//DoNotStarveTogether/client_save/inventory_cache_prod_sig
+[00:00:17]: ModWorkshop::CancelDownloads clearing all unfinished downloads
+[00:00:17]: Collecting garbage...
+[00:00:17]: lua_gc took 0.02 seconds
+[00:00:17]: ~ShardLuaProxy()
+[00:00:17]: ~cEventLeaderboardProxy()
+[00:00:17]: ~ItemServerLuaProxy()
+[00:00:17]: ~InventoryLuaProxy()
+[00:00:17]: ~NetworkLuaProxy()
+[00:00:17]: ~SimLuaProxy()
+[00:00:17]: ModWorkshop::CancelDownloads clearing all unfinished downloads
+[00:00:17]: lua_close took 0.07 seconds
+[00:00:17]: ModWorkshop::CancelDownloads clearing all unfinished downloads
+[00:00:17]: [Steam] Auth ticket cancelled
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: Orphaned unnamed resource. This resource must have used Add( resource ) to insert itself into the manager. 
+[00:00:17]: CurlRequestManager::ClientThread::Main() complete
+[00:00:17]: HttpClient2 discarded 0 callbacks.
+[00:00:17]: /Users/buildbot/buildslave/sdr_public_osx/build/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_lowlevel.cpp (88) : Assertion Failed: SteamDatagramTransportLock held for 251.1ms!
+[00:00:17]: Shutting down
