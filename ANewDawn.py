@@ -3,6 +3,14 @@ import math
 import numpy as np
 
 
+""" Reference for debugging reasons: 1.7 -1.7 1.7
+                                     0.7 -1.7 1.7
+                                     1.7 -1.7 0.7 --> different
+                                     0.7 -1.7 1.7
+                                     0.7 -1.7 0.7 --> different
+                                     1.7 -1.7 0.7 --> different
+"""
+
 def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the verteces' colors are also part of that n-tuple (second half)
 
     listWithCubies = []
@@ -50,6 +58,9 @@ def quatMult(listWithQuats, multQuat):
     multipliedCuby = np.zeros(36, [("position", np.float32, 4)])
     invMultQuat = np.zeros(4, dtype = np.float32)
     invMultQuat[:3] = (-1) * multQuat[:3]
+    invMultQuat[3] = multQuat[3]
+    print(multQuat)
+    print(invMultQuat)
     for index, e in enumerate(invMultQuat):
         if e == -0.0:
             invMultQuat[index] = 0.0
@@ -57,28 +68,31 @@ def quatMult(listWithQuats, multQuat):
     for cubyIndex, cuby in enumerate(listWithQuats):
         for index, vertex in enumerate(cuby):
 
+            #print(vertex["position"])
+
+            temp = np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 0], dtype = np.float32)
             firstMultResult = np.array([
-                                        multQuat[0]*vertex["position"][3] + multQuat[1]*vertex["position"][2] - multQuat[2]*vertex["position"][1] + multQuat[3]*vertex["position"][0],
-                                        -multQuat[0]*vertex["position"][2] + multQuat[1]*vertex["position"][3] + multQuat[2]*vertex["position"][0] + multQuat[3]*vertex["position"][1],
-                                        multQuat[0]*vertex["position"][1] - multQuat[1]*vertex["position"][0] + multQuat[2]*vertex["position"][3] + multQuat[3]*vertex["position"][2],
-                                        -multQuat[0]*vertex["position"][0] - multQuat[1]*vertex["position"][1] - multQuat[2]*vertex["position"][2] + multQuat[3]*vertex["position"][3]
+                                        multQuat[0]*temp[3] + multQuat[1]*temp[2] - multQuat[2]*temp[1] + multQuat[3]*temp[0],
+                                        -multQuat[0]*temp[2] + multQuat[1]*temp[3] + multQuat[2]*temp[0] + multQuat[3]*temp[1],
+                                        multQuat[0]*temp[1] - multQuat[1]*temp[0] + multQuat[2]*temp[3] + multQuat[3]*temp[2],
+                                        -multQuat[0]*temp[0] - multQuat[1]*temp[1] - multQuat[2]*temp[2] + multQuat[3]*temp[3]
                                         ],
                                         dtype = np.float32
             )
+
+            # print(firstMultResult)
 
             temp = list((firstMultResult[0]*invMultQuat[3], firstMultResult[1]*invMultQuat[2], firstMultResult[2]*invMultQuat[1], firstMultResult[3]*invMultQuat[0],
             -firstMultResult[0]*invMultQuat[2], firstMultResult[1]*invMultQuat[3], firstMultResult[2]*invMultQuat[0], firstMultResult[3]*invMultQuat[1],
             firstMultResult[0]*invMultQuat[1], firstMultResult[1]*invMultQuat[0], firstMultResult[2]*invMultQuat[3], firstMultResult[3]*invMultQuat[2],
             -firstMultResult[0]*invMultQuat[0], firstMultResult[1]*invMultQuat[1], firstMultResult[2]*invMultQuat[2], firstMultResult[3]*invMultQuat[3]))
 
-            for damn, e in enumerate(temp):
-                if e == -0.0:
-                    temp[damn] = 0.0
-
             invMultResult = np.zeros(4, dtype = np.float32)
 
             for dude in range(4):
                 invMultResult[dude] = (temp[4*dude] + temp[4*dude + 1] + temp[4*dude + 2] + temp[4*dude + 3])
+
+            print(invMultResult)
 
             multipliedCuby[index]["position"] = invMultResult
 
@@ -330,6 +344,6 @@ if __name__ == "__main__":
 
     betraege = []
     listWithQuats = vertexToQuat(listWithCubies, betraege)
-    listWithMultQuats = quatMult(listWithQuats, np.array([1.0,0.0,0.0,0.0], dtype = np.float32))
+    listWithMultQuats = quatMult(listWithQuats, np.array([math.sin(math.pi/4)*1,0.0,0.0,math.cos(math.pi/4)], dtype = np.float32))
     testList = quatToVert(listWithCubies, listWithMultQuats, betraege)
     print(listWithCubies)

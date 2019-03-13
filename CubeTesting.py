@@ -2,6 +2,8 @@ import sys
 import math
 import ctypes
 import numpy as np
+import time
+import random
 
 import OpenGL.GL as gl
 import OpenGL.GLUT as glut
@@ -17,18 +19,17 @@ class wholeCube():
         self.objectIndices = objectIndices
         self.coordinateAxes = coordinateAxes
         self.listWithCubies = np.array([*listWithCubies])
-        self.cubeSideOrder = np.arange(27).reshape(3,3,3)
-        for i in range(27):
-            self.cubeSideOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
-        self.whatCubesToRotate = np.array([])#np.empty(9, dtype = np.object_)
-        #self.whatCubesToRotate.fill([])
+        self.cubeOrder = np.arange(27).reshape(3,3,3)
+        self.angles = [0.0,0.0,0.0]
         self.xRotPos, self.yRotPos, self.zRotPos = 0,1,2
-        self.angles = [0.0, 0.0, 0.0]
         self.difStartPosXRot, self.difStartYRot, self.difStartZRot = 0.0, 0.0, 0.0
-        self.sideIsAboutToRotate = False
-        self.aroundWhichAxis = 0
-        self.whichSideTurned = ""
-        print()
+
+        for i in range(27):
+            self.cubeOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
+
+        self.whatCubesToRotate = np.array([])
+        self.angleValue = 5*math.pi/180
+
         self.initGlut()
         self.initProgram()
 
@@ -54,10 +55,8 @@ class wholeCube():
     def initProgram(self):
 
         # Shader code
-        # I know what problem there is: as you can see the order of the matrices which build the modelMatrix matters
         vertexShaderCode = """
             uniform vec3 angles;
-            attribute vec3 animationAngles;
             attribute float change;
             attribute vec3 position;
             attribute vec4 color;
@@ -66,9 +65,9 @@ class wholeCube():
             mat4 viewMatrix;
             mat4 projectionMatrix;
             void main() {
-                modelMatrix = mat4(1,0,0,0,  0,cos(angles.x + animationAngles.x),-sin(angles.x + animationAngles.x),0,  0,sin(angles.x + animationAngles.x),cos(angles.x + animationAngles.x),0,  0,0,0,1) *
-                              mat4(cos(angles.y + animationAngles.y),0,sin(angles.y + animationAngles.y),0,  0,1,0,0,  -sin(angles.y + animationAngles.y),0,cos(angles.y + animationAngles.y),0,  0,0,0,1) *
-                              mat4(cos(angles.z + animationAngles.z),-sin(angles.z + animationAngles.z),0,0,  sin(angles.z + animationAngles.z),cos(angles.z + animationAngles.z),0,0,  0,0,1,0,  0,0,0,1);
+                modelMatrix = mat4(1,0,0,0,  0,cos(angles.x),-sin(angles.x),0,  0,sin(angles.x),cos(angles.x),0,  0,0,0,1) *
+                              mat4(cos(angles.y),0,sin(angles.y),0,  0,1,0,0,  -sin(angles.y),0,cos(angles.y),0,  0,0,0,1) *
+                              mat4(cos(angles.z),-sin(angles.z),0,0,  sin(angles.z),cos(angles.z),0,0,  0,0,1,0,  0,0,0,1);
                 viewMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,-4.5,1);
                 projectionMatrix = mat4(1,0,0,0,  0,1,0,0,  0,0,0,-1, 0,0,-1.5,0);
                 vec4 temporary = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
@@ -126,30 +125,25 @@ class wholeCube():
 
     def keyboard(self, key, x, y):
 
-        modMatLoc = gl.glGetUniformLocation(self.program, "modelMatrix")
 
-        """
-        if key == b'\x1b':
+        # Cube rotations
 
-            self.alpha += 1 * math.pi/180
-            self.beta += 2 * math.pi/180
-            self.theta += 5 * math.pi/180
-        """
         # Left
-        if key == b'a':
+        if key == b'1':
 
-            self.angles[1] -= 10 * math.pi/180
-            self.display()
+            for _ in range(5):
+                self.angles[1] -= 2*math.pi/180
+                self.display()
 
         # Right
-        elif key == b'd':
+        elif key == b'3':
 
-            self.angles[1] += 10 * math.pi/180
+            for _ in range(5):
+                self.angles[1] += 2*math.pi/180
+                self.display()
 
         # Down
-        elif key == b's':
-
-            self.angles[0] += 10* math.pi/180
+        elif key == b'2':
 
             if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
                 self.angles.append(self.angles[1])
@@ -159,10 +153,12 @@ class wholeCube():
                 self.zRotPos = temp
                 self.difStartPosXRot += math.pi/2
 
-        # Up
-        elif key == b'w':
+            for _ in range(5):
+                self.angles[0] += 2*math.pi/180
+                self.display()
 
-            self.angles[0] -= 10* math.pi/180
+        # Up
+        elif key == b'5':
 
             if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
                 self.angles.append(self.angles[1])
@@ -172,102 +168,119 @@ class wholeCube():
                 self.zRotPos = temp
                 self.difStartPosXRot -= math.pi/2
 
-        elif key == b'f':
-
-            self.sideIsAboutToRotate = True
-            self.whichSideTurned = "f"
-
-            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
-            self.whatCubesToRotate = self.cubeSideOrder[0]
-
-            self.aroundWhichAxis = 2
-
-        elif key == b't':
+            for _ in range(5):
+                self.angles[0] -= 2*math.pi/180
+                self.display()
 
 
-            self.sideIsAboutToRotate = True
-            self.whichSideTurned = "t"
+        # Side rotations
 
-            self.cubeSideOrder = np.rot90(self.cubeSideOrder, 3, axes = (0,1))
-            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
-            self.whatCubesToRotate = self.cubeSideOrder[0]
-            self.cubeSideOrder = np.rot90(self.cubeSideOrder, axes = (0,1))
+        # Front
+        elif key == b'f' or key == "f":
 
-            #for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-            #    i["axisInverted"][0] = True
+            self.rotateCubeSide(0, 0)
+        # Back
+        elif key == b'b' or key == "b":
 
-            self.aroundWhichAxis = 1
+            self.rotateCubeSide(0, 0, (0,1), 2, True)
 
-        elif key == b'r':
+        # Top
+        elif key == b't' or key == "t":
 
-            self.sideIsAboutToRotate = True
-            self.cubeSideOrder = np.rot90(self.cubeSideOrder, axes = (0,2))
-            self.cubeSideOrder[0] = np.rot90(self.cubeSideOrder[0], 3)
-            self.whatCubesToRotate = self.cubeSideOrder[0]
+            self.rotateCubeSide(2, 0, (0,1), 3)
+        # Down
+        elif key == b'd' or key == "d":
 
-            self.cubeSideOrder = np.rot90(self.cubeSideOrder, 3, axes = (0,2))
-            print(self.cubeSideOrder)
-            self.aroundWhichAxis = 0
+            self.rotateCubeSide(2, 0, (0,1), 1, True)
 
+        # Right
+        elif key == b'r' or key == "r":
 
-        elif key == b'k':
+            self.rotateCubeSide(1, 0, (0,2), 1)
+        # Left
+        elif key == b'l' or key == "l":
 
-            self.sideIsAboutToRotate = True
-            self.whatCubesToRotate = self.cubeSideOrder[0]
-            self.aroundWhichAxis = 2
+            self.rotateCubeSide(1, 0, (0,2), 3, True)
+
+        # Middle
+        elif key == b'm' or key == "m":
+
+            self.rotateCubeSide(1, 1, (0,2), 3, True)
+        # Equator
+        elif key == b'e' or key == "e":
+
+            self.rotateCubeSide(2, 1, (0,1), 1, True)
+        # Standing
+        elif key == b's' or key == "s":
+
+            self.rotateCubeSide(0, 1)
+
+        elif key == b'h':
+
+            self.scramble(70)
 
         self.display()
 
+
+    def rotateCubeSide(self, sideRotationMatricesArrayIndex, layer, axes = (0,1), amountForth = 0, invertAngle = False):
+
+        if invertAngle:
+            self.angleValue = -self.angleValue
+
+        self.cubeOrder = np.rot90(self.cubeOrder, amountForth, axes = axes)
+        self.whatCubesToRotate = self.cubeOrder[layer]
+        self.cubeOrder[layer] = np.rot90(self.cubeOrder[layer], 3)
+        self.cubeOrder = np.rot90(self.cubeOrder, 4-amountForth, axes = axes)
+
+        sideRotationMatricesArray = (
+            np.array([[np.cos(self.angleValue),np.sin(self.angleValue),0,0] , [-np.sin(self.angleValue),np.cos(self.angleValue),0,0] , [0,0,1,0] , [0,0,0,1]]),
+            np.array([[1,0,0,0] , [0,np.cos(self.angleValue),np.sin(self.angleValue),0] , [0,-np.sin(self.angleValue),np.cos(self.angleValue),0] , [0,0,0,1]]),
+            np.array([[np.cos(self.angleValue),0,-np.sin(self.angleValue),0] , [0,1,0,0] , [np.sin(self.angleValue),0,np.cos(self.angleValue),0] , [0,0,0,1]])
+        )
+
+        for _ in range(int(round((math.pi/2)/abs(self.angleValue)))):
+            for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
+                for vertex in cuby:
+                    vertex["position"] = (sideRotationMatricesArray[sideRotationMatricesArrayIndex] @ np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 1]))[:3]
+            self.display()
+
+        self.angleValue = abs(self.angleValue)
+
+
+    def scramble(self, amountOfMoves):
+
+        self.angleValue = math.pi/6
+        listWithMoves = [random.choice("fbtdrlmes") for _ in range(amountOfMoves)]
+        print(listWithMoves)
+        for move in listWithMoves:
+            self.keyboard(move, 0, 0)
+
+        self.angleValue = 5*math.pi/180
 
     def display(self):
 
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.angles[self.xRotPos], self.angles[self.yRotPos], self.angles[self.zRotPos])
 
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+        #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+        #gl.glClearDepth(1.0)
+        for i in self.listWithCubies:
+            self.drawCubies(i)
+        self.drawAxes()
 
-        if self.sideIsAboutToRotate:
+        glut.glutSwapBuffers()
 
-            for _ in range(18):
-                for i in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-                    for e in i["animationAngles"]:
-                        #print(i["animationAngles"])
-                        e[self.aroundWhichAxis] += math.pi/36
-
-                gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
-
-                for i in self.listWithCubies:
-                    self.drawCubies(i)
-                self.drawAxes()
-
-                glut.glutSwapBuffers()
-
-        else:
-            gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
-            #gl.glClearColor(0.0, 0.0, 0.0, 0.0)
-            #gl.glClearDepth(1.0)
-            for i in self.listWithCubies:
-                self.drawCubies(i)
-            self.drawAxes()
-
-            glut.glutSwapBuffers()
-
-        self.sideIsAboutToRotate = False
 
     # Buffer stuff
     def drawCubies(self, objectToDraw, outLines = True):
 
         Vbos = gl.glGenBuffers(4)
 
-        print(objectToDraw["position"])
-        print(objectToDraw["position"].dtype.itemsize)
-        print(objectToDraw.strides[0])s
-
         posLoc = gl.glGetAttribLocation(self.program, "position")
         colorLoc = gl.glGetAttribLocation(self.program, "color")
-        angleLoc = gl.glGetAttribLocation(self.program, "animationAngles")
         posOffset = ctypes.c_void_p(0)
         colorOffset = ctypes.c_void_p(objectToDraw.dtype["position"].itemsize)
-        angleOffset = ctypes.c_void_p(objectToDraw.dtype["position"].itemsize + objectToDraw.dtype["color"].itemsize)
 
         objectStride = objectToDraw.strides[0]
 
@@ -280,9 +293,6 @@ class wholeCube():
 
         gl.glEnableVertexAttribArray(colorLoc)
         gl.glVertexAttribPointer(colorLoc, 4, gl.GL_FLOAT, False, objectStride, colorOffset)
-
-        gl.glEnableVertexAttribArray(angleLoc)
-        gl.glVertexAttribPointer(angleLoc, 3, gl.GL_FLOAT, False, objectStride, angleOffset)
 
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, objectToDraw.size)
 
@@ -341,7 +351,7 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
 
     for i in range(amount):
         cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
-        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4), ("animationAngles", np.float32, 3), ("axisInverted", np.bool, 3)])
+        convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4)])
 
         for count, e in enumerate(dataIndices):
             convertedData["position"][count] = cubyData["position"][e]
@@ -349,7 +359,6 @@ def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the 
                 convertedData["color"][count] = tRC[amount][i * 36 + count]         # Skip the topRightCorner positions and the colors for the cubes which have already been treated
             except:
                 print("Weird, you did not finish filling in the arguments...")
-            convertedData["axisInverted"][count] = False
 
         listWithCubies.append(convertedData)
 
@@ -366,53 +375,6 @@ if __name__ == "__main__":
     axesData = np.zeros(6, [("position", np.float32, 3), ("color", np.float32, 4)])
     axesData["position"] = [(0.0, 0.0, 0.0), (3.0, 0.0, 0.0), (0.0, 0.0, 0.0), (0.0, 3.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 3.0)]
     axesData["color"] = [(1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 0.0, 1.0, 1.0), (0.0, 0.0, 1.0, 1.0)]
-
-    """
-    # Center face
-    centerR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    centerR["position"] = [(+1.7, +0.5, +0.5), (+0.7, +0.5, +0.5), (+0.7, -0.5, +0.5), (+1.7, -0.5, +0.5), (+1.7, -0.5, -0.5), (+1.7, +0.5, -0.5), (+0.7, +0.5, -0.5), (+0.7, -0.5, -0.5)]
-    centerR["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
-
-    topR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    topR["position"] = [(+1.7, +1.7, +0.5), (+0.7, +1.7, +0.5), (+0.7, 0.7, +0.5), (+1.7, 0.7, +0.5), (+1.7, 0.7, -0.5), (+1.7, +1.7, -0.5), (+0.7, +1.7, -0.5), (+0.7, 0.7, -0.5)]
-    topR["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-    botR = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    botR["position"] = [(+1.7, -0.7, +0.5), (+0.7, -0.7, +0.5), (+0.7, -1.7, +0.5), (+1.7, -1.7, +0.5), (+1.7, -1.7, -0.5), (+1.7, -0.7, -0.5), (+0.7, -0.7, -0.5), (+0.7, -1.7, -0.5)]
-    botR["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-
-    centerM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    centerM["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    centerM["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
-
-    topM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    topM["position"] = [(+0.5, +1.7, +0.5), (-0.5, +1.7, +0.5), (-0.5, 0.7, +0.5), (+0.5, 0.7, +0.5), (+0.5, 0.7, -0.5), (+0.5, +1.7, -0.5), (-0.5, +1.7, -0.5), (-0.5, 0.7, -0.5)]
-    topM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-    botM = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    botM["position"] = [(+0.5, -0.7, +0.5), (-0.5, -0.7, +0.5), (-0.5, -1.7, +0.5), (+0.5, -1.7, +0.5), (+0.5, -1.7, -0.5), (+0.5, -0.7, -0.5), (-0.5, -0.7, -0.5), (-0.5, -1.7, -0.5)]
-    botM["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-
-    centerL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    centerL["position"] = [(-0.7, +0.5, +0.5), (-1.7, +0.5, +0.5), (-1.7, -0.5, +0.5), (-0.7, -0.5, +0.5), (-0.7, -0.5, -0.5), (-0.7, +0.5, -0.5), (-1.7, +0.5, -0.5), (-1.7, -0.5, -0.5)]
-    centerL["color"] = [(0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0), (0.0, 1.0, 0.5, 1.0)]
-
-    topL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    topL["position"] = [(-0.7, +1.7, +0.5), (-1.7, +1.7, +0.5), (-1.7, 0.7, +0.5), (-0.7, 0.7, +0.5), (-0.7, 0.7, -0.5), (-0.7, +1.7, -0.5), (-1.7, +1.7, -0.5), (-1.7, 0.7, -0.5)]
-    topL["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-    botL = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    botL["position"] = [(-0.7, -0.7, +0.5), (-1.7, -0.7, +0.5), (-1.7, -1.7, +0.5), (-0.7, -1.7, +0.5), (-0.7, -1.7, -0.5), (-0.7, -0.7, -0.5), (-1.7, -0.7, -0.5), (-1.7, -1.7, -0.5)]
-    botL["color"] = [(0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0), (0.0, 0.0, 0.5, 1.0)]
-
-
-    # Outlines data
-    edgeData = np.zeros(8, [("position", np.float32, 3), ("color", np.float32, 4)])
-    edgeData["position"] = [(+0.5, +0.5, +0.5), (-0.5, +0.5, +0.5), (-0.5, -0.5, +0.5), (+0.5, -0.5, +0.5), (+0.5, -0.5, -0.5), (+0.5, +0.5, -0.5), (-0.5, +0.5, -0.5), (-0.5, -0.5, -0.5)]
-    edgeData["color"] = np.ones(4, dtype = np.float32)
-    """
 
 
     # Final Rubik's Cube
