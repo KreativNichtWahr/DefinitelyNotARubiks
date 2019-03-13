@@ -2,7 +2,6 @@ import sys
 import math
 import ctypes
 import numpy as np
-import time
 import random
 
 import OpenGL.GL as gl
