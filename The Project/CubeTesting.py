@@ -124,9 +124,7 @@ class wholeCube():
 
     def keyboard(self, key, x, y):
 
-
         # Cube rotations
-
         # Left
         if key == b'1':
 

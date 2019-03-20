@@ -6,17 +6,18 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
-import CubeWindow as cw
+import CubeWindow
 import subprocess as sp
 
 class SubWindow(QWidget):
 
 
-    def __init__(self, length = 400, width = 250, parent = None):
+    def __init__(self, parent = None, length = 400, width = 250):
 
         super().__init__(parent)
-
-        self.initUI(length, width)
+        self.length = length
+        self.width = width
+        self.initUI(self.length, self.width)
 
 
     def initUI(self, length, width):
@@ -42,12 +43,13 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
 
-        centralWidget = SubWindow(parent = self)
-        self.setCentralWidget(centralWidget)
+        centralWidget = SubWindow(self)
+        #self.setCentralWidget(centralWidget)
 
         self.setMouseTracking(True)
 
-        self.cubeWindow = cw.Cube(self)
+        self.qOpenGLWidget = CubeWindow.Cube(self, centralWidget.length, centralWidget.width)
+        self.setCentralWidget(self.qOpenGLWidget)
 
         self.setWindowTitle("3D Rubik's Cube Simulator")
         self.setGeometry(200, 100, 1100, 800)
@@ -56,7 +58,7 @@ class MainWindow(QMainWindow):
 
     def keyPressEvent(self, event):
 
-        self.cubeWindow.keyboard(event.key())
+        self.qOpenGLWidget.keyboard(event.key())
 
         """if event.key() == Qt.Key_S:
 
