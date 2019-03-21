@@ -1,40 +1,27 @@
 from PyQt5 import *
 from PyQt5.QtWidgets import (QOpenGLWidget)
-from PyQt5.QtGui import (QOpenGLContext, QSurfaceFormat, QSurface, QWindow)
+from PyQt5.QtGui import (QOpenGLContext, QSurfaceFormat, QSurface)
 from PyQt5.QtCore import Qt
+import time
 import numpy as np
 import math
 import ctypes
 import OpenGL.GL as gl
+import OpenGL.GLU as glu
+import random
 
 class Cube(QOpenGLWidget):
 
     def __init__(self, parent, length, width):
 
-        super().__init__(parent)
-        QWindow.__init__(parent)
+        super().__init__()
+        self.height = length
+        self.width = width
         self.initUI(length, width)
 
 
     def initUI(self, length, width):
 
-        self.openGLContext = QOpenGLContext()
-
-        format = QSurfaceFormat()
-        format.setVersion(4, 2)
-        format.setProfile(QSurfaceFormat.CoreProfile)
-        format.setDepthBufferSize(24);
-        format.setStencilBufferSize(8);
-        format.setSamples(4)
-
-        #gl.setSurfaceType(OpenGLSurface)
-        self.openGLContext.setFormat(format)
-        self.openGLContext.create()
-
-        QWindow.setSurfaceType(OpenGLSurface)
-
-        self.length = length
-        self.width = width
         self.resize(length, width)
         self.show()
 
@@ -305,7 +292,10 @@ class Cube(QOpenGLWidget):
             self.cubeOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
 
         self.whatCubesToRotate = np.array([])
-        self.angleValue = 5*math.pi/180
+        self.angleValue = 3*math.pi/180
+
+        self.oldMouseXPos = 0
+        self.oldMouseYPos = 0
 
         # Depth and Cull init
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -383,12 +373,17 @@ class Cube(QOpenGLWidget):
 
     def resizeGL(self, width, height):
 
-        gl.glViewport(0, 0, round(math.sqrt(width+height)), round(math.sqrt(height+width)))
+        self.width = width
+        self.height = height
+        self.repaint()
 
 
     def paintGL(self):
 
-        self.openGLContext.makeCurrent(OpenGLSurface)
+        if self.width < self.height:
+            gl.glViewport(0, int((self.height/2) - (self.width/2)), self.width, self.width)
+        else:
+            gl.glViewport(int((self.width/2) - (self.height/2)), 0, self.height, self.height)
 
         loc = gl.glGetUniformLocation(self.program, "angles")
         gl.glUniform3f(loc, self.angles[self.xRotPos], self.angles[self.yRotPos], self.angles[self.zRotPos])
@@ -400,7 +395,6 @@ class Cube(QOpenGLWidget):
             self.drawCubies(i)
         self.drawAxes()
 
-        self.openGLContext.swapBuffers()
 
     # Buffer stuff
     def drawCubies(self, objectToDraw, outLines = True):
@@ -473,6 +467,31 @@ class Cube(QOpenGLWidget):
         gl.glDrawArrays(gl.GL_LINES, 0, 6)
 
 
+    def mouseClicked(self, mouseClickEvent):
+
+        self.oldMouseXPos = mouseClickEvent.x()
+        self.oldMouseYPos = mouseClickEvent.y()
+
+
+    def mouseMoved(self, mouseMoveEvent):
+
+        #print(self.oldMouseXPos, self.oldMouseYPos)
+        #print(mouseMoveEvent.x(), mouseMoveEvent.y())
+
+        diffOldNewX = mouseMoveEvent.x() - self.oldMouseXPos
+        diffOldNewY = mouseMoveEvent.y() - self.oldMouseYPos
+
+        print(diffOldNewX, diffOldNewY)
+
+        self.oldMouseXPos = mouseMoveEvent.x()
+        self.oldMouseYPos = mouseMoveEvent.y()
+
+        self.angles[1] -= (diffOldNewX / 9) * math.pi/180
+        self.angles[0] -= (diffOldNewY / 9) * math.pi/180
+        
+        self.update()
+
+
     # Handles the cubes rotations
     def keyboard(self, key):
 
@@ -480,19 +499,21 @@ class Cube(QOpenGLWidget):
         # Left
         if key == Qt.Key_Left:
 
-            for _ in range(5):
-                self.angles[1] -= 2*math.pi/180
-                self.paintGL()
+            for _ in range(40):
+                self.angles[1] -= 0.25*math.pi/180
+                self.repaint()
+                time.sleep(0.0015)
 
         # Right
-        elif key == b'3':
+        elif key == Qt.Key_Right:
 
-            for _ in range(5):
-                self.angles[1] += 2*math.pi/180
-                self.paintGL()
+            for _ in range(40):
+                self.angles[1] += 0.25*math.pi/180
+                self.repaint()
+                time.sleep(0.0015)
 
         # Down
-        elif key == b'2':
+        elif key == Qt.Key_Down:
 
             if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
                 self.angles.append(self.angles[1])
@@ -502,12 +523,13 @@ class Cube(QOpenGLWidget):
                 self.zRotPos = temp
                 self.difStartPosXRot += math.pi/2
 
-            for _ in range(5):
-                self.angles[0] += 2*math.pi/180
-                self.paintGL()
+            for _ in range(40):
+                self.angles[0] += 0.25*math.pi/180
+                self.repaint()
+                time.sleep(0.0015)
 
         # Up
-        elif key == b'5':
+        elif key == Qt.Key_Up:
 
             if abs(self.angles[0] - self.difStartPosXRot) > math.pi/4:
                 self.angles.append(self.angles[1])
@@ -517,59 +539,60 @@ class Cube(QOpenGLWidget):
                 self.zRotPos = temp
                 self.difStartPosXRot -= math.pi/2
 
-            for _ in range(5):
-                self.angles[0] -= 2*math.pi/180
-                self.paintGL()
+            for _ in range(40):
+                self.angles[0] -= 0.25*math.pi/180
+                self.repaint()
+                time.sleep(0.0015)
 
 
         # Side rotations
 
         # Front
-        elif key == b'f' or key == "f":
+        elif key == Qt.Key_F or key == "f":
 
             self.rotateCubeSide(0, 0)
         # Back
-        elif key == b'b' or key == "b":
+        elif key == Qt.Key_B or key == "b":
 
             self.rotateCubeSide(0, 0, (0,1), 2, True)
 
         # Top
-        elif key == b't' or key == "t":
+        elif key == Qt.Key_T or key == "t":
 
             self.rotateCubeSide(2, 0, (0,1), 3)
         # Down
-        elif key == b'd' or key == "d":
+        elif key == Qt.Key_D or key == "d":
 
             self.rotateCubeSide(2, 0, (0,1), 1, True)
 
         # Right
-        elif key == b'r' or key == "r":
+        elif key == Qt.Key_R or key == "r":
 
             self.rotateCubeSide(1, 0, (0,2), 1)
         # Left
-        elif key == b'l' or key == "l":
+        elif key == Qt.Key_L or key == "l":
 
             self.rotateCubeSide(1, 0, (0,2), 3, True)
 
         # Middle
-        elif key == b'm' or key == "m":
+        elif key == Qt.Key_M or key == "m":
 
             self.rotateCubeSide(1, 1, (0,2), 3, True)
         # Equator
-        elif key == b'e' or key == "e":
+        elif key == Qt.Key_E or key == "e":
 
             self.rotateCubeSide(2, 1, (0,1), 1, True)
         # Standing
-        elif key == b's' or key == "s":
+        elif key == Qt.Key_S or key == "s":
 
             self.rotateCubeSide(0, 1)
 
-        elif key == b'h':
+        elif key == Qt.Key_H:
 
             self.scramble(70)
 
 
-        self.paintGL()
+        self.update()
 
 
     def rotateCubeSide(self, sideRotationMatricesArrayIndex, layer, axes = (0,1), amountForth = 0, invertAngle = False):
@@ -592,17 +615,18 @@ class Cube(QOpenGLWidget):
             for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
                 for vertex in cuby:
                     vertex["position"] = (sideRotationMatricesArray[sideRotationMatricesArrayIndex] @ np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 1]))[:3]
-            self.paintGL()
+            self.repaint()
+            time.sleep(0.0015)
 
         self.angleValue = abs(self.angleValue)
 
 
     def scramble(self, amountOfMoves):
 
-        self.angleValue = math.pi/6
+        self.angleValue = math.pi/24
         listWithMoves = [random.choice("fbtdrlmes") for _ in range(amountOfMoves)]
         print(listWithMoves)
         for move in listWithMoves:
-            self.keyboard(move, 0, 0)
+            self.keyboard(move)
 
-        self.angleValue = 5*math.pi/180
+        self.angleValue = 3*math.pi/180

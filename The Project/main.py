@@ -1,9 +1,7 @@
 import sys
 
 # Basic Qt imports
-from PyQt5.QtWidgets import (
-        QMainWindow, QWidget, QApplication, QVBoxLayout
-)
+from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication, QVBoxLayout)
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
 import CubeWindow
@@ -12,7 +10,7 @@ import subprocess as sp
 class SubWindow(QWidget):
 
 
-    def __init__(self, parent = None, length = 400, width = 250):
+    def __init__(self, parent = None, length = 300, width = 300):
 
         super().__init__(parent)
         self.length = length
@@ -46,8 +44,6 @@ class MainWindow(QMainWindow):
         centralWidget = SubWindow(self)
         #self.setCentralWidget(centralWidget)
 
-        self.setMouseTracking(True)
-
         self.qOpenGLWidget = CubeWindow.Cube(self, centralWidget.length, centralWidget.width)
         self.setCentralWidget(self.qOpenGLWidget)
 
@@ -66,6 +62,15 @@ class MainWindow(QMainWindow):
             cmd = "python3 CubeWindow.py"
             sp.Popen(cmd, stdout=sp.PIPE, shell=True)
         """
+
+    def mousePressEvent(self, event):
+
+        self.qOpenGLWidget.mouseClicked(event)
+
+
+    def mouseMoveEvent(self, event):
+
+        self.qOpenGLWidget.mouseMoved(event)
 
 
 
