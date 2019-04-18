@@ -4,7 +4,8 @@ import sys
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QApplication, QVBoxLayout)
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
-import CubeWindow
+#import CubeWindow
+import Sandbox
 import subprocess as sp
 
 class SubWindow(QWidget):
@@ -44,7 +45,7 @@ class MainWindow(QMainWindow):
         centralWidget = SubWindow(self)
         #self.setCentralWidget(centralWidget)
 
-        self.qOpenGLWidget = CubeWindow.Cube(self, centralWidget.length, centralWidget.width)
+        self.qOpenGLWidget = Sandbox.Cube(self, centralWidget.length, centralWidget.width)
         self.setCentralWidget(self.qOpenGLWidget)
 
         self.setWindowTitle("3D Rubik's Cube Simulator")
