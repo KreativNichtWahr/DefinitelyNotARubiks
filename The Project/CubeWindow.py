@@ -1,4 +1,3 @@
-from PyQt5 import *
 from PyQt5.QtWidgets import (QOpenGLWidget)
 from PyQt5.QtGui import (QOpenGLContext, QSurfaceFormat, QSurface)
 from PyQt5.QtCore import Qt
@@ -7,7 +6,6 @@ import numpy as np
 import math
 import ctypes
 import OpenGL.GL as gl
-import OpenGL.GLU as glu
 import random
 import threading as th
 
@@ -764,12 +762,16 @@ class Cube(QOpenGLWidget):
             np.array([[np.cos(self.angleValue),0,-np.sin(self.angleValue),0] , [0,1,0,0] , [np.sin(self.angleValue),0,np.cos(self.angleValue),0] , [0,0,0,1]])
         )
 
+        oldTime = time.time()
+
         for _ in range(int(round((math.pi/2)/abs(self.angleValue)))):
             for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
                 for vertex in cuby:
                     vertex["position"] = (sideRotationMatricesArray[sideRotationMatricesArrayIndex] @ np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 1]))[:3]
             self.repaint()
             time.sleep(0.0015)
+
+        print(time.time()-oldTime)
 
         self.angleValue = abs(self.angleValue)
 
