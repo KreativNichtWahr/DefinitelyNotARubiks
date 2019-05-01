@@ -8,8 +8,6 @@ import ctypes
 import OpenGL.GL as gl
 import random
 import threading as th
-import queue
-
 
 class Cube(QOpenGLWidget):
 
@@ -629,8 +627,13 @@ class Cube(QOpenGLWidget):
 
     def mouseMoved(self, mouseMoveEvent):
 
+        #print(self.oldMouseXPos, self.oldMouseYPos)
+        #print(mouseMoveEvent.x(), mouseMoveEvent.y())
+
         diffOldNewX = mouseMoveEvent.x() - self.oldMouseXPos
         diffOldNewY = mouseMoveEvent.y() - self.oldMouseYPos
+
+        print(diffOldNewX, diffOldNewY)
 
         self.oldMouseXPos = mouseMoveEvent.x()
         self.oldMouseYPos = mouseMoveEvent.y()
@@ -737,7 +740,7 @@ class Cube(QOpenGLWidget):
 
         elif key == Qt.Key_H:
 
-            self.scramble(70)
+            self.scramble(30)
 
 
         self.update()
@@ -759,47 +762,16 @@ class Cube(QOpenGLWidget):
             np.array([[np.cos(self.angleValue),0,-np.sin(self.angleValue),0] , [0,1,0,0] , [np.sin(self.angleValue),0,np.cos(self.angleValue),0] , [0,0,0,1]])
         )
 
-        # Thread init
-        threads = []
+        oldTime = time.time()
 
-        # Queue and Lock init
-        specialQ = queue.Queue()
-        qs = [queue.Queue() for _ in range(int(round((math.pi/2)/abs(self.angleValue))))]
-        qs.insert(0, specialQ)
-        qLock = th.Lock()
-
-        for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-            for vertex in cuby:
-                for q in qs:
-                    q.put(vertex)
-
-        #oldTime = time.time()
-
-        for index in range(int(round((math.pi/2)/abs(self.angleValue)))):
-            oldTime = time.time()
-            for __ in range(1):
-                thread = VertexCalculatingThread(specialQ, qLock, sideRotationMatricesArray, sideRotationMatricesArrayIndex, self.angleValue)
-                threads.append(thread)
-                thread.start()
-            print("1) ThreadCreationTime: ", time.time()-oldTime)
-
-            for thread in threads:
-                thread.join()
-
-            threads = []
-            oldTime = time.time()
-            #for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
-            #    for vertex in cuby:
-            #        q.put(vertex)
-            specialQ = qs[index+1]
-            print(q.empty())
-
-            print("2) QueueFillingTime: ", time.time()-oldTime)
-
+        for _ in range(int(round((math.pi/2)/abs(self.angleValue)))):
+            for cuby in [x for x in self.listWithCubies if np.where(x == self.listWithCubies)[0][0] in self.whatCubesToRotate]:
+                for vertex in cuby:
+                    vertex["position"] = (sideRotationMatricesArray[sideRotationMatricesArrayIndex] @ np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 1]))[:3]
             self.repaint()
             time.sleep(0.0015)
 
-        #print(time.time()-oldTime)
+        print(time.time()-oldTime)
 
         self.angleValue = abs(self.angleValue)
 
@@ -812,40 +784,3 @@ class Cube(QOpenGLWidget):
             self.keyboard(move)
 
         self.angleValue = 5*math.pi/180
-"""
-class QueueFillingThread(th.Thread):
-
-    def __init__(self, q, qLock):
-
-        super().__init__()
-        self.q = q
-        self.qLock = qLock
-
-    def run(self):
-"""
-
-
-class VertexCalculatingThread(th.Thread):
-
-    def __init__(self, q, qLock, sideRotationMatricesArray, sideRotationMatricesArrayIndex, angleValue):
-
-        super().__init__()
-        self.q = q
-        self.qLock = qLock
-        self.sideRotationMatricesArray = sideRotationMatricesArray
-        self.sideRotationMatricesArrayIndex = sideRotationMatricesArrayIndex
-        self.angleValue = angleValue
-
-    def run(self):
-
-        while not self.q.empty():
-
-            self.qLock.acquire()
-
-            if not self.q.empty():
-                vertex = self.q.get()
-                vertex["position"] = (self.sideRotationMatricesArray[self.sideRotationMatricesArrayIndex] @ np.array([vertex["position"][0], vertex["position"][1], vertex["position"][2], 1]))[:3]
-                self.qLock.release()
-
-            else:
-                self.qLock.release()
