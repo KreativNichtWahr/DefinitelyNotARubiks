@@ -27,7 +27,7 @@ class Cube(QOpenGLWidget):
 
     def initializeGL(self):
 
-        def createNewCubyData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the verteces' colors are also part of that n-tuple (second half)
+        def createNewCubeData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the verteces' colors are also part of that n-tuple (second half)
 
             listWithCubies = []
             cubyData = np.zeros(8, [("position", np.float32, 3)])
@@ -48,14 +48,14 @@ class Cube(QOpenGLWidget):
 
             return listWithCubies
 
-        def createNewCubyDataTest(cubeType, cubyFaceWidth, cubyRoundedPartWidth, fTRC, colors):
+        def createNewCubeDataTest(cubeType, cubyFaceWidth, cubyRoundedPartWidth, fTRC, colors):
 
             listWithCubies = []
-            feinKoernigkeit = 9
+            feinKoernigkeit = 2
 
             for cuby in range(cubeType**3):
-
-                cubyData = np.zeros(36 + (feinKoernigkeit*6)*12, [("position", np.float32, 3), ("color", np.float32, 4)])
+                # 36 : Faces; (feinKoernigkeit*6)*12 : Rounded edge parts; ((feinKoernigkeit**2)*3)*8 : Rounded corner parts
+                cubyData = np.zeros(36 + (feinKoernigkeit*6)*12 + ((feinKoernigkeit**2)*3)*8, [("position", np.float32, 3), ("color", np.float32, 4)])
                 tRC = (fTRC[0]-cuby+(cuby//3 * 3), fTRC[1]-(cuby//3)+(cuby//9 * 3), fTRC[2]-(cuby//9))
                 # Colored Faces
                 # Each line one triangle, 2 lines one face, up to the part where the rounded forms are being stored
@@ -83,7 +83,7 @@ class Cube(QOpenGLWidget):
                 for colorIndex in range(36):
                     cubyData["color"][colorIndex] = colors[cuby*36 + colorIndex]
 
-                # Rounded parts
+                # Rounded edge parts
                     # Middle
                         # Front Top
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
@@ -130,7 +130,7 @@ class Cube(QOpenGLWidget):
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth, tRC[2]), tRC]
                 for korn in range(feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
+                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
                     cubyData["position"][((36+feinKoernigkeit*6*4)+korn*6):((42+feinKoernigkeit*6*4)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
@@ -147,7 +147,7 @@ class Cube(QOpenGLWidget):
                     cubyData["color"][((36+feinKoernigkeit*6*5)+korn*6):((42+feinKoernigkeit*6*5)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Right
-                oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth), (tRC[0], tRC[1], tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth), (tRC[0], tRC[1], tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth)]
                 for korn in range(feinKoernigkeit):
 
                     oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
@@ -157,7 +157,7 @@ class Cube(QOpenGLWidget):
                     cubyData["color"][((36+feinKoernigkeit*6*6)+korn*6):((42+feinKoernigkeit*6*6)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Left
-                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth), (tRC[0]-cubyFaceWidth, tRC[1], tRC[2]-cubyFaceWidth)]
+                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1], tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth)]
                 for korn in range(feinKoernigkeit):
 
                     oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
@@ -207,6 +207,196 @@ class Cube(QOpenGLWidget):
 
                     cubyData["color"][((36+feinKoernigkeit*6*11)+korn*6):((42+feinKoernigkeit*6*11)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
+                # Rounded corner parts
+                    # Top
+                        # Right Front
+                oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+                        # Left Front
+                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+
+                        # Right Back
+                oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+                        # Left Back
+                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+
+                    # Down
+                        # Right Front
+                oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+                        # Left Front
+                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+
+                        # Right Back
+                oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
+                        # Left Back
+                oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                for korn in range(feinKoernigkeit):
+
+                    oldBottomCorners = [
+                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                    ]
+
+                    tempList = []
+                    if korn != 0:
+                        tempList = [(oldTopCorners[k], oldTopCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+1], oldBottomCorners[k+2], oldTopCorners[k+1]) for k in range(korn)]
+                    tempList.insert(0, (oldTopCorners[0], oldBottomCorners[0], oldBottomCorners[1]))
+
+                    tempList2 = []
+                    for e in tempList:
+                        for d in range(len([*e])):
+                            tempList2.append(e[d])
+
+                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    oldTopCorners = oldBottomCorners
 
                 listWithCubies.append(cubyData)
 
@@ -222,7 +412,7 @@ class Cube(QOpenGLWidget):
 
 
         # Final Rubik's Cube
-        listWithConditionsInitiales = [dataIndices, edgeDataIndices, axesData, createNewCubyDataTest(
+        listWithConditionsInitiales = [dataIndices, edgeDataIndices, axesData, createNewCubeDataTest(
                         3, 0.8696, 0.0652,
                         # topRightCorner positions
                         (1.4348,1.4348,1.5),
@@ -444,7 +634,7 @@ class Cube(QOpenGLWidget):
             self.cubeOrder[i//9][(i - i%3 - 2*(i//3))%3][2-i%3] = i
 
         self.whatCubesToRotate = np.array([])
-        self.angleValue = 5*math.pi/180
+        self.angleValue = 10*math.pi/180
 
         self.oldMouseXPos = 0
         self.oldMouseYPos = 0
@@ -633,8 +823,6 @@ class Cube(QOpenGLWidget):
         diffOldNewX = mouseMoveEvent.x() - self.oldMouseXPos
         diffOldNewY = mouseMoveEvent.y() - self.oldMouseYPos
 
-        print(diffOldNewX, diffOldNewY)
-
         self.oldMouseXPos = mouseMoveEvent.x()
         self.oldMouseYPos = mouseMoveEvent.y()
 
@@ -771,16 +959,14 @@ class Cube(QOpenGLWidget):
             self.repaint()
             time.sleep(0.0015)
 
-        print(time.time()-oldTime)
-
         self.angleValue = abs(self.angleValue)
 
 
     def scramble(self, amountOfMoves):
 
-        self.angleValue = math.pi/24
+        self.angleValue = math.pi/6
         listWithMoves = [random.choice("fbtdrlmes") for _ in range(amountOfMoves)]
         for move in listWithMoves:
             self.keyboard(move)
 
-        self.angleValue = 5*math.pi/180
+        self.angleValue = 10*math.pi/180
