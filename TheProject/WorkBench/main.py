@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
             QPushButton, QLabel
 )
 from PyQt5.QtGui import QColor, QPixmap, QImageReader
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QCoreApplication
 import CubeWindow
 import Sandbox
 import os
@@ -82,12 +82,7 @@ class MainWindow(QMainWindow):
                     # Tab content
         self.tabOneLayout = QVBoxLayout()
 
-        os.chdir('images')
-        print(os.path.abspath('thumbnail_3x3.png'))
-
-        self.pixmap3x3 = QPixmap('images/thumbnail_3x3.png')
-        if self.pixmap3x3.isNull():
-            print("AAALLAAAAARRRMMMMM")
+        self.pixmap3x3 = QPixmap('TheProject/WorkBench/images/thumbnail_3x3.png')
 
         self.label3x3 = ClickableLabel(self, self.cubeContainerWidget, self.pixmap3x3)
         self.tabOneLayout.addWidget(self.label3x3)
