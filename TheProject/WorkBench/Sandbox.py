@@ -11,51 +11,253 @@ import threading as th
 
 class Cube(QOpenGLWidget):
 
-    def __init__(self, parent, length, width):
+    def __init__(self, parent = None, windowHeight = 500, windowWidth = 500, cubeType = 3, feinKoernigkeit = 3):
 
         super().__init__()
-        self.height = length
-        self.width = width
-        self.initUI(length, width)
+        self.cubeType = cubeType
+        self.feinKoernigkeit = feinKoernigkeit
+        self.height = windowHeight
+        self.width = windowWidth
+        self.initUI(self.height, self.width)
 
 
-    def initUI(self, length, width):
+    def initUI(self, height, width):
 
-        self.resize(length, width)
+        self.resize(height, width)
         self.show()
 
 
     def initializeGL(self):
 
-        def createNewCubeData(amount, cubyWidth, *tRC): # tRC = topRightCorner, but the verteces' colors are also part of that n-tuple (second half)
+        def createAdditionalValuesFromCubyType():
+
+            # cubeFaceWidth in OpenGL units --> add or substract 0.4 for every additional / missing cuby compared to the standard 3x3
+            cubeFaceWidth = 5.7 + (self.cubeType - 3)*0.4
+
+            # Divide by amount of cubes and multiply by face width ratio
+            cubyFaceWidth = (cubeFaceWidth/self.cubeType)*0.8696
+            # Divide by amount of cubes and multiply by rounded part width ratio
+            cubyRoundedPartWidth = (cubeFaceWidth/self.cubeType)*0.0652
+            # First top right corner, don't ask me why I chose to give it that specific value
+            fTRC = ((cubeFaceWidth/2)-cubyRoundedPartWidth, (cubeFaceWidth/2)-cubyRoundedPartWidth, cubeFaceWidth/2)
+            # Amount of corner / edge / center cubies can directly be extracted from the cubeType
+                # Special case: 1x1 (even though it is actually useless)
+                # Others
+            numpyColors = np.zeros(cubeType**3).reshape(cubeType, cubeType, cubeType)
+
+            for layer in numpyColors:
+                
+
+            colors = []
+            [
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0), (1.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+
+
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+
+
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0), (1.0,1.0,1.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0), (0.0,0.0,1.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0), (1.0,0.5,0.0,1.0),
+            (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0), (0.0,1.0,0.0,1.0),
+            (0.0,0.0,0.0,0.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0), (0.0,0.0,0.0,1.0),
+            (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0), (1.0,1.0,0.0,1.0),
+            ]
+
+            additionalValues = (cubyFaceWidth, cubyRoundedPartWidth, fTRC, colors)
+
+            return additionalValues
+
+
+        def createNewCubeData(cubeType, cubyFaceWidth, cubyRoundedPartWidth, fTRC, colors):
 
             listWithCubies = []
-            cubyData = np.zeros(8, [("position", np.float32, 3)])
-            dataIndices = np.array([0,1,3, 1,2,3, 5,0,4, 0,3,4, 6,5,7, 5,4,7, 1,6,2, 6,7,2, 5,6,0, 6,1,0, 7,4,2, 4,3,2], dtype = np.int32)
-
-            for i in range(amount):
-                cubyData["position"] = [tRC[i], (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]), (tRC[i][0], tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth), (tRC[i][0], tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1], tRC[i][2]-cubyWidth), (tRC[i][0]-cubyWidth, tRC[i][1]-cubyWidth, tRC[i][2]-cubyWidth)]
-                convertedData = np.zeros(36, [("position", np.float32, 3), ("color", np.float32, 4)])
-
-                for count, e in enumerate(dataIndices):
-                    convertedData["position"][count] = cubyData["position"][e]
-                    try:
-                        convertedData["color"][count] = tRC[amount][i * 36 + count]         # Skip the topRightCorner positions and the colors for the cubes which have already been treated
-                    except:
-                        print("Weird, you did not finish filling in the arguments...")
-
-                listWithCubies.append(convertedData)
-
-            return listWithCubies
-
-        def createNewCubeDataTest(cubeType, cubyFaceWidth, cubyRoundedPartWidth, fTRC, colors):
-
-            listWithCubies = []
-            feinKoernigkeit = 2
 
             for cuby in range(cubeType**3):
-                # 36 : Faces; (feinKoernigkeit*6)*12 : Rounded edge parts; ((feinKoernigkeit**2)*3)*8 : Rounded corner parts
-                cubyData = np.zeros(36 + (feinKoernigkeit*6)*12 + ((feinKoernigkeit**2)*3)*8, [("position", np.float32, 3), ("color", np.float32, 4)])
+                # 36 : Faces; (self.feinKoernigkeit*6)*12 : Rounded edge parts; ((self.feinKoernigkeit**2)*3)*8 : Rounded corner parts
+                cubyData = np.zeros(36 + (self.feinKoernigkeit*6)*12 + ((self.feinKoernigkeit**2)*3)*8, [("position", np.float32, 3), ("color", np.float32, 4)])
                 tRC = (fTRC[0]-cuby+(cuby//3 * 3), fTRC[1]-(cuby//3)+(cuby//9 * 3), fTRC[2]-(cuby//9))
                 # Colored Faces
                 # Each line one triangle, 2 lines one face, up to the part where the rounded forms are being stored
@@ -87,9 +289,9 @@ class Cube(QOpenGLWidget):
                     # Middle
                         # Front Top
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0], tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
+                    oldBottomCorners = [(tRC[0], tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
                     cubyData["position"][(36+korn*6):(42+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
@@ -97,126 +299,126 @@ class Cube(QOpenGLWidget):
 
                         # Front Down
                 oldTopCorners = [(tRC[0], tRC[1]-cubyRoundedPartWidth-cubyFaceWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyRoundedPartWidth-cubyFaceWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0], tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6)+korn*6):((42+feinKoernigkeit*6)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0], tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6)+korn*6):((42+self.feinKoernigkeit*6)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6)+korn*6):((42+feinKoernigkeit*6)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6)+korn*6):((42+self.feinKoernigkeit*6)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Top
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0], tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*2)+korn*6):((42+feinKoernigkeit*6*2)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0], tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*2)+korn*6):((42+self.feinKoernigkeit*6*2)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*2)+korn*6):((42+feinKoernigkeit*6*2)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*2)+korn*6):((42+self.feinKoernigkeit*6*2)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Down
                 oldTopCorners = [(tRC[0], tRC[1]-cubyRoundedPartWidth-cubyFaceWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyRoundedPartWidth-cubyFaceWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0], tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*3)+korn*6):((42+feinKoernigkeit*6*3)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0], tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-(1+math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*3)+korn*6):((42+self.feinKoernigkeit*6*3)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*3)+korn*6):((42+feinKoernigkeit*6*3)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*3)+korn*6):((42+self.feinKoernigkeit*6*3)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                     # Equator
                         # Front Right
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth, tRC[2]), tRC]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*4)+korn*6):((42+feinKoernigkeit*6*4)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*4)+korn*6):((42+self.feinKoernigkeit*6*4)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*4)+korn*6):((42+feinKoernigkeit*6*4)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*4)+korn*6):((42+self.feinKoernigkeit*6*4)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Front Left
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth, tRC[2]), (tRC[0]-cubyFaceWidth, tRC[1], tRC[2])]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*5)+korn*6):((42+feinKoernigkeit*6*5)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-(1-math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*5)+korn*6):((42+self.feinKoernigkeit*6*5)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*5)+korn*6):((42+feinKoernigkeit*6*5)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*5)+korn*6):((42+self.feinKoernigkeit*6*5)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Right
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth), (tRC[0], tRC[1], tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*6)+korn*6):((42+feinKoernigkeit*6*6)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*6)+korn*6):((42+self.feinKoernigkeit*6*6)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*6)+korn*6):((42+feinKoernigkeit*6*6)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*6)+korn*6):((42+self.feinKoernigkeit*6*6)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Back Left
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1], tRC[2]-cubyFaceWidth-2*cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*7)+korn*6):((42+feinKoernigkeit*6*7)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth, tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1], tRC[2]-cubyFaceWidth-(1+math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*7)+korn*6):((42+self.feinKoernigkeit*6*7)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*7)+korn*6):((42+feinKoernigkeit*6*7)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*7)+korn*6):((42+self.feinKoernigkeit*6*7)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                     # Standing
                         # Right Top
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*8)+korn*6):((42+feinKoernigkeit*6*8)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*8)+korn*6):((42+self.feinKoernigkeit*6*8)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*8)+korn*6):((42+feinKoernigkeit*6*8)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*8)+korn*6):((42+self.feinKoernigkeit*6*8)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Left Top
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*9)+korn*6):((42+feinKoernigkeit*6*9)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*9)+korn*6):((42+self.feinKoernigkeit*6*9)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*9)+korn*6):((42+feinKoernigkeit*6*9)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*9)+korn*6):((42+self.feinKoernigkeit*6*9)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Right Down
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*10)+korn*6):((42+feinKoernigkeit*6*10)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]+(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*10)+korn*6):((42+self.feinKoernigkeit*6*10)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*10)+korn*6):((42+feinKoernigkeit*6*10)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*10)+korn*6):((42+self.feinKoernigkeit*6*10)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                         # Left Down
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
-                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                    cubyData["position"][((36+feinKoernigkeit*6*11)+korn*6):((42+feinKoernigkeit*6*11)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
+                    oldBottomCorners = [(tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth), (tRC[0]-cubyFaceWidth-(math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*11)+korn*6):((42+self.feinKoernigkeit*6*11)+korn*6)] = [*oldTopCorners, oldBottomCorners[0], oldTopCorners[1], *oldBottomCorners]
                     oldTopCorners = oldBottomCorners
 
-                    cubyData["color"][((36+feinKoernigkeit*6*11)+korn*6):((42+feinKoernigkeit*6*11)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
+                    cubyData["color"][((36+self.feinKoernigkeit*6*11)+korn*6):((42+self.feinKoernigkeit*6*11)+korn*6)] = [(0.0,0.0,0.0,1.0) for _ in range(6)]
 
                 # Rounded corner parts
                     # Top
                         # Right Front
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -229,17 +431,17 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
                         # Left Front
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -252,18 +454,18 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*1-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*1+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
 
                         # Right Back
                 oldTopCorners = [(tRC[0], tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -276,17 +478,17 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*2-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*2+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
                         # Left Back
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]+cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]+(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -299,19 +501,19 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*3-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*3+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
 
                     # Down
                         # Right Front
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]+math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -324,17 +526,17 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*4-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*4+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
                         # Left Front
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]-cubyFaceWidth-math.sin((k/(1+korn))*(math.pi/2)) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1-math.cos((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -347,18 +549,18 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*5-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*5+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
 
                         # Right Back
                 oldTopCorners = [(tRC[0], tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]+(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -371,17 +573,17 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*6-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*6+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
                         # Left Back
                 oldTopCorners = [(tRC[0]-cubyFaceWidth, tRC[1]-cubyFaceWidth-cubyRoundedPartWidth, tRC[2]-cubyFaceWidth-cubyRoundedPartWidth)]
-                for korn in range(feinKoernigkeit):
+                for korn in range(self.feinKoernigkeit):
 
                     oldBottomCorners = [
-                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth),
-                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth,
-                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
+                                        (tRC[0]-cubyFaceWidth-(math.cos((k/(1+korn))*(math.pi/2))) * (math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth),
+                                        tRC[1]-cubyFaceWidth-(math.cos((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth,
+                                        tRC[2]-cubyFaceWidth-(1-math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit))*cubyRoundedPartWidth-((1+math.sin((k/(1+korn))*(math.pi/2))) * math.sin((math.pi/2) * (korn+1)/self.feinKoernigkeit)*cubyRoundedPartWidth)) for k in range(korn+2)
                     ]
 
                     tempList = []
@@ -394,8 +596,8 @@ class Cube(QOpenGLWidget):
                         for d in range(len([*e])):
                             tempList2.append(e[d])
 
-                    cubyData["position"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = tempList2
-                    cubyData["color"][((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+feinKoernigkeit*6*12+((feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
+                    cubyData["position"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = tempList2
+                    cubyData["color"][((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*7-((0**korn)-1)*(korn**2)*3*1)):((36+self.feinKoernigkeit*6*12+((self.feinKoernigkeit**2)*3)*7+((korn+1)**2)*3*1))] = [(0.0,0.0,0.0,1.0) for _ in range(len(tempList2))]
                     oldTopCorners = oldBottomCorners
 
                 listWithCubies.append(cubyData)
@@ -412,7 +614,7 @@ class Cube(QOpenGLWidget):
 
 
         # Final Rubik's Cube
-        listWithConditionsInitiales = [dataIndices, edgeDataIndices, axesData, createNewCubeDataTest(
+        listWithConditionsInitiales = [dataIndices, edgeDataIndices, axesData, createNewCubeData(
                         3, 0.8696, 0.0652,
                         # topRightCorner positions
                         (1.4348,1.4348,1.5),

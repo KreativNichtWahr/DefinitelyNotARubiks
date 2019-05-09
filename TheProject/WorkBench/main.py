@@ -80,12 +80,21 @@ class MainWindow(QMainWindow):
                 # Tab 1: Cubes
         self.tabOne = QWidget()
                     # Tab content
-        self.tabOneLayout = QVBoxLayout()
+                        # Tab layout
+        self.tabOneLayout = QGridLayout()
 
-        self.pixmap3x3 = QPixmap('TheProject/WorkBench/images/thumbnail_3x3.png')
-
+                        # Pixmap to display images (scaled to 120 by 120)
+        self.pixmap2x2 = QPixmap('TheProject/WorkBench/images/thumbnail_2x2.png').scaled(120, 120)
+                        # Label as pixmap container
+        self.label2x2 = ClickableLabel(self, self.cubeContainerWidget, self.pixmap2x2)
+        self.pixmap3x3 = QPixmap('TheProject/WorkBench/images/thumbnail_3x3.png').scaled(120, 120)
         self.label3x3 = ClickableLabel(self, self.cubeContainerWidget, self.pixmap3x3)
-        self.tabOneLayout.addWidget(self.label3x3)
+
+        self.tabOneLayout.addWidget(self.label3x3, 0, 0)
+        self.tabOneLayout.addWidget(self.label2x2, 1, 0)
+                        # Again, placeholder widget
+        self.tabOneLayout.addWidget(self.placeHoldingWidget, 2, 0)
+        self.tabOneLayout.setRowMinimumHeight(2, 500)
         self.tabOne.setLayout(self.tabOneLayout)
                 # Tab 2: Algorithms
         self.tabTwo = QWidget()
@@ -123,7 +132,7 @@ class MainWindow(QMainWindow):
         self.qOpenGLWidget.mouseMoved(event)
 
 
-
+# Custom class to render clickable
 class ClickableLabel(QLabel):
 
     def __init__(self, mainWindow, cubeContainerWidget, pixmap):
@@ -135,6 +144,7 @@ class ClickableLabel(QLabel):
 
     def mousePressEvent(self, event):
 
+        # If there is no CubeWindow
         if not self.mainWindow.mainLayout.itemAt(1):
             self.mainWindow.mainLayout.addWidget(self.cubeContainerWidget, 0, 1)
 
