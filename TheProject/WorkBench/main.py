@@ -1,6 +1,4 @@
 import sys
-
-# Basic Qt imports
 from PyQt5.QtWidgets import (
             QMainWindow, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QTabWidget, QGridLayout,
             QPushButton, QLabel
@@ -61,7 +59,7 @@ class MainWindow(QMainWindow):
         # Container for layout
         self.cubeContainerWidget = QWidget()
         # Cube window
-        self.qOpenGLWidget = Sandbox.Cube(self, 500, 500)
+        self.qOpenGLWidget = CubeWindow.Cube(self, 500, 500)
         # Place holder to reduce the cube windows's height
         self.placeHoldingWidget = QWidget()
         # Layout
