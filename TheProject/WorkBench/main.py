@@ -11,6 +11,7 @@ import CubeWindow
 import Sandbox
 import os
 
+
 class SubWindow(QWidget):
 
 
@@ -60,7 +61,7 @@ class MainWindow(QMainWindow):
         # Container for layout
         self.cubeContainerWidget = QWidget()
         # Cube window
-        self.qOpenGLWidget = CubeWindow.Cube(self, 500, 500)
+        self.qOpenGLWidget = Sandbox.Cube(self, 500, 500)
         # Place holder to reduce the cube windows's height
         self.placeHoldingWidget = QWidget()
         # Layout

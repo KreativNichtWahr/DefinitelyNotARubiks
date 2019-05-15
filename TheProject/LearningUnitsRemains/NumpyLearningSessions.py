@@ -96,6 +96,7 @@ for i in p:
 
 # multidimensional
 q = np.fromfunction(lambda i, j: 10*i + j, (5, 4), dtype = int)
+print("-" * 100)
 print(q)
 print(q[2, 1])
 print(q[:2, 1])
@@ -104,6 +105,8 @@ print(q[2:4,:1:-1])
 r = np.fromfunction(lambda i,j,k: 2*i + 5*j + k, (4,4,5), dtype = int)
 print(r)
 print(r[2,...,2])
+
+print("-" * 100)
 
 for e in q.flat:
     print(e)
